@@ -14,6 +14,7 @@ public class mainFrame extends JFrame
 	public mainFrame()
 	{
 		super("Last.fm Player");
+		//Do some stuff here; we'll figure it out.
 	}
 	
 	public void launchView()
