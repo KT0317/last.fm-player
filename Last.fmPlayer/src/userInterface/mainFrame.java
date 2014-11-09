@@ -10,7 +10,7 @@ public class mainFrame extends JFrame
 {
 	private static final int PREF_MIN_WIDTH = 600;
 	private static final int PREF_MIN_HEIGHT = 600;
-	
+	//Jorge <3
 	public mainFrame()
 	{
 		super("Last.fm Player");
