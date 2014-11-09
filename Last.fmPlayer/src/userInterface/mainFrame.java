@@ -1,16 +1,20 @@
 package userInterface;
 
 import java.awt.Dimension;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import player.Player;
+import player.Playlist;
+
 public class mainFrame extends JFrame
 {
 	private static final int PREF_MIN_WIDTH = 600;
 	private static final int PREF_MIN_HEIGHT = 600;
-	//Jorge <3
+	
 	public mainFrame()
 	{
 		super("Last.fm Player");
