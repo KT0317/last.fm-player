@@ -5,14 +5,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -38,45 +41,23 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton play;
 	private JButton stop;
 	private JButton exit;
-	private JSlider volumeSlider;
+	private JButton open;
+	private static JSlider volumeSlider;
 		
+	
 	public MyMediaFrame(File playFile)
 	{
 		System.out.println(Artist);
 		
-		try { 
-      	     File song = playFile; 
-             FileInputStream file = new FileInputStream(song); 
-             int size = (int)song.length(); 
-             file.skip(size - 128); 
-             byte[] last128 = new byte[128]; 
-             file.read(last128); 
-             String id3 = new String(last128); 
-             String tag = id3.substring(0, 3); 
-             if (tag.equals("TAG")) { 
-                this.setTitle(id3.substring(3, 32)); 
-                this.setArtist(id3.substring(33, 62)); 
-                this.setAlbum(id3.substring(63, 91)); 
-                this.setYear(id3.substring(93, 97)); 
-             }
-             	else 
-             		System.out.println(" does not contain" 
-             		   + " ID3 info.");  
-             	file.close(); 
-             } 
-      	catch (Exception e)
-      	{ 
-      		System.out.println("Error ? " + e.toString()); 
-        }
-		
-		
-		
+		this.getMetadata(playFile);
+
 		JFXPanel fxPanel = new JFXPanel();
 		Media track = new Media(new File("stuff.mp3").toURI().toString());
 		mediaPlayer = new MediaPlayer(track);
 
 		play = new JButton("Play");
 		stop = new JButton("Stop");
+		open = new JButton("Open");
 		exit = new JButton("Exit");
 		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 100);
 		volumeSlider.setMinorTickSpacing(5);
@@ -89,10 +70,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		buttonPanel.setBorder(new TitledBorder(new EtchedBorder(), "Command"));
 		buttonPanel.add(play);
 		buttonPanel.add(stop);
+		buttonPanel.add(open);
 		buttonPanel.add(exit);
 		
 		play.addActionListener(this); 
 		stop.addActionListener(this); 
+		open.addActionListener(this);
 		exit.addActionListener(this); 
 		volumeSlider.addChangeListener(this);
 
@@ -123,6 +106,34 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 	}
 	
+	public void getMetadata(File playFile)
+	{
+		try { 
+     	    File song = playFile; 
+            FileInputStream file = new FileInputStream(song); 
+            int size = (int)song.length(); 
+            file.skip(size - 128); 
+            byte[] last128 = new byte[128]; 
+            file.read(last128); 
+            String id3 = new String(last128); 
+            String tag = id3.substring(0, 3); 
+            if (tag.equals("TAG")) { 
+               this.setTitle(id3.substring(3, 32)); 
+               this.setArtist(id3.substring(33, 62)); 
+               this.setAlbum(id3.substring(63, 91)); 
+               this.setYear(id3.substring(93, 97)); 
+            }
+            	else 
+            		System.out.println(" does not contain" 
+            		   + " ID3 info.");  
+            	file.close(); 
+            } 
+     	catch (Exception e)
+     	{ 
+     		System.out.println("Error ? " + e.toString()); 
+       }
+	}
+	
 	public void actionPerformed(ActionEvent ae)  
 	{
 		JButton b = (JButton)ae.getSource();
@@ -130,6 +141,24 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			playSound();
 		//	scrobbleCurrent(this);
+		}
+		else if(b == open)
+		{
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.showOpenDialog(this);
+			File file = fileChooser.getSelectedFile();
+			String fileString = file.toString();
+			System.out.println(file);
+			Media track = new Media(new File(fileString).toURI().toString());
+			mediaPlayer.dispose();
+			mediaPlayer = new MediaPlayer(track);
+			this.getMetadata(file);
+			Title = Title.trim();
+			Artist = Artist.trim();
+			Album = Album.trim();
+			System.out.println(Title+Artist+Album);
+			Scrobbler x = new Scrobbler();
+			x.scrobbleCurrent(this);
 		}
 		else if (b == stop)
 			stopSound();

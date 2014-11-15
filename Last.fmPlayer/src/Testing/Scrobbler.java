@@ -16,7 +16,7 @@ public class Scrobbler
     static String password = "meowmix"; 
     		//Create session to communicate with last.fm server
     static Session session = Authenticator.getMobileSession(user, password, key, secret);
-    static ArrayList<Track> songCache = new ArrayList();
+    static ArrayList<MyMediaFrame> songCache = new ArrayList();
     
     public void main(String args[])
     {//Main
@@ -31,15 +31,16 @@ public class Scrobbler
 			//Get current time
 		
 		int now = (int) (System.currentTimeMillis() / 1000);
-			//Attempt to scrobble, get result
+			
+			//Get metadata from MyMediaFrame class
 		String title = track.getTitle();
 		String artist = track.getArtist();
 		String album = track.getAlbum();
 		System.out.println(title + " " + artist + " " + album);
-		//Track trackToScrobble = new Track(title, artist, album);
 		Track.scrobble(title, artist, now, session);
-		return;// true;
+		return;
 		
+			//Attempt to scrobble, get result
 		/*ScrobbleResult result = Track.scrobble(title, artist, now, session);
  
 			//Check is scrobble was successful
@@ -54,5 +55,10 @@ public class Scrobbler
 		
 		return;
 	}//Build cache
+	
+	public void scrobbleCache()
+	{//Scrobble cache
+		return;
+	}//Scrobble cache
 	
 }//Scrobble class
