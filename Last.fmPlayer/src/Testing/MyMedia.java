@@ -64,33 +64,7 @@ class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 	public MyMediaFrame(File playFile)
 	{
 		
-		try { 
-      	     File song = playFile; 
-             FileInputStream file = new FileInputStream(song); 
-             int size = (int)song.length(); 
-             file.skip(size - 128); 
-             byte[] last128 = new byte[128]; 
-             file.read(last128); 
-             String id3 = new String(last128); 
-             String tag = id3.substring(0, 3); 
-             if (tag.equals("TAG")) { 
-                this.setTitle(id3.substring(3, 32)); 
-                this.setArtist(id3.substring(33, 62)); 
-                this.setAlbum(id3.substring(63, 91)); 
-                this.setYear(id3.substring(93, 97)); 
-             }
-             	else 
-             		System.out.println(" does not contain" 
-             		   + " ID3 info.");  
-             	file.close(); 
-             } 
-      	catch (Exception e)
-      	{ 
-      		System.out.println("Error ? " + e.toString()); 
-        }
-		
-		
-		
+		this.setTags(playFile);
 		JFXPanel fxPanel = new JFXPanel();
 		Media track = new Media(new File("stuff.mp3").toURI().toString());
 		mediaPlayer = new MediaPlayer(track);
@@ -104,7 +78,6 @@ class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 		volumeSlider.setPaintTicks(true);
 		volumeSlider.setPaintLabels(true);
 
-			
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(new TitledBorder(new EtchedBorder(), "Command"));
 		buttonPanel.add(play);
@@ -126,6 +99,38 @@ class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 		panel.add(buttonPanel);
 		panel.add(volumePanel);			
 		this.setContentPane(panel);
+	}
+	
+	public void setTags(File playFile)
+	{
+		try 
+		{
+      	     File song = playFile; 
+             FileInputStream file = new FileInputStream(song); 
+             int size = (int)song.length(); 
+             file.skip(size - 128); 
+             byte[] last128 = new byte[128]; 
+             file.read(last128); 
+             String id3 = new String(last128); 
+             String tag = id3.substring(0, 3); 
+             if (tag.equals("TAG")) 
+             { 
+                this.setTitle(id3.substring(3, 32)); 
+                this.setArtist(id3.substring(33, 62)); 
+                this.setAlbum(id3.substring(63, 91)); 
+                this.setYear(id3.substring(93, 97)); 
+             }
+             else 
+             {
+             	System.out.println(" does not contain" 
+             	   + " ID3 info.");  
+             	file.close(); 
+             }
+		}
+      	catch (Exception e)
+      	{ 
+      		System.out.println("Error ? " + e.toString()); 
+        }
 	}
 
 	public void stateChanged(ChangeEvent ce) 
