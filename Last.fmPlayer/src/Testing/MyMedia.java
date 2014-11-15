@@ -1,6 +1,7 @@
 package Testing;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -49,7 +50,12 @@ class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 	float maxVolume;
 	float minVolume;
 	MediaPlayer mediaPlayer;
-
+	
+	String Year;
+	String Title; 
+	String Artist; 
+	String Album; 
+	
 	private JButton play;
 	private JButton stop;
 	private JButton exit;
@@ -57,12 +63,37 @@ class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 		
 	public MyMediaFrame(File playFile)
 	{
+		
+		try { 
+      	     File song = playFile; 
+             FileInputStream file = new FileInputStream(song); 
+             int size = (int)song.length(); 
+             file.skip(size - 128); 
+             byte[] last128 = new byte[128]; 
+             file.read(last128); 
+             String id3 = new String(last128); 
+             String tag = id3.substring(0, 3); 
+             if (tag.equals("TAG")) { 
+                this.setTitle(id3.substring(3, 32)); 
+                this.setArtist(id3.substring(33, 62)); 
+                this.setAlbum(id3.substring(63, 91)); 
+                this.setYear(id3.substring(93, 97)); 
+             }
+             	else 
+             		System.out.println(" does not contain" 
+             		   + " ID3 info.");  
+             	file.close(); 
+             } 
+      	catch (Exception e)
+      	{ 
+      		System.out.println("Error ? " + e.toString()); 
+        }
+		
+		
+		
 		JFXPanel fxPanel = new JFXPanel();
 		Media track = new Media(new File("stuff.mp3").toURI().toString());
-		System.out.println(new File("stuff.mp3").toURI().toString());
-		System.out.println(track.getMarkers());
 		mediaPlayer = new MediaPlayer(track);
-			
 
 		play = new JButton("Play");
 		stop = new JButton("Stop");
@@ -125,6 +156,38 @@ class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 	public void stopSound()
 	{
 		mediaPlayer.stop();
+	}
+	public void setYear(String Year)
+	{
+		this.Year = Year;
+	}
+	public void setArtist(String Artist)
+	{
+		this.Artist=Artist;
+	}
+	public void setTitle(String Title)
+	{
+		this.Title = Title;
+	}
+	public void setAlbum(String Album)
+	{
+		this.Album=Album;
+	}
+	public String getYear()
+	{
+		return Year;
+	}
+	public String getArtist()
+	{
+		return Artist;
+	}
+	public String getTitle()
+	{
+		return Title;
+	}
+	public String getAlbum()
+	{
+		return Album;
 	}
 }
 
