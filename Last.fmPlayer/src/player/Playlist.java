@@ -61,6 +61,16 @@ public class Playlist
 		return toReturn;
 	}
 	
+	public File getFile(int index) throws Exception
+	{
+		if(index <= files.size())
+		{
+			return files.get(index);
+		}
+		return null;
+	}
+	
+	
 	public File getNext(boolean shuffle) throws Exception
 	{
 		File toReturn = null;
