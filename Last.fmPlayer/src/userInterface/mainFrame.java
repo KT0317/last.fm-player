@@ -42,7 +42,7 @@ public class mainFrame extends JFrame implements ActionListener
         //Menu Items
         JMenu fileMenu = new JMenu("File");
         JMenu ViewMenu = new JMenu("View");
-        JMenu OptionMenu = new JMenu("Option");
+        JMenu OptionMenu = new JMenu("Options");
         JMenu HelpMenu = new JMenu("Help");
         //Add Menu to Menu Bar
         mb.add(fileMenu);
