@@ -88,9 +88,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(buttonPanel);
 		panel.add(volumePanel);	
-		Title = Title.trim();
-		Artist = Artist.trim();
-		Album = Album.trim();
+
 		this.setContentPane(panel);
 		Scrobbler x = new Scrobbler();
 		x.scrobbleCurrent(this);
@@ -153,9 +151,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			mediaPlayer.dispose();
 			mediaPlayer = new MediaPlayer(track);
 			this.getMetadata(file);
-			Title = Title.trim();
-			Artist = Artist.trim();
-			Album = Album.trim();
+			
 			System.out.println(Title+Artist+Album);
 			Scrobbler x = new Scrobbler();
 			x.scrobbleCurrent(this);
@@ -176,19 +172,19 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	}
 	public void setYear(String Year)
 	{
-		this.Year = Year;
+		this.Year = Year.trim();
 	}
 	public void setArtist(String Artist)
 	{
-		this.Artist=Artist;
+		this.Artist=Artist.trim();
 	}
 	public void setTitle(String Title)
 	{
-		this.Title = Title;
+		this.Title = Title.trim();
 	}
 	public void setAlbum(String Album)
 	{
-		this.Album=Album;
+		this.Album=Album.trim();
 	}
 	public String getYear()
 	{

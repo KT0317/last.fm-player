@@ -37,7 +37,7 @@ public class Scrobbler
 		String artist = track.getArtist();
 		String album = track.getAlbum();
 		System.out.println(title + " " + artist + " " + album);
-		Track.scrobble(title, artist, now, session);
+		Track.scrobble(artist, title, now, session);
 		return;
 		
 			//Attempt to scrobble, get result
@@ -47,7 +47,7 @@ public class Scrobbler
 		if((result.isSuccessful()) && (!result.isIgnored()))//Successful
 			return true;
 		else //Not successful
-0			return false;*/
+			return false;*/
 	}//scrobbleCurrent
 	
 	public void buildCache()
