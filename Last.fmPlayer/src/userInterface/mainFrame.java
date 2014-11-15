@@ -75,7 +75,7 @@ public class mainFrame extends JFrame implements ActionListener
         
         //Add Items to HelpMenu
         HelpAbout = new JMenuItem("About");
-        OptionMenu.add(OptionSettings);
+        HelpMenu.add(HelpAbout);
         HelpAbout.addActionListener(this);
         
         
