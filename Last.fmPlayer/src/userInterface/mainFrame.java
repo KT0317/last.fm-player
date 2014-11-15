@@ -51,6 +51,7 @@ public class mainFrame extends JFrame implements ActionListener
         mb.add(HelpMenu);
         
         
+        
         //Add Items to the FileMenu
         AddToPlaylist = new JMenuItem("AddToPlaylist");
         exit = new JMenuItem("Exit");
@@ -74,8 +75,9 @@ public class mainFrame extends JFrame implements ActionListener
         
         //Add Items to HelpMenu
         HelpAbout = new JMenuItem("About");
-        HelpMenu.add(OptionSettings);
+        OptionMenu.add(OptionSettings);
         HelpAbout.addActionListener(this);
+        
         
         
         //Buttons for the sidebar
@@ -140,6 +142,7 @@ public class mainFrame extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source == exit)	System.exit(0);
+		
 		else if (source == AddToPlaylist)
 		{
 			//menu pops up letting you choose mp3
@@ -165,7 +168,7 @@ public class mainFrame extends JFrame implements ActionListener
 		
 		else if (source == HelpAbout)
 		{
-			
+			//go to about page
 		}
 		
 	}
