@@ -11,12 +11,13 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
@@ -43,6 +44,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton exit;
 	private JButton open;
 	private static JSlider volumeSlider;
+	private JLabel artistUrl = new JLabel();
+	private JLabel artistListners = new JLabel();
+	private JLabel artistPlaycount = new JLabel();
 	
 	Scrobbler scrobbler = new Scrobbler();
 	
@@ -83,12 +87,20 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		JPanel volumePanel = new JPanel();
 		volumePanel.setBorder(new TitledBorder(new EtchedBorder(), "Volume"));
 		volumePanel.add(volumeSlider);
-			
+		
+		JPanel infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
+		infoPanel.setBorder(new TitledBorder(new EtchedBorder(), "Information"));
+		infoPanel.add(artistUrl);
+		infoPanel.add(artistListners);
+		infoPanel.add(artistPlaycount);
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 1, 25, 25));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(buttonPanel);
 		panel.add(volumePanel);	
+		panel.add(infoPanel);
 
 		this.setContentPane(panel);
 	}
@@ -150,8 +162,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			mediaPlayer = new MediaPlayer(track);
 			this.getMetadata(file);
 			scrobbler = new Scrobbler(this);
+			artistUrl.setText("URL: " + scrobbler.getUrl());
+			artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
+			artistListners.setText("Listeners: "+scrobbler.getListeners());
 			
-			scrobbler.setNowPlaying(this);
 			scrobbler.scrobbleCurrent(this);
 		}
 		else if (b == stop)
@@ -162,6 +176,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public void playSound()
 	{
 		mediaPlayer.play();
+		scrobbler.setNowPlaying(this);
 	}
 		
 	public void stopSound()

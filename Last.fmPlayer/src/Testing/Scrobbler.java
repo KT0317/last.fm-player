@@ -76,13 +76,13 @@ public class Scrobbler
 	
 	public void setNowPlaying(MyMediaFrame track)
 	{//Set now playing
-		track.getLength();
+		Track.updateNowPlaying(artist, title, session);
+		
 	}//Set now playing
 	
-	public void getArtistInfo(String artistName)
+	private void getArtistInfo(String artistName)
 	{	
 		String info = Artist.getInfo(artistName, key).toString();
-//		System.out.println(info);
 
 		String[] toSplit = info.split("url='");
 		url = toSplit[1].split("'")[0];
@@ -96,13 +96,18 @@ public class Scrobbler
 		toSplit = info.split("listeners=");
 		listeners = toSplit[1].split(",")[0];
 		
-/*		System.out.println(url);
-		System.out.println(mbid);
-		System.out.println(playcount);
-		System.out.println(listeners);*/
-		
 		return;
 	}
-	
-	
+	public String getUrl()
+	{
+		return url;
+	}
+	public String getPlaycount()
+	{
+		return playcount;
+	}
+	public String getListeners()
+	{
+		return listeners;
+	}
 }//Scrobble class
