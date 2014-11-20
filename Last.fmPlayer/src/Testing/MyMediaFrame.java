@@ -151,6 +151,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			this.getMetadata(file);
 			scrobbler = new Scrobbler(this);
 			
+			scrobbler.setNowPlaying(this);
 			scrobbler.scrobbleCurrent(this);
 		}
 		else if (b == stop)
@@ -190,6 +191,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public String getArtist()
 	{
 		return Artist;
+	}
+	public int getLength()
+	{
+		String data = mediaPlayer.totalDurationProperty().toString();
+		data = data.split("value: ")[1];
+		data = data.split(" ms")[0];
+		int length = Integer.parseInt(data);
+		return length;
 	}
 	public String getTitle()
 	{

@@ -53,12 +53,11 @@ public class Scrobbler
     					//Scrobble currently playing track
 	public void scrobbleCurrent(MyMediaFrame track)
 	{//scrobbleCurrent
-		System.out.println("hi");
 			//Get current time
 		
 		int now = (int) (System.currentTimeMillis() / 1000);
 
-		System.out.println(title + " " + artist + " " + album);
+//		System.out.println(title + " " + artist + " " + album);
 		Track.scrobble(artist, title, now, session);
 		getArtistInfo(artist);
 		return;
@@ -75,10 +74,15 @@ public class Scrobbler
 		return;
 	}//Scrobble cache
 	
+	public void setNowPlaying(MyMediaFrame track)
+	{//Set now playing
+		track.getLength();
+	}//Set now playing
+	
 	public void getArtistInfo(String artistName)
 	{	
 		String info = Artist.getInfo(artistName, key).toString();
-		System.out.println(info);
+//		System.out.println(info);
 
 		String[] toSplit = info.split("url='");
 		url = toSplit[1].split("'")[0];
@@ -92,10 +96,10 @@ public class Scrobbler
 		toSplit = info.split("listeners=");
 		listeners = toSplit[1].split(",")[0];
 		
-		System.out.println(url);
+/*		System.out.println(url);
 		System.out.println(mbid);
 		System.out.println(playcount);
-		System.out.println(listeners);
+		System.out.println(listeners);*/
 		
 		return;
 	}
