@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import de.umass.lastfm.Authenticator;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
-import Testing.MyMediaFrame;
+import de.umass.lastfm.Artist;
 
 public class Scrobbler 
 {//Scrobble class
@@ -18,11 +18,37 @@ public class Scrobbler
     static Session session = Authenticator.getMobileSession(user, password, key, secret);
     static ArrayList<MyMediaFrame> songCache = new ArrayList();
     
+    private String url = new String();
+    private String mbid = new String();
+    private String playcount = new String();
+    private String listeners = new String();
+    private String title = new String();
+    private String artist = new String();
+    private String album = new String();
+    
     public void main(String args[])
     {//Main
     	
     }//Main
     
+    												/**CONSTRUCTORS**/
+    public Scrobbler()
+    {//Default constructor
+    	title = null;
+    	artist = null;
+    	album = null;
+    }//Default constructor
+    
+    public Scrobbler(MyMediaFrame track)
+    {//Constructor with track
+    	//Get metadata from MyMediaFrame class
+    	title = track.getTitle();
+    	artist = track.getArtist();
+    	album = track.getAlbum();
+    	getArtistInfo(artist);
+    }//Constructor with track
+    
+    												/**METHODS**/
     
     					//Scrobble currently playing track
 	public void scrobbleCurrent(MyMediaFrame track)
@@ -31,23 +57,11 @@ public class Scrobbler
 			//Get current time
 		
 		int now = (int) (System.currentTimeMillis() / 1000);
-			
-			//Get metadata from MyMediaFrame class
-		String title = track.getTitle();
-		String artist = track.getArtist();
-		String album = track.getAlbum();
+
 		System.out.println(title + " " + artist + " " + album);
 		Track.scrobble(artist, title, now, session);
+		getArtistInfo(artist);
 		return;
-		
-			//Attempt to scrobble, get result
-		/*ScrobbleResult result = Track.scrobble(title, artist, now, session);
- 
-			//Check is scrobble was successful
-		if((result.isSuccessful()) && (!result.isIgnored()))//Successful
-			return true;
-		else //Not successful
-			return false;*/
 	}//scrobbleCurrent
 	
 	public void buildCache()
@@ -60,5 +74,31 @@ public class Scrobbler
 	{//Scrobble cache
 		return;
 	}//Scrobble cache
+	
+	public void getArtistInfo(String artistName)
+	{	
+		String info = Artist.getInfo(artistName, key).toString();
+		System.out.println(info);
+
+		String[] toSplit = info.split("url='");
+		url = toSplit[1].split("'")[0];
+		
+		toSplit = info.split("mbid='");
+		mbid = toSplit[1].split("'")[0];
+		
+		toSplit = info.split("playcount=");
+		playcount = toSplit[1].split(",")[0];
+		
+		toSplit = info.split("listeners=");
+		listeners = toSplit[1].split(",")[0];
+		
+		System.out.println(url);
+		System.out.println(mbid);
+		System.out.println(playcount);
+		System.out.println(listeners);
+		
+		return;
+	}
+	
 	
 }//Scrobble class

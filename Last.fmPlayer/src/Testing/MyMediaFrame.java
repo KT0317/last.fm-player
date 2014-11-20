@@ -43,7 +43,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton exit;
 	private JButton open;
 	private static JSlider volumeSlider;
-		
+	
+	Scrobbler scrobbler = new Scrobbler();
 	
 	public MyMediaFrame(File playFile)
 	{
@@ -90,8 +91,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.add(volumePanel);	
 
 		this.setContentPane(panel);
-		Scrobbler x = new Scrobbler();
-		x.scrobbleCurrent(this);
 	}
 
 	public void stateChanged(ChangeEvent ce) 
@@ -138,7 +137,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		if (b == play)
 		{
 			playSound();
-		//	scrobbleCurrent(this);
 		}
 		else if(b == open)
 		{
@@ -151,10 +149,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			mediaPlayer.dispose();
 			mediaPlayer = new MediaPlayer(track);
 			this.getMetadata(file);
+			scrobbler = new Scrobbler(this);
 			
-			System.out.println(Title+Artist+Album);
-			Scrobbler x = new Scrobbler();
-			x.scrobbleCurrent(this);
+			scrobbler.scrobbleCurrent(this);
 		}
 		else if (b == stop)
 			stopSound();
