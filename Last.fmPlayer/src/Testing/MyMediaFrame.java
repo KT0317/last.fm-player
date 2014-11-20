@@ -47,6 +47,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistUrl = new JLabel();
 	private JLabel artistListners = new JLabel();
 	private JLabel artistPlaycount = new JLabel();
+	private JLabel trackLabel = new JLabel();
+	private JLabel artistLabel = new JLabel();
+	private JLabel albumLabel = new JLabel();
+	private JLabel lengthLabel = new JLabel();
 	
 	Scrobbler scrobbler = new Scrobbler();
 	
@@ -88,9 +92,17 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		volumePanel.setBorder(new TitledBorder(new EtchedBorder(), "Volume"));
 		volumePanel.add(volumeSlider);
 		
+		JPanel currentlyPlaying = new JPanel();
+		currentlyPlaying.setBorder(new TitledBorder(new EtchedBorder(), "Currently Playing"));
+		currentlyPlaying.setLayout(new BoxLayout(currentlyPlaying, BoxLayout.PAGE_AXIS));
+		currentlyPlaying.add(artistLabel);
+		currentlyPlaying.add(trackLabel);
+		currentlyPlaying.add(albumLabel);
+		currentlyPlaying.add(lengthLabel);
+		
 		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-		infoPanel.setBorder(new TitledBorder(new EtchedBorder(), "Information"));
+		infoPanel.setBorder(new TitledBorder(new EtchedBorder(), "Global Artist Information"));
 		infoPanel.add(artistUrl);
 		infoPanel.add(artistListners);
 		infoPanel.add(artistPlaycount);
@@ -100,6 +112,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(buttonPanel);
 		panel.add(volumePanel);	
+		panel.add(currentlyPlaying);
 		panel.add(infoPanel);
 
 		this.setContentPane(panel);
@@ -165,6 +178,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			artistUrl.setText("URL: " + scrobbler.getUrl());
 			artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
 			artistListners.setText("Listeners: "+scrobbler.getListeners());
+			artistLabel.setText("Artist: "+Artist);
+			trackLabel.setText("Title: "+Title);
+			albumLabel.setText("Album: "+Album);
+			lengthLabel.setText("Tack legnth: "+getLength());
 			
 			scrobbler.scrobbleCurrent(this);
 		}

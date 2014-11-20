@@ -57,7 +57,6 @@ public class Scrobbler
 		
 		int now = (int) (System.currentTimeMillis() / 1000);
 
-//		System.out.println(title + " " + artist + " " + album);
 		Track.scrobble(artist, title, now, session);
 		getArtistInfo(artist);
 		return;
@@ -77,8 +76,8 @@ public class Scrobbler
 	public void setNowPlaying(MyMediaFrame track)
 	{//Set now playing
 		Track.updateNowPlaying(artist, title, session);
-		
 	}//Set now playing
+	
 	
 	private void getArtistInfo(String artistName)
 	{	
