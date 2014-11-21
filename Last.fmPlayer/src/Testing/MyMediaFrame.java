@@ -56,10 +56,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public MyMediaFrame(File playFile)
 	{
-		System.out.println(Artist);
-		
-		this.getMetadata(playFile);
-
 		JFXPanel fxPanel = new JFXPanel();
 		Media track = new Media(new File("stuff.mp3").toURI().toString());
 		mediaPlayer = new MediaPlayer(track);
@@ -116,6 +112,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.add(infoPanel);
 
 		this.setContentPane(panel);
+		
+		checkCache();
 	}
 
 	public void stateChanged(ChangeEvent ce) 
@@ -162,6 +160,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		if (b == play)
 		{
 			playSound();
+			scrobbler.setNowPlaying(this);
 		}
 		else if(b == open)
 		{
@@ -190,6 +189,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		else if (b == exit)
 			System.exit(0);
 	}
+	
+	public void checkCache()
+	{//Check cache
+		Scrobbler cacheScrobbler = new Scrobbler();
+		cacheScrobbler.scrobbleCache();
+	}//Check cache
+	
 	public void playSound()
 	{
 		mediaPlayer.play();
@@ -224,12 +230,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		return Artist;
 	}
-	public int getLength()
+	public double getLength()
 	{
 		String data = mediaPlayer.totalDurationProperty().toString();
 		data = data.split("value: ")[1];
 		data = data.split(" ms")[0];
-		int length = Integer.parseInt(data);
+		double length = Double.parseDouble(data);
 		return length;
 	}
 	public String getTitle()

@@ -1,8 +1,11 @@
 package Testing;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Authenticator;
@@ -99,7 +102,7 @@ public class Scrobbler
 		try
 		{
 	        FileWriter fw = new FileWriter(cacheFile, true);
-	        fw.write(artist+" "+title+" "+timeStamp+"\n");
+	        fw.write(artist+";"+title+";"+timeStamp+"\n");
 	        fw.close();
 		}
 		catch(Exception e)
@@ -110,6 +113,26 @@ public class Scrobbler
 	
 	public void scrobbleCache()
 	{//Scrobble cache
+							/**REMINDER: NO MORE THAN 5 SCROBBLES PER SECOND
+							 * AS PER LAST.FM USAGE AGREEMENT.*/
+		try {
+			Scanner fileReader = new Scanner(new File(cacheFile));
+			
+			while(fileReader.hasNextLine())
+			{
+				String line = fileReader.nextLine();
+				artist = line.split(";")[0];
+				title = line.split(";")[1];
+				System.out.println(artist+title);
+				int timeStamp = Integer.parseInt(line.split(";")[2]);
+				Track.scrobble(artist, title, timeStamp, session);
+				getArtistInfo(artist);
+			}
+			fileReader.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return;
 	}//Scrobble cache
 	
