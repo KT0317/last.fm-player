@@ -4,6 +4,7 @@ package Testing;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -126,7 +127,9 @@ public class Scrobbler
 				System.out.println(artist+title);
 				int timeStamp = Integer.parseInt(line.split(";")[2]);
 				Track.scrobble(artist, title, timeStamp, session);
-				getArtistInfo(artist);
+							//Clear cache file
+				PrintWriter pw = new PrintWriter(cacheFile);
+				pw.close();
 			}
 			fileReader.close();
 		} catch (FileNotFoundException e) {
@@ -138,7 +141,9 @@ public class Scrobbler
 	
 	public void setNowPlaying(MyMediaFrame track)
 	{//Set now playing
-//		Track.updateNowPlaying(artist, title, session);
+		if(offlineFlag == 1)//If offline, dont do this
+			return;
+		Track.updateNowPlaying(artist, title, session);
 	}//Set now playing
 	
 	
