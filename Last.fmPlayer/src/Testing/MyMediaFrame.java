@@ -380,14 +380,18 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			try
 			{
-				if(playing = true)
+				if(playing)
+				{
 					pauseSound();
+					play.setText("Play");
+				}
 				else
 				{
 					this.setCurrentTrack();
 					scrobbler.setNowPlaying(this);
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					playSound();
+					play.setText("Pause");
 				}
 			}
 				catch(Exception e)
@@ -419,7 +423,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				populatePlaylist();
 				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
-				playSound();
+				//playSound();
 			}
 			catch (Exception e)
 			{
@@ -428,8 +432,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			}
 		}
 		else if (source.equals(stop))
+		{
 				stopSound();
-		
+			play.setText("Play");
+		}
 		else if (source.equals(exit) || source.equals(exitMI))
 				System.exit(0);
 		else if (source.equals(next))
