@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -24,10 +26,12 @@ import javafx.scene.media.MediaPlayer;
 import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -49,6 +53,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	float minVolume;
 	MediaPlayer mediaPlayer;
 	
+	private String currentTrack;
 	String Year;
 	String Title; 
 	String Artist; 
@@ -58,7 +63,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton stop;
 	private JButton exit;
 	private JButton open;
-	
 	private JButton next;
 	private JButton dickbutt;
 	
@@ -74,11 +78,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
 	private boolean playing;
-	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout;
+	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
 	private JButton playerButton, descriptionButton, settingsButton;
 	private static final int PREF_MIN_WIDTH = 200;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
+	
+	private JList playlistDisplay;
+	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
 	
 	Playlist playlist = new Playlist();
 	
@@ -86,12 +93,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public MyMediaFrame() throws Exception
 	{
-		
 		JFXPanel fxPanel = new JFXPanel();
-		playlist.add("stuff.mp3");
+		
+		/*playlist.add("stuff.mp3");
 		//playlist.add("G:\\DT\\Dark Tranquillity - Construct (2013) (MP3)\\07 Endtime Hearts.mp3");
 		Media track = new Media(playlist.getFile(0).toURI().toString());
-		mediaPlayer = new MediaPlayer(track);
+		mediaPlayer = new MediaPlayer(track);*/
 		this.setMinimumSize(new Dimension(PREF_MIN_WIDTH, PREF_MIN_HEIGHT));
 		this.setVisible(true);
 		Container Pane = this.getContentPane();
@@ -112,12 +119,16 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		mb.add(HelpMenu);
 		        
 		//Add Items to the FileMenu
-		AddToPlaylist = new JMenuItem("AddToPlaylist");
+		
+		AddToPlaylist = new JMenuItem("Add To Playlist...");
 		exitMI = new JMenuItem("Exit");
+		openMI = new JMenuItem("Open..");
+		fileMenu.add(openMI);
 		fileMenu.add(AddToPlaylist);
 		fileMenu.add(exitMI);
 		AddToPlaylist.addActionListener(this);
 		exitMI.addActionListener(this);
+		openMI.addActionListener(this);
 		        
 		//Add Items to the ViewMenu
 		ViewPlayer = new JMenuItem("Music Player");
@@ -171,9 +182,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		stop = new JButton("Stop");
 		open = new JButton("Open");
 		exit = new JButton("Exit");
-		dickbutt = new JButton("DICKBUTT");
-		next = new JButton("next");
-		shuffle = new JToggleButton("shuffle");
+		dickbutt = new JButton("Previous");
+		next = new JButton("Next");
+		shuffle = new JToggleButton("Shuffle");
 		shuffle.setSelected(false);
 		
 		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 100);
@@ -206,13 +217,21 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		buttonPanel.add(volumeSlider);
 		//buttonPanel.add(timeSlider);
 		
+		
+		playlistDisplay = new JList<String>(inPlaylist);
 		JPanel currentlyPlaying = new JPanel();
+		JPanel playlist = new JPanel();
+		JPanel trackInfo = new JPanel();
 		currentlyPlaying.setBorder(new TitledBorder(new EtchedBorder(), "Currently Playing"));
-		currentlyPlaying.setLayout(new BoxLayout(currentlyPlaying, BoxLayout.PAGE_AXIS));
-		currentlyPlaying.add(artistLabel);
-		currentlyPlaying.add(trackLabel);
-		currentlyPlaying.add(albumLabel);
-		currentlyPlaying.add(lengthLabel);
+		currentlyPlaying.setLayout(new BorderLayout());
+		currentlyPlaying.add(trackInfo, BorderLayout.CENTER);
+		currentlyPlaying.add(playlist, BorderLayout.EAST);
+		playlist.add(playlistDisplay);
+		trackInfo.setLayout(new BoxLayout(trackInfo, BoxLayout.PAGE_AXIS));
+		trackInfo.add(artistLabel);
+		trackInfo.add(trackLabel);
+		trackInfo.add(albumLabel);
+		trackInfo.add(lengthLabel);
 		
 		JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
@@ -230,12 +249,50 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.add(infoPanel);*/
 		Pane.add(Sidebar, BorderLayout.WEST);
         Pane.add(buttonPanel, BorderLayout.SOUTH);
+        Pane.add(currentlyPlaying, BorderLayout.CENTER);
         this.pack();
 	//	this.setContentPane(panel);
 		
 		checkCache();
+		buttonCheck();
 	}
 
+	public void populatePlaylist()
+	{
+		inPlaylist.clear();
+		try
+		{
+			for(int i = 0; i < playlist.getSize(); i++)
+			{
+				File current = playlist.getFile(i);
+				String backupName = current.toString();
+				String id3 = this.musicToBytes(current);
+				String tag = id3.substring(0, 3);
+				String songUndArtist = "";
+				
+				if (tag.equals("TAG")) 
+		        { 
+					songUndArtist = id3.substring(3, 32).trim() + " - " + id3.substring(33, 62).trim(); 
+		        }
+		        else 
+		        {
+		        	int index = backupName.lastIndexOf("/");
+		        	if(index == -1)
+		        		index = backupName.lastIndexOf("\\");
+		        	songUndArtist = backupName.substring(index + 1);
+		        }
+				
+				System.out.println(songUndArtist);
+				inPlaylist.addElement(songUndArtist);
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Ya dun goofed");
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	public void stateChanged(ChangeEvent ce) 
 	{
 		JSlider s = (JSlider)ce.getSource();
@@ -246,118 +303,193 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 	}
 	
-	public void getMetadata(File playFile)
+	private String musicToBytes(File playFile)
 	{
-		try { 
+		String id3 = "";
+		try 
+		{ 
      	    File song = playFile; 
             FileInputStream file = new FileInputStream(song); 
             int size = (int)song.length(); 
             file.skip(size - 128); 
             byte[] last128 = new byte[128]; 
             file.read(last128); 
-            String id3 = new String(last128); 
-            String tag = id3.substring(0, 3); 
-            if (tag.equals("TAG")) { 
-               this.setTitle(id3.substring(3, 32)); 
-               this.setArtist(id3.substring(33, 62)); 
-               this.setAlbum(id3.substring(63, 91)); 
-               this.setYear(id3.substring(93, 97)); 
-            }
-            	else 
-            		System.out.println(" does not contain" 
-            		   + " ID3 info.");  
-            	//file.close(); 
-            } 
+            id3 = new String(last128);
+            file.close();
+        } 
      	catch (Exception e)
      	{ 
      		System.out.println("Error with tags: " + e.toString()); 
-       }
+     	}
+		return id3;
+	}
+	
+	public void getMetadata(File playFile)
+	{
+		String id3 = this.musicToBytes(playFile);
+		String tag = id3.substring(0, 3);
+		if (tag.equals("TAG")) 
+         { 
+         	this.setTitle(id3.substring(3, 32)); 
+            this.setArtist(id3.substring(33, 62)); 
+            this.setAlbum(id3.substring(63, 91)); 
+            this.setYear(id3.substring(93, 97)); 
+         }
+         	else 
+         		System.out.println(" does not contain" 
+         		   + " ID3 info.");  
 	}
 	
 	public void actionPerformed(ActionEvent ae)
 	{
+		Object source = ae.getSource();
 		
-		
-		if(ae.getSource().equals(shuffle))
+		if (source.equals(AddToPlaylist))
+		{
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.showOpenDialog(this);
+			File file = fileChooser.getSelectedFile();
+			String fileString = file.toString();
+			System.out.println(file);
+			try
+			{
+				playlist.add(fileString);
+			}
+			catch(Exception e)
+			{
+				System.out.println("Ya dun goofed in adding to the playlist");
+				System.out.println(e.getMessage());
+			}
+			buttonCheck();
+			populatePlaylist();
+			System.out.println(playlist.getSize());
+		}
+		else if(source.equals(shuffle))
 		{
 			if(shuffle.isSelected())
 			{
 				shuffle.setSelected(false);
 			}
-			else
+			else if(!shuffle.isSelected())
 			{
 				shuffle.setSelected(true);
 			}
 			shekels = !shekels;
 		}
-		else
+		else if (source.equals(play))
 		{
-			JButton b = (JButton)ae.getSource();
-			if (b == play)
+			try
 			{
-				playSound();
+				this.setCurrentTrack();
 				scrobbler.setNowPlaying(this);
+				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+				playSound();
 			}
-			else if(b == open)
+				catch(Exception e)
+				{
+					System.out.println("Ya dun goofed in playing");
+					System.out.println(e.getMessage());
+				}
+		}
+		else if(source.equals(open) || source.equals(openMI))
+		{
+			try
 			{
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.showOpenDialog(this);
-				File file = fileChooser.getSelectedFile();
-				String fileString = file.toString();
-				System.out.println(file);
-				Media track = new Media(new File(fileString).toURI().toString());
-				//mediaPlayer.dispose();
-				mediaPlayer = new MediaPlayer(track);
-				//System.out.println((int)getLength()/1000);
-				//timeSlider.setMaximumSize(mediaPlayer.getTotalDuration());
-				this.getMetadata(file);
-				scrobbler = new Scrobbler(this);
-				artistUrl.setText("URL: " + scrobbler.getUrl());
-				artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
-				artistListners.setText("Listeners: "+scrobbler.getListeners());
-				artistLabel.setText("Artist: "+Artist);
-				trackLabel.setText("Title: "+Title);
-				albumLabel.setText("Album: "+Album);
-				timeSlider.setMaximum((int)getLength()/1000);
-				lengthLabel.setText("Tack legnth: "+getLength());
-				scrobbler.scrobbleCurrent(this);
+				playlist.clear();
+				this.openFile();
+				scrobbler.setNowPlaying(this);
+				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+				playSound();
 			}
-			else if (b == stop)
-				stopSound();
-			else if (b == exit)
-				System.exit(0);
-			else if (b == next)
+			catch (Exception e)
 			{
-				try
-				{
-					this.playlist.getNext(shekels);
-				}
-				catch (Exception e)
-				{
-					System.out.println("Ya dun goofed");
-				}
-			}
-			else if (b == dickbutt)
-			{
-				try
-				{
-					this.playlist.getNext(shekels);
-				}
-				catch (Exception e)
-				{
-					System.out.println("Ya dun goofed");
-				}
+				System.out.println("Ya dun goofed in opening a file");
+				System.out.println(e.getMessage());
 			}
 		}
+		else if (source.equals(stop))
+				stopSound();
+		
+		else if (source.equals(exit) || source.equals(exitMI))
+				System.exit(0);
+		else if (source.equals(next))
+		{
+			try
+			{
+				this.playlist.getNext(shekels);
+				this.setCurrentTrack();
+				//stopSound();
+			}
+			catch (Exception e)
+			{
+				System.out.println("Ya dun goofed in next");
+				System.out.println(e.getMessage());
+			}
+		}
+		else if (source.equals(dickbutt))
+		{
+			try
+			{
+				this.playlist.getPrev(shekels);
+				this.setCurrentTrack();
+				//stopSound();
+			}
+			catch (Exception e)
+			{
+				System.out.println("Ya dun goofed in dickbutt");
+				System.out.println(e.getMessage());
+			}
+		}
+
+	}
+	
+	public void openFile() throws Exception
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.showOpenDialog(this);
+		File file = fileChooser.getSelectedFile();
+		currentTrack = file.toString();
+		System.out.println(file);
+		playlist.add(currentTrack);
+		populatePlaylist();
+		buttonCheck();
+		
+		
+		//mediaPlayer.dispose();
+		
+		//System.out.println((int)getLength()/1000);
+		//timeSlider.setMaximumSize(mediaPlayer.getTotalDuration());
+		
+		timeSlider.setMaximum((int)getLength()/1000);
+		//lengthLabel.setText("Tack legnth: "+getLength());
 	}
 		
+	public void displayTrackInfo(File file)
+	{
+		this.getMetadata(file);
+		scrobbler = new Scrobbler(this);
+		artistUrl.setText("URL: " + scrobbler.getUrl());
+		artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
+		artistListners.setText("Listeners: "+scrobbler.getListeners());
+		artistLabel.setText("Artist: "+Artist);
+		trackLabel.setText("Title: "+Title);
+		albumLabel.setText("Album: "+Album);
 		
+		scrobbler.scrobbleCurrent(this);
+	}
 	
 	public void checkCache()
 	{//Check cache
 		Scrobbler cacheScrobbler = new Scrobbler();
 		cacheScrobbler.scrobbleCache();
 	}//Check cache
+	
+	public void setCurrentTrack() throws Exception
+	{
+		currentTrack = playlist.getFile(playlist.getCurrentIndex()).toString();
+		Media track = new Media(new File(currentTrack).toURI().toString());
+		mediaPlayer = new MediaPlayer(track);
+	}
 	
 	public void playSound()
 	{
@@ -409,5 +541,24 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public String getAlbum()
 	{
 		return Album;
+	}
+	
+	public void buttonCheck()
+	{
+		if(playlist.isEmpty())
+		{
+			play.setEnabled(false);
+			next.setEnabled(false);
+			dickbutt.setEnabled(false);
+			shuffle.setEnabled(false);
+			stop.setEnabled(false);
+		}
+		else
+		{
+			play.setEnabled(true);
+			next.setEnabled(true);
+			dickbutt.setEnabled(true);
+			stop.setEnabled(true);
+		}
 	}
 }

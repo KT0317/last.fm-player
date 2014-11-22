@@ -155,4 +155,25 @@ public class Playlist
 			return true;
 		return false;
 	}
+	
+	public int getCurrentIndex()
+	{
+		return playlistIndex;
+	}
+	
+	public int getSize()
+	{
+		return files.size();
+	}
+	
+	public boolean isEmpty()
+	{
+		return files.isEmpty();
+	}
+	
+	public void clear()
+	{
+		files.clear();
+		playlistIndex = 0;
+	}
 }
