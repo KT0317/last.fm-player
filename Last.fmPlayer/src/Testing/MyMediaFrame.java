@@ -77,12 +77,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistLabel = new JLabel();
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
-	private boolean playing = false;
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
 	private JButton playerButton, descriptionButton, settingsButton;
 	private static final int PREF_MIN_WIDTH = 750;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
+	private boolean hasPaused = false;
+	private boolean playing = false;
 	
 	private JList playlistDisplay;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
@@ -384,6 +385,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				{
 					pauseSound();
 					play.setText("Play");
+					hasPaused = true;
+				}
+				else if (hasPaused)
+				{
+					playSound();
+					play.setText("Pause");
 				}
 				else
 				{
@@ -392,6 +399,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					playSound();
 					play.setText("Pause");
+					hasPaused = false;
 				}
 			}
 				catch(Exception e)
@@ -433,7 +441,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 		else if (source.equals(stop))
 		{
-				stopSound();
+			stopSound();
 			play.setText("Play");
 		}
 		else if (source.equals(exit) || source.equals(exitMI))
@@ -518,7 +526,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		playing = true;
 		mediaPlayer.play();
-		scrobbler.setNowPlaying(this);
+		//scrobbler.setNowPlaying(this);
 	}
 	
 	public void pauseSound()
