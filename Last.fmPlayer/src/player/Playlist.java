@@ -141,4 +141,18 @@ public class Playlist
 			this.playlistIndex = files.indexOf(file);
 		}
 	}
+	
+	public boolean hasNext()
+	{
+		if(this.playlistIndex < files.size())
+			return true;
+		return false;
+	}
+	
+	public boolean hasPrevious()
+	{
+		if(this.playlistIndex < 0)
+			return true;
+		return false;
+	}
 }
