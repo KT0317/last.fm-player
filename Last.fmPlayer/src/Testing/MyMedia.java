@@ -17,7 +17,7 @@ import javafx.scene.media.*;
 public class MyMedia 
 {
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		// TODO Auto-generated method stub
 		
@@ -26,8 +26,8 @@ public class MyMedia
 	             UIManager.getSystemLookAndFeelClassName());
 	       } catch (Exception e) {}
 	    
-	    File soundFile = new File("stuff.mp3");
-	    MyMediaFrame frame = new MyMediaFrame(soundFile);
+	    //File soundFile = new File("stuff.mp3");
+	    MyMediaFrame frame = new MyMediaFrame();
 	    frame.setTitle("DemoSoundVolume");
 	 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.pack();

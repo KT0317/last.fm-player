@@ -1,5 +1,7 @@
 package Testing;
 
+import player.Playlist;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -30,6 +32,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
@@ -54,7 +57,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton stop;
 	private JButton exit;
 	private JButton open;
+	
+	private JButton next;
+	private JButton dickbutt;
+	
 	private static JSlider volumeSlider;
+	private static JProgressBar timeSlider;
 	private JLabel artistUrl = new JLabel();
 	private JLabel artistListners = new JLabel();
 	private JLabel artistPlaycount = new JLabel();
@@ -62,19 +70,23 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistLabel = new JLabel();
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
+	private boolean playing;
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout;
 	private JButton playerButton, descriptionButton, settingsButton;
-	private static final int PREF_MIN_WIDTH = 600;
-	private static final int PREF_MIN_HEIGHT = 600;
+	private static final int PREF_MIN_WIDTH = 200;
+	private static final int PREF_MIN_HEIGHT = 200;
 	
 	Scrobbler scrobbler = new Scrobbler();
 	
-	public MyMediaFrame(File playFile)
+	public MyMediaFrame() throws Exception
 	{
 		
 		JFXPanel fxPanel = new JFXPanel();
-		Media track = new Media(new File("stuff.mp3").toURI().toString());
-		mediaPlayer = new MediaPlayer(track);
+		Playlist x = new Playlist();
+		/*x.add("stuff.mp3");
+		x.add("G:\\DT\\Dark Tranquillity - Construct (2013) (MP3)\\07 Endtime Hearts.mp3");
+		Media track = new Media(x.getFile(1).toURI().toString());
+		mediaPlayer = new MediaPlayer(track);*/
 		this.setMinimumSize(new Dimension(PREF_MIN_WIDTH, PREF_MIN_HEIGHT));
 		this.setVisible(true);
 		Container Pane = this.getContentPane();
@@ -154,15 +166,21 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		stop = new JButton("Stop");
 		open = new JButton("Open");
 		exit = new JButton("Exit");
+		dickbutt = new JButton("DICKBUTT");
+		next = new JButton("next");
 		
 		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 100);
-		volumeSlider.setMinorTickSpacing(5);
+		volumeSlider.setMinorTickSpacing(3);
 		volumeSlider.setMajorTickSpacing(25);
 		volumeSlider.setPaintTicks(true);
 		volumeSlider.setPaintLabels(true);
+		
+		timeSlider = new JProgressBar();
 
+		buttonPanel.add(dickbutt);
 		buttonPanel.add(play);
 		buttonPanel.add(stop);
+		buttonPanel.add(next);
 		buttonPanel.add(open);
 		buttonPanel.add(exit);
 		
@@ -170,10 +188,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		stop.addActionListener(this); 
 		open.addActionListener(this);
 		exit.addActionListener(this); 
+		dickbutt.addActionListener(this);
+		next.addActionListener(this);
 		volumeSlider.addChangeListener(this);
+		//timeSlider.addChangeListener(this);
 
 		
 		buttonPanel.add(volumeSlider);
+		//buttonPanel.add(timeSlider);
 		
 		JPanel currentlyPlaying = new JPanel();
 		currentlyPlaying.setBorder(new TitledBorder(new EtchedBorder(), "Currently Playing"));
@@ -197,7 +219,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.add(volumePanel);	
 		panel.add(currentlyPlaying);
 		panel.add(infoPanel);*/
-
 		Pane.add(Sidebar, BorderLayout.WEST);
         Pane.add(buttonPanel, BorderLayout.SOUTH);
         this.pack();
@@ -236,11 +257,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
             	else 
             		System.out.println(" does not contain" 
             		   + " ID3 info.");  
-            	file.close(); 
+            	//file.close(); 
             } 
      	catch (Exception e)
      	{ 
-     		System.out.println("Error ? " + e.toString()); 
+     		System.out.println("Error with tags: " + e.toString()); 
        }
 	}
 	
@@ -260,8 +281,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			String fileString = file.toString();
 			System.out.println(file);
 			Media track = new Media(new File(fileString).toURI().toString());
-			mediaPlayer.dispose();
+			//mediaPlayer.dispose();
 			mediaPlayer = new MediaPlayer(track);
+			//System.out.println((int)getLength()/1000);
+			//timeSlider.setMaximumSize(mediaPlayer.getTotalDuration());
 			this.getMetadata(file);
 			scrobbler = new Scrobbler(this);
 			artistUrl.setText("URL: " + scrobbler.getUrl());
@@ -270,8 +293,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			artistLabel.setText("Artist: "+Artist);
 			trackLabel.setText("Title: "+Title);
 			albumLabel.setText("Album: "+Album);
+			timeSlider.setMaximum((int)getLength()/1000);
 			lengthLabel.setText("Tack legnth: "+getLength());
-			
 			scrobbler.scrobbleCurrent(this);
 		}
 		else if (b == stop)
@@ -288,6 +311,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public void playSound()
 	{
+		playing = true;
 		mediaPlayer.play();
 		scrobbler.setNowPlaying(this);
 	}
