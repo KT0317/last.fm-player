@@ -177,4 +177,10 @@ public class Scrobbler
 	{
 		return listeners;
 	}
+	
+	public void setUserAndPass(String user, String pass)
+	{
+		this.user = user;
+		this.password = pass;
+	}
 }//Scrobble class
