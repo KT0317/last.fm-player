@@ -77,10 +77,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistLabel = new JLabel();
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
-	private boolean playing;
+	private boolean playing = false;
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
 	private JButton playerButton, descriptionButton, settingsButton;
-	private static final int PREF_MIN_WIDTH = 200;
+	private static final int PREF_MIN_WIDTH = 750;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
 	
@@ -380,10 +380,15 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			try
 			{
-				this.setCurrentTrack();
-				scrobbler.setNowPlaying(this);
-				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
-				playSound();
+				if(playing = true)
+					pauseSound();
+				else
+				{
+					this.setCurrentTrack();
+					scrobbler.setNowPlaying(this);
+					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+					playSound();
+				}
 			}
 				catch(Exception e)
 				{
@@ -396,7 +401,22 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			try
 			{
 				playlist.clear();
-				this.openFile();
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.showOpenDialog(this);
+				File file = fileChooser.getSelectedFile();
+				String fileString = file.toString();
+				System.out.println(file);
+				try
+				{
+					playlist.add(fileString);
+				}
+				catch(Exception e)
+				{
+					System.out.println("Ya dun goofed in adding to the playlist");
+					System.out.println(e.getMessage());
+				}
+				buttonCheck();
+				populatePlaylist();
 				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				playSound();
@@ -418,7 +438,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				this.playlist.getNext(shekels);
 				this.setCurrentTrack();
-				//stopSound();
 			}
 			catch (Exception e)
 			{
@@ -432,7 +451,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				this.playlist.getPrev(shekels);
 				this.setCurrentTrack();
-				//stopSound();
 			}
 			catch (Exception e)
 			{
@@ -443,15 +461,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 
 	}
 	
-	public void openFile() throws Exception
+	/*public void openFile() throws Exception
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.showOpenDialog(this);
 		File file = fileChooser.getSelectedFile();
 		currentTrack = file.toString();
 		System.out.println(file);
-		playlist.add(currentTrack);
-		populatePlaylist();
+		playlist.add(file);
 		buttonCheck();
 		
 		
@@ -460,9 +477,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		//System.out.println((int)getLength()/1000);
 		//timeSlider.setMaximumSize(mediaPlayer.getTotalDuration());
 		
-		timeSlider.setMaximum((int)getLength()/1000);
+		//timeSlider.setMaximum((int)getLength()/1000);
 		//lengthLabel.setText("Tack legnth: "+getLength());
-	}
+	}*/
 		
 	public void displayTrackInfo(File file)
 	{
@@ -497,9 +514,16 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		mediaPlayer.play();
 		scrobbler.setNowPlaying(this);
 	}
+	
+	public void pauseSound()
+	{
+		playing = false;
+		mediaPlayer.pause();
+	}
 		
 	public void stopSound()
 	{
+		playing = false;
 		mediaPlayer.stop();
 	}
 	public void setYear(String Year)
@@ -559,6 +583,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			next.setEnabled(true);
 			dickbutt.setEnabled(true);
 			stop.setEnabled(true);
+		}
+		
+		if(playlist.getSize() > 2)
+		{
+			shuffle.setEnabled(true);
 		}
 	}
 }
