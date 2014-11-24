@@ -92,7 +92,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	private JLabel currentTime;
 	private JLabel maxTime;
-	private Timer timer;
+	private Timer timer = new Timer(1000,this);;
 	
 	private JList playlistDisplay;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
@@ -428,6 +428,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 		else if(source.equals(open) || source.equals(openMI))
 		{
+			timeCounter = 0;
 			try
 			{
 				playlist.clear();
@@ -451,6 +452,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				this.setCurrentTrack();
 				playSound();
+				play.setText("Pause");
 			}
 			catch (Exception e)
 			{
@@ -462,15 +464,18 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			stopSound();
 			play.setText("Play");
+			timeCounter = 0;
 		}
 		else if (source.equals(exit) || source.equals(exitMI))
 			System.exit(0);
 		else if (source.equals(next))
 		{
+			timeCounter = 0;
 			this.moveToNext();
 		}
 		else if (source.equals(dickbutt))
 		{
+			timeCounter = 0;
 			this.moveToPrev();
 		}
 		else if(source.equals(timer))
@@ -596,7 +601,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		playing = true;
 		mediaPlayer.play();
-		countTime();
+		if (hasPaused)
+			timer.start();
+		else
+		{
+			timeCounter = 0;
+			timer.restart();
+		}
+			
 		//scrobbler.setNowPlaying(this);
 	}
 	
@@ -604,12 +616,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		playing = false;
 		mediaPlayer.pause();
+		timer.stop();
 	}
 		
 	public void stopSound()
 	{
 		playing = false;
 		mediaPlayer.stop();
+		timer.stop();
 	}
 	public void setYear(String Year)
 	{
@@ -674,10 +688,5 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			next.setEnabled(true);
 			dickbutt.setEnabled(true);
 		}
-	}
-	public void countTime()
-	{
-		timer = new Timer(1000,this);
-		timer.start();
 	}
 }
