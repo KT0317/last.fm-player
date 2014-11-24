@@ -23,6 +23,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import javax.swing.Timer;
 import javax.sound.sampled.FloatControl;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -44,6 +45,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.tools.JavaCompiler;
 
 public class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 {
@@ -65,11 +67,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton open;
 	private JButton next;
 	private JButton dickbutt;
-	
+	private int timeCounter;
+	private int hours;
+	private int mins;
+	private int seconds;
 	private JToggleButton shuffle;
 	
 	private static JSlider volumeSlider;
-	private static JProgressBar timeSlider;
+	private static JSlider timeSlider;
 	private JLabel artistUrl = new JLabel();
 	private JLabel artistListners = new JLabel();
 	private JLabel artistPlaycount = new JLabel();
@@ -84,6 +89,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private boolean shekels = false;
 	private boolean hasPaused = false;
 	private boolean playing = false;
+	
+	private JLabel currentTime;
+	private JLabel maxTime;
+	private Timer timer;
 	
 	private JList playlistDisplay;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
@@ -193,9 +202,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		volumeSlider.setMajorTickSpacing(25);
 		volumeSlider.setPaintTicks(true);
 		volumeSlider.setPaintLabels(true);
+	
+		currentTime = new JLabel("0:00");
+		maxTime = new JLabel("3:00");
+		timeSlider = new JSlider(0,100,0);
 		
-		timeSlider = new JProgressBar();
-
+		
 		buttonPanel.add(dickbutt);
 		buttonPanel.add(play);
 		buttonPanel.add(stop);
@@ -212,11 +224,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		next.addActionListener(this);
 		volumeSlider.addChangeListener(this);
 		shuffle.addActionListener(this);
-		//timeSlider.addChangeListener(this);
+		timeSlider.addChangeListener(this);
 
 		
 		buttonPanel.add(volumeSlider);
-		//buttonPanel.add(timeSlider);
+		buttonPanel.add(currentTime);
+		buttonPanel.add(timeSlider);
+		buttonPanel.add(maxTime);
 		
 		
 		playlistDisplay = new JList<String>(inPlaylist);
@@ -344,7 +358,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public void actionPerformed(ActionEvent ae)
 	{
 		Object source = ae.getSource();
-		
 		if (source.equals(AddToPlaylist))
 		{
 			JFileChooser fileChooser = new JFileChooser();
@@ -460,6 +473,24 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			this.moveToPrev();
 		}
+		else if(source.equals(timer))
+		{
+			timeCounter++;
+			seconds++;
+			if(seconds == 60)
+			{
+				mins++;
+				seconds =0;
+			}
+			if(seconds < 10)
+			{
+				currentTime.setText(mins + ":0"+ seconds);
+			}
+			else
+			{
+				currentTime.setText(mins+":"+seconds);
+			}
+		}
 
 	}
 	
@@ -565,6 +596,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		playing = true;
 		mediaPlayer.play();
+		countTime();
 		//scrobbler.setNowPlaying(this);
 	}
 	
@@ -642,5 +674,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			next.setEnabled(true);
 			dickbutt.setEnabled(true);
 		}
+	}
+	public void countTime()
+	{
+		timer = new Timer(1000,this);
+		timer.start();
 	}
 }
