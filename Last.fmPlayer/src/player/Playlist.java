@@ -81,7 +81,7 @@ public class Playlist
 		}
 		else
 		{
-			if(playlistIndex > files.size())
+			if(playlistIndex < files.size())
 				playlistIndex++;
 			toReturn = files.get(playlistIndex);
 		}
@@ -99,7 +99,7 @@ public class Playlist
 		}
 		else
 		{
-			if(playlistIndex < 0)
+			if(playlistIndex > 0)
 				playlistIndex--;
 			toReturn = files.get(playlistIndex);
 		}
@@ -151,7 +151,7 @@ public class Playlist
 	
 	public boolean hasPrevious()
 	{
-		if(this.playlistIndex < 0)
+		if(this.playlistIndex > 0)
 			return true;
 		return false;
 	}

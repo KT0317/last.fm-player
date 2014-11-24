@@ -362,6 +362,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				System.out.println(e.getMessage());
 			}
 			buttonCheck();
+			if(playing)
+			{
+				play.setText("Pause");
+			}
 			populatePlaylist();
 			System.out.println(playlist.getSize());
 		}
@@ -447,34 +451,67 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			play.setText("Play");
 		}
 		else if (source.equals(exit) || source.equals(exitMI))
-				System.exit(0);
+			System.exit(0);
 		else if (source.equals(next))
 		{
-			try
+			this.moveToNext();
+		}
+		else if (source.equals(dickbutt))
+		{
+			this.moveToPrev();
+		}
+
+	}
+	
+	public void moveToNext()
+	{
+		try
+		{
+			if(playing)
+			{
+				this.stopSound();
+				this.playlist.getNext(shekels);
+				this.setCurrentTrack();
+				this.playSound();
+			}
+			else
 			{
 				this.playlist.getNext(shekels);
 				this.setCurrentTrack();
 			}
-			catch (Exception e)
-			{
-				System.out.println("Ya dun goofed in next");
-				System.out.println(e.getMessage());
-			}
+			this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+			//System.out.println(playlist.getCurrentIndex());
+			
 		}
-		else if (source.equals(dickbutt))
+		catch (Exception e)
 		{
-			try
+			System.out.println("Ya dun goofed in next");
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void moveToPrev()
+	{
+		try
+		{
+			if(playing)
 			{
+				this.stopSound();
 				this.playlist.getPrev(shekels);
 				this.setCurrentTrack();
+				this.playSound();
 			}
-			catch (Exception e)
+			else
 			{
-				System.out.println("Ya dun goofed in dickbutt");
-				System.out.println(e.getMessage());
+				this.playlist.getNext(shekels);
+				this.setCurrentTrack();
 			}
 		}
-
+		catch (Exception e)
+		{
+			System.out.println("Ya dun goofed in dickbutt");
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	/*public void openFile() throws Exception
@@ -509,11 +546,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		albumLabel.setText("Album: "+Album);
 		
 		scrobbler.scrobbleCurrent(this);
-	}
-	
-	public void moveToNext()
-	{
-		
 	}
 	
 	public void checkCache()
@@ -601,14 +633,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		else
 		{
 			play.setEnabled(true);
-			next.setEnabled(true);
-			dickbutt.setEnabled(true);
 			stop.setEnabled(true);
 		}
 		
-		if(playlist.getSize() > 2)
+		if(playlist.getSize() > 1)
 		{
 			shuffle.setEnabled(true);
+			next.setEnabled(true);
+			dickbutt.setEnabled(true);
 		}
 	}
 }
