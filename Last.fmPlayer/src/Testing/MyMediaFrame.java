@@ -1,5 +1,7 @@
 package Testing;
 
+import player.Playlist;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -7,18 +9,24 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import javax.swing.Timer;
 import javax.sound.sampled.FloatControl;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -30,17 +38,15 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
-import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import player.Playlist;
+import javax.tools.JavaCompiler;
 
 public class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 {
@@ -66,6 +72,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private int hours;
 	private int mins;
 	private int seconds;
+	private int endMins;
+	private int endSeconds;
 	private JToggleButton shuffle;
 	
 	private static JSlider volumeSlider;
@@ -77,16 +85,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistLabel = new JLabel();
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
-	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionChangeUser, OptionSettings, HelpAbout, openMI;
-	private JButton playerButton, descriptionButton, settingsButton, changeUserButton;
+	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
+	private JButton playerButton, descriptionButton, settingsButton;
 	private static final int PREF_MIN_WIDTH = 750;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
 	private boolean hasPaused = false;
 	private boolean playing = false;
-	JTextField usernameField = new JTextField(10);
-	JTextField passwordField = new JTextField(10);
-	JFrame changeUser = new JFrame("Change Account");
 	
 	private JLabel currentTime;
 	private JLabel maxTime;
@@ -148,12 +153,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		        
 		//Add Items to OptionMenu
 		OptionSettings = new JMenuItem("Settings");
-		OptionChangeUser = new JMenuItem("Change Account");
 		OptionMenu.add(OptionSettings);
-		OptionMenu.add(OptionChangeUser);
 		OptionSettings.addActionListener(this);
-		OptionChangeUser.addActionListener(this);
-		
+		        
 		//Add Items to HelpMenu
 		HelpAbout = new JMenuItem("About");
 		HelpMenu.add(HelpAbout);
@@ -205,7 +207,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		volumeSlider.setPaintLabels(true);
 	
 		currentTime = new JLabel("0:00");
-		maxTime = new JLabel("3:00");
+		maxTime = new JLabel("0:00");
 		timeSlider = new JSlider(0,100,0);
 		
 		
@@ -317,6 +319,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			float vol = s.getValue();
 			mediaPlayer.setVolume(vol/100);
 		}
+		/*else if(s == timeSlider)
+		{
+			int newTime = s.getValue();
+			Duration x = new Duration(newTime);
+			timeCounter = newTime;
+			mediaPlayer.seek(x);
+		}*/
 	}
 	
 	private String musicToBytes(File playFile)
@@ -454,6 +463,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.setCurrentTrack();
 				playSound();
 				play.setText("Pause");
+				Thread.sleep(100);
+				endMins = ((int)getLength()/1000)/60;
+				endSeconds = ((int)getLength()/1000)%60;
+				if(endSeconds < 10)
+					maxTime.setText(endMins + ":0"+ endSeconds);
+				else
+					maxTime.setText(endMins + ":" + endSeconds);
+				timeSlider.setMaximum((int)getLength()/1000);
 			}
 			catch (Exception e)
 			{
@@ -465,7 +482,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			stopSound();
 			play.setText("Play");
-			timeCounter = 0;
 		}
 		else if (source.equals(exit) || source.equals(exitMI))
 			System.exit(0);
@@ -483,6 +499,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			timeCounter++;
 			seconds++;
+			timeSlider.setValue(timeCounter);
 			if(seconds == 60)
 			{
 				mins++;
@@ -496,43 +513,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				currentTime.setText(mins+":"+seconds);
 			}
-		}
-		else if(source.equals(changeUserButton))
-		{
-			String userName = new String(usernameField.getText());
-			String password = new String(passwordField.getText());
-			scrobbler.setUserAndPass(userName, password);
-			changeUser.dispose();
-		}
-		
-		else if(source.equals(OptionChangeUser))
-		{
-			final int CHANGEUSER_PREF_MIN_WIDTH = 300;
-			final int CHANGEUSER_PREF_MIN_HEIGHT = 300;
-			JPanel changeUserPanel = new JPanel();
-			changeUserButton = new JButton("Change Account");
-			
-			changeUserPanel.setLayout(new BoxLayout(changeUserPanel, 1));
-			
-			JLabel usernameLabel = new JLabel("Username: ");
-			JLabel passwordLabel = new JLabel("Password: ");
-			changeUserButton.addActionListener(this);
-			
-			
-			changeUser.setPreferredSize(new Dimension(CHANGEUSER_PREF_MIN_WIDTH, CHANGEUSER_PREF_MIN_HEIGHT));
-			changeUserPanel.add(usernameLabel);//, usernameField);
-			usernameField.setMaximumSize(new Dimension(1000,25));
-			passwordField.setMaximumSize(new Dimension(1000, 25));
-			changeUserPanel.add(usernameField);
-			changeUserPanel.add(passwordLabel);
-			changeUserPanel.add(passwordField);
-			changeUserPanel.add(changeUserButton);
-			
-			changeUser.add(changeUserPanel);
-			changeUser.setContentPane(changeUserPanel);
-			passwordField.setVisible(true);
-			changeUser.setVisible(true);
-			changeUser.pack();
 		}
 
 	}
@@ -554,7 +534,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.setCurrentTrack();
 			}
 			this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
-			//System.out.println(playlist.getCurrentIndex());
 			
 		}
 		catch (Exception e)
