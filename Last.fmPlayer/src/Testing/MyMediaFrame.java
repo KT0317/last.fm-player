@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import javax.sound.sampled.FloatControl;
 import javax.swing.BoxLayout;
@@ -638,6 +639,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		playing = true;
 		mediaPlayer.play();
+		Duration x = new Duration(50);
+		mediaPlayer.seek(x);
 		if (hasPaused)
 			timer.start();
 		else
@@ -661,6 +664,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		playing = false;
 		mediaPlayer.stop();
 		timer.stop();
+		mins = 0;
+		seconds = 0;
+		currentTime.setText("0:00");
 	}
 	public void setYear(String Year)
 	{
