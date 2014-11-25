@@ -87,7 +87,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel lengthLabel = new JLabel();
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
 	private JButton playerButton, descriptionButton, settingsButton;
-	private static final int PREF_MIN_WIDTH = 750;
+	private static final int PREF_MIN_WIDTH = 1000;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
 	private boolean hasPaused = false;

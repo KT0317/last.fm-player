@@ -231,6 +231,7 @@ public class Scrobbler
 		
 		JPanel changeUserPanel = new JPanel();
 		JButton registerButton = new JButton("Register");
+		JLabel welcomeLabel = new JLabel("Meow");
 		
 		changeUserPanel.setLayout(new BoxLayout(changeUserPanel, 1));
 		
