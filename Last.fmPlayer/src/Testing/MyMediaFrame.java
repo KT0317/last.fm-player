@@ -102,7 +102,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	Playlist playlist = new Playlist();
 	
-	Scrobbler scrobbler = new Scrobbler();
+	Scrobbler scrobbler;
 	
 	public MyMediaFrame() throws Exception
 	{
@@ -456,6 +456,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					System.out.println("Ya dun goofed in adding to the playlist");
 					System.out.println(e.getMessage());
 				}
+				scrobbler = new Scrobbler(this);
 				buttonCheck();
 				populatePlaylist();
 				scrobbler.setNowPlaying(this);
@@ -589,6 +590,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 	public void displayTrackInfo(File file)
 	{
+		System.out.println("HI");
 		this.getMetadata(file);
 		scrobbler = new Scrobbler(this);
 		artistUrl.setText("URL: " + scrobbler.getUrl());
