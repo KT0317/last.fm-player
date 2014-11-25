@@ -60,6 +60,7 @@ public class Scrobbler
     	 }
     }//Default constructor
     
+    
     public Scrobbler(MyMediaFrame track)
     {//Constructor with track
     	try{
@@ -127,10 +128,10 @@ public class Scrobbler
 				System.out.println(artist+title);
 				int timeStamp = Integer.parseInt(line.split(";")[2]);
 				Track.scrobble(artist, title, timeStamp, session);
-							//Clear cache file
-				PrintWriter pw = new PrintWriter(cacheFile);
-				pw.close();
 			}
+			//Clear cache file
+			PrintWriter pw = new PrintWriter(cacheFile);
+			pw.close();
 			fileReader.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -165,6 +166,7 @@ public class Scrobbler
 		
 		return;
 	}
+	
 	public String getUrl()
 	{
 		return url;

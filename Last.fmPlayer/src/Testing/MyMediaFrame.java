@@ -1,7 +1,5 @@
 package Testing;
 
-import player.Playlist;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -9,23 +7,17 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import javax.swing.Timer;
 import javax.sound.sampled.FloatControl;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -37,15 +29,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.tools.JavaCompiler;
+
+import player.Playlist;
 
 public class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 {
@@ -82,13 +76,16 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistLabel = new JLabel();
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
-	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
-	private JButton playerButton, descriptionButton, settingsButton;
+	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionChangeUser, OptionSettings, HelpAbout, openMI;
+	private JButton playerButton, descriptionButton, settingsButton, changeUserButton;
 	private static final int PREF_MIN_WIDTH = 750;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
 	private boolean hasPaused = false;
 	private boolean playing = false;
+	JTextField usernameField = new JTextField(10);
+	JTextField passwordField = new JTextField(10);
+	JFrame changeUser = new JFrame("Change Account");
 	
 	private JLabel currentTime;
 	private JLabel maxTime;
@@ -150,9 +147,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		        
 		//Add Items to OptionMenu
 		OptionSettings = new JMenuItem("Settings");
+		OptionChangeUser = new JMenuItem("Change Account");
 		OptionMenu.add(OptionSettings);
+		OptionMenu.add(OptionChangeUser);
 		OptionSettings.addActionListener(this);
-		        
+		OptionChangeUser.addActionListener(this);
+		
 		//Add Items to HelpMenu
 		HelpAbout = new JMenuItem("About");
 		HelpMenu.add(HelpAbout);
@@ -495,6 +495,43 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				currentTime.setText(mins+":"+seconds);
 			}
+		}
+		else if(source.equals(changeUserButton))
+		{
+			String userName = new String(usernameField.getText());
+			String password = new String(passwordField.getText());
+			scrobbler.setUserAndPass(userName, password);
+			changeUser.dispose();
+		}
+		
+		else if(source.equals(OptionChangeUser))
+		{
+			final int CHANGEUSER_PREF_MIN_WIDTH = 300;
+			final int CHANGEUSER_PREF_MIN_HEIGHT = 300;
+			JPanel changeUserPanel = new JPanel();
+			changeUserButton = new JButton("Change Account");
+			
+			changeUserPanel.setLayout(new BoxLayout(changeUserPanel, 1));
+			
+			JLabel usernameLabel = new JLabel("Username: ");
+			JLabel passwordLabel = new JLabel("Password: ");
+			changeUserButton.addActionListener(this);
+			
+			
+			changeUser.setPreferredSize(new Dimension(CHANGEUSER_PREF_MIN_WIDTH, CHANGEUSER_PREF_MIN_HEIGHT));
+			changeUserPanel.add(usernameLabel);//, usernameField);
+			usernameField.setMaximumSize(new Dimension(1000,25));
+			passwordField.setMaximumSize(new Dimension(1000, 25));
+			changeUserPanel.add(usernameField);
+			changeUserPanel.add(passwordLabel);
+			changeUserPanel.add(passwordField);
+			changeUserPanel.add(changeUserButton);
+			
+			changeUser.add(changeUserPanel);
+			changeUser.setContentPane(changeUserPanel);
+			passwordField.setVisible(true);
+			changeUser.setVisible(true);
+			changeUser.pack();
 		}
 
 	}
