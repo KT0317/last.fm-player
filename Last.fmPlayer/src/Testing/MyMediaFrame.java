@@ -191,12 +191,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
-		play = new JButton("Play");
-		stop = new JButton("Stop");
+		play = new JButton("►");
+		stop = new JButton("■");
 		open = new JButton("Open");
 		exit = new JButton("Exit");
-		dickbutt = new JButton("Previous");
-		next = new JButton("Next");
+		dickbutt = new JButton("|◄◄");
+		next = new JButton("►►|");
 		shuffle = new JToggleButton("Shuffle");
 		shuffle.setSelected(false);
 		
@@ -387,7 +387,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			buttonCheck();
 			if(playing)
 			{
-				play.setText("Pause");
+				play.setText("▮▮");
 			}
 			populatePlaylist();
 			System.out.println(playlist.getSize());
@@ -411,13 +411,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				if(playing)
 				{
 					pauseSound();
-					play.setText("Play");
+					play.setText("►");
 					hasPaused = true;
 				}
 				else if (hasPaused)
 				{
 					playSound();
-					play.setText("Pause");
+					play.setText("▮▮");
 				}
 				else
 				{
@@ -426,7 +426,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					this.setCurrentTrack();
 					playSound();
-					play.setText("Pause");
+					play.setText("▮▮");
 					hasPaused = false;
 				}
 			}
@@ -464,7 +464,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				this.setCurrentTrack();
 				playSound();
-				play.setText("Pause");
+				play.setText("▮▮");
 				Thread.sleep(100);
 				endMins = ((int)getLength()/1000)/60;
 				endSeconds = ((int)getLength()/1000)%60;
@@ -483,7 +483,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		else if (source.equals(stop))
 		{
 			stopSound();
-			play.setText("Play");
+			play.setText("►");
 		}
 		else if (source.equals(exit) || source.equals(exitMI))
 			System.exit(0);
