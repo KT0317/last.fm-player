@@ -319,13 +319,25 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			float vol = s.getValue();
 			mediaPlayer.setVolume(vol/100);
 		}
-		/*else if(s == timeSlider)
+		else if(s == timeSlider)
 		{
 			int newTime = s.getValue();
-			Duration x = new Duration(newTime);
-			timeCounter = newTime;
-			mediaPlayer.seek(x);
-		}*/
+			if(newTime != timeCounter)
+			{
+				timeCounter = newTime;
+				mediaPlayer.seek(Duration.millis(newTime*1000));
+				mins = newTime/60;
+				seconds = newTime%60;
+				if(seconds < 10)
+				{
+					currentTime.setText(mins + ":0"+ seconds);
+				}
+				else
+				{
+					currentTime.setText(mins+":"+seconds);
+				}
+			}
+		}
 	}
 	
 	private String musicToBytes(File playFile)
