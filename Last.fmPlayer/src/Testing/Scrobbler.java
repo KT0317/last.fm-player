@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -24,12 +23,12 @@ import de.umass.lastfm.Authenticator;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
 
-public class Scrobbler 
+public class Scrobbler implements ActionListener
 {//Scrobble class
 	static String key = "4a7f6e9278971a6f8375d1f485e0d6a0";
     static String secret = "de5fd35fffed624ab4a3a2941e96b2bf";
-    static String user;// = "TestAccount3461"; 
-    static String password;// = "meowmix"; 
+    static String user; 
+    static String password;
     		//Create session to communicate with last.fm server
     static Session session;
     private String cacheFile = "cache.txt";
@@ -47,9 +46,13 @@ public class Scrobbler
     private String title = new String();
     private String artist = new String();
     private String album = new String();
-    JTextField usernameField = new JTextField();
-	JPasswordField passwordField = new JPasswordField();
-	JFrame newUserFrame = new JFrame("New User");
+    private JTextField usernameField = new JTextField();
+	private JPasswordField passwordField = new JPasswordField();
+	private JFrame newUserFrame = new JFrame("New User");
+	private JFrame welcomeFrame = new JFrame("Welcome!");
+	private JButton registerButton = new JButton("Register");
+	private JButton welcomeButton = new JButton("Continue");
+	
     
     private int offlineFlag = 0;
     
@@ -134,25 +137,29 @@ public class Scrobbler
 	
 	public void scrobbleCache()
 	{//Scrobble cache
+							//If there is no account logged in, do nothing
 		if((user == null) || (password == null))
 			return;
 							/**REMINDER: NO MORE THAN 5 SCROBBLES PER SECOND
 							 * AS PER LAST.FM USAGE AGREEMENT.*/
 		try {
+					//Open scanner for cache
 			Scanner fileReader = new Scanner(new File(cacheFile));
 			
 			while(fileReader.hasNextLine())
-			{
+			{//While loop over cache
+					//Retrieve next line in cache
 				String line = fileReader.nextLine();
+					//Parse all information from said line
 				artist = line.split(";")[0];
 				title = line.split(";")[1];
-				System.out.println(artist+title);
 				int timeStamp = Integer.parseInt(line.split(";")[2]);
-				Track.scrobble(artist, title, timeStamp, session);
-			}
+				Track.scrobble(artist, title, timeStamp, session);//Scrobble track
+		//		Thread.sleep(1000);	//Sleep for 1 second, to prevent scrobbling too quickly
+			}//While loop over cache
 			//Clear cache file
 			PrintWriter pw = new PrintWriter(cacheFile);
-			pw.close();
+			pw.close();//Close write stream
 			fileReader.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -173,9 +180,10 @@ public class Scrobbler
 	
 	
 	private void getArtistInfo(String artistName)
-	{	
+	{//Get artist info
+			//Get artist info from last.fm
 		String info = Artist.getInfo(artistName, key).toString();
-
+			//Parse info, store in variables
 		String[] toSplit = info.split("url='");
 		url = toSplit[1].split("'")[0];
 		
@@ -189,33 +197,35 @@ public class Scrobbler
 		listeners = toSplit[1].split(",")[0];
 		
 		return;
-	}
+	}//Get artist info
 	
 	public String getUrl()
-	{
+	{//get artist url
 		return url;
-	}
+	}//get artist url
 	public String getPlaycount()
-	{
+	{//get global playcount
 		return playcount;
-	}
+	}//get global playcount
 	public String getListeners()
-	{
+	{//get amount of listners
 		return listeners;
-	}
+	}//get amount of listners
 	
 	public void setUserAndPass(String user, String pass)
-	{
+	{//Change username and password
 		this.user = user;
 		this.password = pass;
-	}
+	}//Change username and password
 	
 	public void newAccountSetup()
-	{
+	{//Set up new account
 		
 		try
 		{
+				//Check account file for existing user account
 			Scanner accountReader = new Scanner(new File(accountFile));
+				//If it exists read it in then return
 			String line = accountReader.nextLine();
 			user = line.split(" ")[0];
 			password = line.split(" ")[1];
@@ -230,32 +240,16 @@ public class Scrobbler
 		final int CHANGEUSER_PREF_MIN_HEIGHT = 300;
 		
 		JPanel changeUserPanel = new JPanel();
-		JButton registerButton = new JButton("Register");
 		JLabel welcomeLabel = new JLabel("Meow");
 		
 		changeUserPanel.setLayout(new BoxLayout(changeUserPanel, 1));
 		
 		JLabel usernameLabel = new JLabel("Username: ");
 		JLabel passwordLabel = new JLabel("Password: ");
-		registerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				String user = usernameField.getText();
-				String password = new String(passwordField.getPassword());
-				try
-				{
-					FileWriter fw = new FileWriter(accountFile);
-			        fw.write(user + " " + password);
-			        fw.close();
-				}
-				catch(Exception ex)
-				{
-				}
-				newUserFrame.dispose();
-			}
-		});
+		registerButton.addActionListener(this);
 
 		newUserFrame.setPreferredSize(new Dimension(CHANGEUSER_PREF_MIN_WIDTH, CHANGEUSER_PREF_MIN_HEIGHT));
-		changeUserPanel.add(usernameLabel);//, usernameField);
+		changeUserPanel.add(usernameLabel);
 		usernameField.setMaximumSize(new Dimension(1000,25));
 		passwordField.setMaximumSize(new Dimension(1000, 25));
 		changeUserPanel.add(usernameField);
@@ -268,5 +262,50 @@ public class Scrobbler
 		passwordField.setVisible(true);
 		newUserFrame.setVisible(true);
 		newUserFrame.pack();
-	}
+	}//Set up new account
+	
+	public void welcomeNewUser()
+	{//Welcome new user
+		JPanel welcomePanel = new JPanel();
+		JLabel welcomeLabel = new JLabel("Welcome to last.fm Player!");
+		JLabel infoLabel = new JLabel("Currently we support the following formats:\n"
+										+ ".mp3\n.aac\n.pcm");
+		welcomePanel.setLayout(new BoxLayout(welcomePanel, 1));
+		welcomeButton.addActionListener(this);
+		
+		welcomePanel.add(welcomeLabel);
+		welcomePanel.add(infoLabel);
+		welcomePanel.add(welcomeButton);
+		
+		welcomeFrame.setContentPane(welcomePanel);
+		welcomeFrame.pack();
+		welcomeFrame.setVisible(true);
+		return;
+	}//Welcome new user
+	
+	public void actionPerformed(ActionEvent ae)
+	{//All action listeners
+			//Get source of event
+		Object source = ae.getSource();
+		if(source == registerButton)
+		{//Register button
+				//Get username/password from respetive fields
+			String user = usernameField.getText();
+			String password = new String(passwordField.getPassword());
+			try
+			{
+					//Open writing stream, overwrite file with new information
+				FileWriter fw = new FileWriter(accountFile);
+		        fw.write(user + " " + password);
+		        fw.close();
+			}
+			catch(Exception ex)
+			{
+			}
+			newUserFrame.dispose();//Close new user frame
+			welcomeNewUser();//Show welcoming page
+		}//Register button
+		else if(source.equals(welcomeButton))//Welcome button
+			welcomeFrame.dispose();//Close welcome frame
+	}//Set action listeners
 }//Scrobble class
