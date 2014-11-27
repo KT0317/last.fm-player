@@ -87,6 +87,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel lengthLabel = new JLabel();
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
 	private JButton playerButton, descriptionButton, settingsButton;
+	JFrame notSupportedFrame = new JFrame("File Not Supported!");
+	private JButton notSupportedButton = new JButton("Okay :c");
 	private static final int PREF_MIN_WIDTH = 1000;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
@@ -468,6 +470,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					System.out.println("Ya dun goofed in adding to the playlist");
 					System.out.println(e.getMessage());
 				}
+				boolean check = checkFileFormat(fileString);
+				if (check == false)
+				{
+					System.out.println("CHECKING FILE FORMAT");
+					notSupported();
+					return;
+				}
 				this.getMetadata(file);
 				scrobbler = new Scrobbler(this);
 				buttonCheck();
@@ -491,6 +500,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				System.out.println("Ya dun goofed in opening a file");
 				System.out.println(e.getMessage());
 			}
+		}
+		else if(source.equals(notSupportedButton))
+		{
+			System.out.println("notSupporedButton");
+			notSupportedFrame.dispose();
 		}
 		else if (source.equals(stop))
 		{
@@ -614,6 +628,39 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		albumLabel.setText("Album: "+Album);
 		
 		scrobbler.scrobbleCurrent(this);
+	}
+	
+	private boolean checkFileFormat(String file)
+	{
+		String supportedFormats[] = ".aac .mp3 .pcm".split(" ");
+		boolean supported = false;
+		
+		for(int i = 0; i < 3; i++)
+		{
+			System.out.println(supportedFormats[i]);
+			if(file.endsWith(supportedFormats[i]))
+				supported = true;
+			System.out.println(supported);	
+		}
+		
+		return supported;
+	}
+	
+	private void notSupported()
+	{
+		final int NOT_SUPPORTED_WIDTH = 400;
+		final int NOT_SUPPORTED_HEIGHT = 200;
+		JPanel notSupportedPanel = new JPanel();
+		JLabel notSupportedLabel = new JLabel("Sorry, the file you have selected is not supported.");
+		notSupportedFrame.setPreferredSize(new Dimension(NOT_SUPPORTED_WIDTH, NOT_SUPPORTED_HEIGHT));
+		notSupportedFrame.setResizable(false);
+		notSupportedButton.addActionListener(this);
+		
+		notSupportedPanel.add(notSupportedLabel);
+		notSupportedPanel.add(notSupportedButton);
+		notSupportedFrame.setContentPane(notSupportedPanel);
+		notSupportedFrame.pack();
+		notSupportedFrame.setVisible(true);
 	}
 	
 	public void checkCache()
