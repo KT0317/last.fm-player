@@ -52,6 +52,7 @@ public class Scrobbler implements ActionListener
 	private JFrame welcomeFrame = new JFrame("Welcome!");
 	private JButton registerButton = new JButton("Register");
 	private JButton welcomeButton = new JButton("Continue");
+	private JLabel wrongCredLabel = new JLabel("The username or password you entered is incorrect.");
 	
     
     private int offlineFlag = 0;
@@ -241,6 +242,7 @@ public class Scrobbler implements ActionListener
 		
 		JPanel changeUserPanel = new JPanel();
 		JLabel welcomeLabel = new JLabel("Meow");
+		wrongCredLabel.setVisible(false);
 		
 		changeUserPanel.setLayout(new BoxLayout(changeUserPanel, 1));
 		
@@ -256,20 +258,27 @@ public class Scrobbler implements ActionListener
 		changeUserPanel.add(passwordLabel);
 		changeUserPanel.add(passwordField);
 		changeUserPanel.add(registerButton);
+		changeUserPanel.add(wrongCredLabel);
 		
 		newUserFrame.add(changeUserPanel);
 		newUserFrame.setContentPane(changeUserPanel);
 		passwordField.setVisible(true);
+		newUserFrame.setAlwaysOnTop(true); 
 		newUserFrame.setVisible(true);
 		newUserFrame.pack();
 	}//Set up new account
 	
 	public void welcomeNewUser()
 	{//Welcome new user
+		final int WELCOME_WIDTH = 300;
+		final int WELCOME_HEIGHT = 300;
+		
 		JPanel welcomePanel = new JPanel();
+		welcomeFrame.setPreferredSize(new Dimension(WELCOME_WIDTH, WELCOME_HEIGHT));
+		welcomeFrame.setResizable(false);
 		JLabel welcomeLabel = new JLabel("Welcome to last.fm Player!");
-		JLabel infoLabel = new JLabel("Currently we support the following formats:\n"
-										+ ".mp3\n.aac\n.pcm");
+		JLabel infoLabel = new JLabel("<html>Currently we support the following formats:<br>"
+										+ ".mp3\n.aac\n.pcm</html>");
 		welcomePanel.setLayout(new BoxLayout(welcomePanel, 1));
 		welcomeButton.addActionListener(this);
 		
@@ -292,6 +301,13 @@ public class Scrobbler implements ActionListener
 				//Get username/password from respetive fields
 			String user = usernameField.getText();
 			String password = new String(passwordField.getPassword());
+			if(Authenticator.getMobileSession(user, password, key, secret) == null)
+			{
+				passwordField.setText("");
+				wrongCredLabel.setVisible(true);
+				return;
+				
+			}
 			try
 			{
 					//Open writing stream, overwrite file with new information
