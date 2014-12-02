@@ -419,6 +419,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			File file = fileChooser.getSelectedFile();
 			String fileString = file.toString();
 			System.out.println(file);
+			boolean check = checkFileFormat(fileString);
+			if (check == false)
+			{
+				notSupported();
+				return;
+			}
 			try
 			{
 				playlist.add(fileString);
@@ -490,7 +496,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				fileChooser.showOpenDialog(this);
 				File file = fileChooser.getSelectedFile();
 				String fileString = file.toString();
-				System.out.println(file);
+				boolean check = checkFileFormat(fileString);
+				if (check == false)
+				{
+					notSupported();
+					return;
+				}
 				try
 				{
 					playlist.add(fileString);
@@ -500,13 +511,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					System.out.println("Ya dun goofed in adding to the playlist");
 					System.out.println(e.getMessage());
 				}
-				boolean check = checkFileFormat(fileString);
-				if (check == false)
-				{
-					System.out.println("CHECKING FILE FORMAT");
-					notSupported();
-					return;
-				}
+				
 				this.getMetadata(file);
 				scrobbler = new Scrobbler(this);
 				buttonCheck();
