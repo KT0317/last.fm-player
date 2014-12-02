@@ -258,7 +258,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
 		descriptionPanel.setVisible(false);
-		
+		 
 		contentPanel.add(currentlyPlaying);
 		contentPanel.add(descriptionPanel);
 	/*	panel.setLayout(new GridLayout(2, 1, 25, 25));
