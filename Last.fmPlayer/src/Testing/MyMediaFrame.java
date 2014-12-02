@@ -659,13 +659,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		System.out.println("HI");
 		this.getMetadata(file);
 		scrobbler = new Scrobbler(this);
-//		artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
+		artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
 		artistUrl.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		artistUrl.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                     try {
- //                           Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
+                           Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
                     } catch (URISyntaxException | IOException ex) {
                             //It looks like there's a problem
                     }
