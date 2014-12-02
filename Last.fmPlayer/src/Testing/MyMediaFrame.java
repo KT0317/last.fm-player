@@ -115,6 +115,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	Playlist playlist = new Playlist();
 	
+	
 	Scrobbler scrobbler;
 	
 	public MyMediaFrame() throws Exception
@@ -590,13 +591,23 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			descriptionPanel.setVisible(false);
 			SettingsPanel.setVisible(true);
 		}
-		else if(source.equals(ChangeUser))
-		{
-			//do stuff here
+		else if(source.equals(ChangeUser)){
+			scrobbler = new Scrobbler();
+			scrobbler.newAccountSetup();
 		}
+		
 		else if(source.equals(Logoff))
 		{
-			//do stuff here
+			if (Logoff.getText().equals("Login")){
+				scrobbler.newAccountSetup();
+				scrobbler.setScrobbleFlag(true);
+				Logoff.setText("Log off");
+			}
+			else{
+				scrobbler.setUserAndPass("", "");
+				scrobbler.setScrobbleFlag(false);
+				Logoff.setText("Login");
+			}
 		}
 
 	}
