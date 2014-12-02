@@ -197,8 +197,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
-		play = new JButton("►");
-		stop = new JButton("■");
+		play = new JButton("\u25BA");
+		stop = new JButton("\u25A0");
 		open = new JButton("Open");
 		exit = new JButton("Exit");
 		dickbutt = new JButton("<<");
@@ -408,7 +408,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			buttonCheck();
 			if(playing)
 			{
-				play.setText("▮▮");
+				play.setText("\u25AE\u25AE");
 			}
 			populatePlaylist();
 			System.out.println(playlist.getSize());
@@ -432,13 +432,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				if(playing)
 				{
 					pauseSound();
-					play.setText("►");
+					play.setText("\u25BA");
 					hasPaused = true;
 				}
 				else if (hasPaused)
 				{
 					playSound();
-					play.setText("▮▮");
+					play.setText("\u25AE\u25AE");
 				}
 				else
 				{
@@ -447,7 +447,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					this.setCurrentTrack();
 					playSound();
-					play.setText("▮▮");
+					play.setText("\u25AE\u25AE");
 					hasPaused = false;
 				}
 			}
@@ -492,7 +492,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				this.setCurrentTrack();
 				playSound();
-				play.setText("▮▮");
+				play.setText("\u25AE\u25AE");
 				Thread.sleep(100);
 				endMins = ((int)getLength()/1000)/60;
 				endSeconds = ((int)getLength()/1000)%60;
@@ -516,7 +516,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		else if (source.equals(stop))
 		{
 			stopSound();
-			play.setText("►");
+			play.setText("\u25BA");
 		}
 		else if (source.equals(exit) || source.equals(exitMI))
 			System.exit(0);
