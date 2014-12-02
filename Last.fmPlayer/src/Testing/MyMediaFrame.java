@@ -79,6 +79,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private int endMins;
 	private int endSeconds;
 	private JToggleButton shuffle;
+	
+	private JButton ChangeUser, Logoff;
 	private JCheckBox EnableScrobbler;
 	
 	private static JSlider volumeSlider;
@@ -272,8 +274,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		JLabel UserLabel = new JLabel("Current User: " + scrobbler.user);
 		EnableScrobbler = new JCheckBox("Enable Scrobbler");
 		EnableScrobbler.addItemListener(this);
+		ChangeUser = new JButton("Changer User");
+		ChangeUser.addActionListener(this);
+		Logoff = new JButton("Log Off");
+		Logoff.addActionListener(this);
 		SettingsPanel.add(UserLabel);
 		SettingsPanel.add(EnableScrobbler);
+		SettingsPanel.add(ChangeUser);
+		SettingsPanel.add(Logoff);
 		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
@@ -563,23 +571,32 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				currentTime.setText(mins+":"+seconds);
 			}
 		}
-		else if(source.equals(descriptionButton))
+		
+		else if(source.equals(descriptionButton) || source.equals(ViewDescription))
 		{
 			currentlyPlaying.setVisible(false);
 			descriptionPanel.setVisible(true);
 			SettingsPanel.setVisible(false);
 		}
-		else if(source.equals(playerButton))
+		else if(source.equals(playerButton) || source.equals(ViewPlayer))
 		{
 			currentlyPlaying.setVisible(true);
 			descriptionPanel.setVisible(false);
 			SettingsPanel.setVisible(false);
 		}
-		else if(source.equals(settingsButton))
+		else if(source.equals(settingsButton) || source.equals(OptionSettings))
 		{
 			currentlyPlaying.setVisible(false);
 			descriptionPanel.setVisible(false);
 			SettingsPanel.setVisible(true);
+		}
+		else if(source.equals(ChangeUser))
+		{
+			//do stuff here
+		}
+		else if(source.equals(Logoff))
+		{
+			//do stuff here
 		}
 
 	}
@@ -830,8 +847,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		Object source = e.getSource();
 		if (source == EnableScrobbler)
 		{
-			if (EnableScrobbler.isSelected());	// turn off scrobbler;
-			else ;// turn on scrobbler
+			if (EnableScrobbler.isSelected()) scrobbler.setScrobbleFlag(true);
+			else scrobbler.setScrobbleFlag(false);
 			
 		}
 		
