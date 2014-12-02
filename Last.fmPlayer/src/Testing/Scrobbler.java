@@ -30,6 +30,8 @@ import de.umass.lastfm.Authenticator;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
 
+import sun.misc.BASE64Decoder;
+
 public class Scrobbler implements ActionListener
 {//Scrobble class
 	static String key = "4a7f6e9278971a6f8375d1f485e0d6a0";
@@ -235,7 +237,11 @@ public class Scrobbler implements ActionListener
 				//If it exists read it in then return
 			String line = accountReader.nextLine();
 			user = line.split(" ")[0];
-			password = line.split(" ")[1];
+			System.out.println(line.split(" ")[1]);
+			BASE64Decoder decoder = new BASE64Decoder();
+			byte[] pass = decoder.decodeBuffer(line.split(" ")[1]);
+			System.out.println(pass.toString());
+			password = pass.toString();
 			accountReader.close();
 			return;
 		}
@@ -257,7 +263,6 @@ public class Scrobbler implements ActionListener
 		JLabel noAccountLabel = new JLabel("<html>Don't have an account?<br>Get one here: <a href=\"\">Last.fm Registration</a>");
 		noAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		noAccountLabel.addMouseListener(new MouseAdapter() {
-            @Override
             public void mouseClicked(MouseEvent e) {
                     try {
                             Desktop.getDesktop().browse(new URI("https://secure.last.fm/join"));
@@ -283,7 +288,7 @@ public class Scrobbler implements ActionListener
 		newUserFrame.add(changeUserPanel);
 		newUserFrame.setContentPane(changeUserPanel);
 		passwordField.setVisible(true);
-		newUserFrame.setAlwaysOnTop(true); 
+		newUserFrame.toFront(); 
 		newUserFrame.setVisible(true);
 		newUserFrame.pack();
 	}//Set up new account
@@ -332,7 +337,8 @@ public class Scrobbler implements ActionListener
 			{
 					//Open writing stream, overwrite file with new information
 				FileWriter fw = new FileWriter(accountFile);
-		        fw.write(user + " " + password);
+				String encoding = new sun.misc.BASE64Encoder().encode(password.getBytes());
+		        fw.write(user + " " + encoding);
 		        fw.close();
 			}
 			catch(Exception ex)
