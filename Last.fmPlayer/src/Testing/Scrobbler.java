@@ -262,11 +262,8 @@ public class Scrobbler implements ActionListener
 				//If it exists read it in then return
 			String line = accountReader.nextLine();
 			user = line.split(" ")[0];
-			System.out.println(line.split(" ")[1]);
-			byte[] pass = Base64.decodeBase64(line.split(" ")[1].getBytes());
-			
-			System.out.println(pass.toString());
-			password = pass.toString();
+			byte[] pass = Base64.decodeBase64(line.split(" ")[1]);
+			password = new String(pass);
 			accountReader.close();
 			return;
 		}
@@ -364,6 +361,10 @@ public class Scrobbler implements ActionListener
 				FileWriter fw = new FileWriter(accountFile);
 				
 				String encoding = Base64.encodeBase64String(password.getBytes());
+				//byte[] pass = Base64.decodeBase64(encoding);
+				
+				
+				//System.out.println(encoding + "  " + new String(pass));
 		        fw.write(user + " " + new String(encoding));
 		        fw.close();
 			}
