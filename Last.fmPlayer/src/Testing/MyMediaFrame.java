@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -30,6 +32,7 @@ import javax.sound.sampled.FloatControl;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,7 +52,7 @@ import javax.swing.event.ChangeListener;
 
 import player.Playlist;
 
-public class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
+public class MyMediaFrame extends JFrame implements ActionListener, ChangeListener, ItemListener
 {
 	static final long serialVersionUID = 42L;
 	FloatControl volumeControl;
@@ -76,6 +79,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private int endMins;
 	private int endSeconds;
 	private JToggleButton shuffle;
+	private JCheckBox EnableScrobbler;
 	
 	private static JSlider volumeSlider;
 	private static JSlider timeSlider;
@@ -102,6 +106,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	private JPanel descriptionPanel = new JPanel();
 	private JPanel currentlyPlaying = new JPanel();
+	private JPanel SettingsPanel = new JPanel();
 	
 	private JList playlistDisplay;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
@@ -262,12 +267,21 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		descriptionPanel.add(artistListners);
 		descriptionPanel.add(artistPlaycount);
 		
+		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
+		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
+		JLabel UserLabel = new JLabel("Current User: " + scrobbler.user);
+		EnableScrobbler = new JCheckBox("Enable Scrobbler");
+		EnableScrobbler.addItemListener(this);
+		SettingsPanel.add(UserLabel);
+		SettingsPanel.add(EnableScrobbler);
+		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
 		descriptionPanel.setVisible(false);
 		 
 		contentPanel.add(currentlyPlaying);
 		contentPanel.add(descriptionPanel);
+		contentPanel.add(SettingsPanel);
 	/*	panel.setLayout(new GridLayout(2, 1, 25, 25));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(buttonPanel);
@@ -553,11 +567,19 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			currentlyPlaying.setVisible(false);
 			descriptionPanel.setVisible(true);
+			SettingsPanel.setVisible(false);
 		}
 		else if(source.equals(playerButton))
 		{
 			currentlyPlaying.setVisible(true);
 			descriptionPanel.setVisible(false);
+			SettingsPanel.setVisible(false);
+		}
+		else if(source.equals(settingsButton))
+		{
+			currentlyPlaying.setVisible(false);
+			descriptionPanel.setVisible(false);
+			SettingsPanel.setVisible(true);
 		}
 
 	}
@@ -800,5 +822,17 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			next.setEnabled(true);
 			dickbutt.setEnabled(true);
 		}
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		Object source = e.getSource();
+		if (source == EnableScrobbler)
+		{
+			if (EnableScrobbler.isSelected());	// turn off scrobbler;
+			else ;// turn on scrobbler
+			
+		}
+		
 	}
 }
