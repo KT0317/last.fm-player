@@ -457,7 +457,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				else
 				{
 					
-					scrobbler.setNowPlaying(this);
+//					scrobbler.setNowPlaying(this);
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					this.setCurrentTrack();
 					playSound();
@@ -502,7 +502,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				scrobbler = new Scrobbler(this);
 				buttonCheck();
 				populatePlaylist();
-				scrobbler.setNowPlaying(this);
+//				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				this.setCurrentTrack();
 				playSound();
@@ -659,13 +659,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		System.out.println("HI");
 		this.getMetadata(file);
 		scrobbler = new Scrobbler(this);
-		artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
+//		artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
 		artistUrl.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		artistUrl.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                     try {
-                            Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
+ //                           Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
                     } catch (URISyntaxException | IOException ex) {
                             //It looks like there's a problem
                     }
@@ -677,7 +677,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);
 		
-		scrobbler.scrobbleCurrent(this);
+//		scrobbler.scrobbleCurrent(this);
 	}
 	
 	private boolean checkFileFormat(String file)
@@ -716,7 +716,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public void checkCache()
 	{//Check cache
 		Scrobbler cacheScrobbler = new Scrobbler();
-		cacheScrobbler.scrobbleCache();
+//		cacheScrobbler.scrobbleCache();
 	}//Check cache
 	
 	public void setCurrentTrack() throws Exception
@@ -731,11 +731,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		playing = true;
 		mediaPlayer.play();
 		Duration x = new Duration(50);
-		mediaPlayer.seek(x);
+		
 		if (hasPaused)
 			timer.start();
 		else
 		{
+			mediaPlayer.seek(x);
 			timeCounter = 0;
 			timer.restart();
 		}
