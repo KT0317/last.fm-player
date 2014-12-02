@@ -263,7 +263,7 @@ public class Scrobbler implements ActionListener
 			String line = accountReader.nextLine();
 			user = line.split(" ")[0];
 			System.out.println(line.split(" ")[1]);
-			byte[] pass = Base64.decode(line.split(" ")[1].getBytes());
+			byte[] pass = Base64.decodeBase64(line.split(" ")[1].getBytes());
 			
 			System.out.println(pass.toString());
 			password = pass.toString();
