@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -11,8 +13,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -630,7 +637,18 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		System.out.println("HI");
 		this.getMetadata(file);
 		scrobbler = new Scrobbler(this);
-		artistUrl.setText("URL: " + scrobbler.getUrl());
+		artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
+		artistUrl.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		artistUrl.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    try {
+                            Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
+                    } catch (URISyntaxException | IOException ex) {
+                            //It looks like there's a problem
+                    }
+            }
+        });
 		artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
 		artistListners.setText("Listeners: "+scrobbler.getListeners());
 		artistLabel.setText("Artist: "+Artist);
