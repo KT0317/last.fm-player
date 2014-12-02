@@ -593,6 +593,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 		else if(source.equals(ChangeUser)){
 			scrobbler = new Scrobbler();
+			scrobbler.setChangeUserFlag(true);
 			scrobbler.newAccountSetup();
 		}
 		

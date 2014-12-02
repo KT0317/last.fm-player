@@ -67,6 +67,7 @@ public class Scrobbler implements ActionListener
     
     private int offlineFlag = 0;
     private boolean scrobbleFlag = true;
+    private boolean changeUserFlag = false;
     
     public void main(String args[])
     {//Main
@@ -257,15 +258,18 @@ public class Scrobbler implements ActionListener
 		
 		try
 		{
-				//Check account file for existing user account
-			Scanner accountReader = new Scanner(new File(accountFile));
-				//If it exists read it in then return
-			String line = accountReader.nextLine();
-			user = line.split(" ")[0];
-			byte[] pass = Base64.decodeBase64(line.split(" ")[1]);
-			password = new String(pass);
-			accountReader.close();
-			return;
+			if(changeUserFlag == false)
+			{
+					//Check account file for existing user account
+				Scanner accountReader = new Scanner(new File(accountFile));
+					//If it exists read it in then return
+				String line = accountReader.nextLine();
+				user = line.split(" ")[0];
+				byte[] pass = Base64.decodeBase64(line.split(" ")[1]);
+				password = new String(pass);
+				accountReader.close();
+				return;
+			}
 		}
 		catch(Exception e)
 		{
@@ -378,6 +382,10 @@ public class Scrobbler implements ActionListener
 			welcomeFrame.dispose();//Close welcome frame
 	}//Set action listeners
 	
+	public void setChangeUserFlag(boolean val)
+	{
+		this.changeUserFlag = val;
+	}
 	
 	public void setScrobbleFlag(boolean val)
 	{
