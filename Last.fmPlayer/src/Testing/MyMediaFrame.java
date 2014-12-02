@@ -716,7 +716,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public void checkCache()
 	{//Check cache
 		Scrobbler cacheScrobbler = new Scrobbler();
-//		cacheScrobbler.scrobbleCache();
+//		cacheScrobbler.scrobbleCache(); 
 	}//Check cache
 	
 	public void setCurrentTrack() throws Exception
