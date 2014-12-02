@@ -211,7 +211,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		exit = new JButton("Exit");
 		dickbutt = new JButton("<<");
 		next = new JButton(">>");
-		shuffle = new JToggleButton("Shuffle");
+		shuffle = new JToggleButton("\u21C4");
 		shuffle.setSelected(false);
 		
 		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 100);
