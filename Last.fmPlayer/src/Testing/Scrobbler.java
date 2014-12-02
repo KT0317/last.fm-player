@@ -1,13 +1,20 @@
 package Testing;
 
 
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Scanner;
 
 import javax.swing.BoxLayout;
@@ -120,7 +127,7 @@ public class Scrobbler implements ActionListener
 		getArtistInfo(artist);
 		return;
 	}//scrobbleCurrent
-	
+
 	public void addToCache(MyMediaFrame track, int timeStamp)
 	{//Build cache
 		
@@ -163,8 +170,7 @@ public class Scrobbler implements ActionListener
 			pw.close();//Close write stream
 			fileReader.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println("You don't have a cache. B-baka!");
+			System.out.println("You don't have a cache.");
 		}
 		return;
 	}//Scrobble cache
@@ -248,6 +254,18 @@ public class Scrobbler implements ActionListener
 		
 		JLabel usernameLabel = new JLabel("Username: ");
 		JLabel passwordLabel = new JLabel("Password: ");
+		JLabel noAccountLabel = new JLabel("<html>Don't have an account?<br>Get one here: <a href=\"\">Last.fm Registration</a>");
+		noAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		noAccountLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    try {
+                            Desktop.getDesktop().browse(new URI("https://secure.last.fm/join"));
+                    } catch (URISyntaxException | IOException ex) {
+                            //It looks like there's a problem
+                    }
+            }
+        });
 		registerButton.addActionListener(this);
 
 		newUserFrame.setPreferredSize(new Dimension(CHANGEUSER_PREF_MIN_WIDTH, CHANGEUSER_PREF_MIN_HEIGHT));
@@ -260,6 +278,7 @@ public class Scrobbler implements ActionListener
 		changeUserPanel.add(passwordField);
 		changeUserPanel.add(registerButton);
 		changeUserPanel.add(wrongCredLabel);
+		changeUserPanel.add(noAccountLabel);
 		
 		newUserFrame.add(changeUserPanel);
 		newUserFrame.setContentPane(changeUserPanel);
