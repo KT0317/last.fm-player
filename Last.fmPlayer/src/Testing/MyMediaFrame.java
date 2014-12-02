@@ -272,6 +272,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
+//		scrobbler.getUser();
 		JLabel UserLabel = new JLabel("Current User: " + scrobbler.user);
 		EnableScrobbler = new JCheckBox("Enable Scrobbler");
 		EnableScrobbler.addItemListener(this);
@@ -495,6 +496,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.showOpenDialog(this);
 				File file = fileChooser.getSelectedFile();
+				if(playing)
+					this.stopSound();
 				String fileString = file.toString();
 				boolean check = checkFileFormat(fileString);
 				if (check == false)
@@ -604,6 +607,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		else if(source.equals(Logoff))
 		{
+			scrobbler = new Scrobbler();
 			if (Logoff.getText().equals("Login")){
 				scrobbler.newAccountSetup();
 				scrobbler.setScrobbleFlag(true);

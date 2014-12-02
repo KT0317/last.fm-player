@@ -25,13 +25,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import  org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Authenticator;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
-import sun.misc.BASE64Decoder;
 
 public class Scrobbler implements ActionListener
 {//Scrobble class
@@ -64,7 +63,6 @@ public class Scrobbler implements ActionListener
 	private JButton welcomeButton = new JButton("Continue");
 	private JLabel wrongCredLabel = new JLabel("The username or password you entered is incorrect.");
 	
-    
     private int offlineFlag = 0;
     private boolean scrobbleFlag = true;
     private boolean changeUserFlag = false;
@@ -381,6 +379,12 @@ public class Scrobbler implements ActionListener
 		else if(source.equals(welcomeButton))//Welcome button
 			welcomeFrame.dispose();//Close welcome frame
 	}//Set action listeners
+	
+	public void getUser()
+	{
+		System.out.println(user);
+	//	return user;
+	}
 	
 	public void setChangeUserFlag(boolean val)
 	{
