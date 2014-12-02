@@ -472,7 +472,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				else
 				{
 					
-//					scrobbler.setNowPlaying(this);
+					scrobbler.setNowPlaying(this);
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					this.setCurrentTrack();
 					playSound();
@@ -516,7 +516,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				scrobbler = new Scrobbler(this);
 				buttonCheck();
 				populatePlaylist();
-//				scrobbler.setNowPlaying(this);
+				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				this.setCurrentTrack();
 				playSound();
@@ -711,7 +711,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);
 		
-//		scrobbler.scrobbleCurrent(this);
+		scrobbler.scrobbleCurrent(this);
 	}
 	
 	private boolean checkFileFormat(String file)
@@ -750,7 +750,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public void checkCache()
 	{//Check cache
 		Scrobbler cacheScrobbler = new Scrobbler();
-//		cacheScrobbler.scrobbleCache(); 
+		cacheScrobbler.scrobbleCache(); 
 	}//Check cache
 	
 	public void setCurrentTrack() throws Exception
@@ -775,7 +775,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			timer.restart();
 		}
 			
-		//scrobbler.setNowPlaying(this);
+		scrobbler.setNowPlaying(this);
 	}
 	
 	public void pauseSound()
