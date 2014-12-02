@@ -25,11 +25,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import  org.apache.commons.codec.binary.Base64;
+
 import de.umass.lastfm.Artist;
 import de.umass.lastfm.Authenticator;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
-
 import sun.misc.BASE64Decoder;
 
 public class Scrobbler implements ActionListener
@@ -65,6 +66,7 @@ public class Scrobbler implements ActionListener
 	
     
     private int offlineFlag = 0;
+    private boolean scrobbleFlag = true;
     
     public void main(String args[])
     {//Main
@@ -114,20 +116,28 @@ public class Scrobbler implements ActionListener
     
     					//Scrobble currently playing track
 	public void scrobbleCurrent(MyMediaFrame track)
-	{//scrobbleCurrent
-		//Get current time
-		int now = (int) (System.currentTimeMillis() / 1000);
-		
-		if(offlineFlag == 1)
-		{//Offline
-				//Add to cache
-			addToCache(track, now);
+	{
+		if(scrobbleFlag)
+		{
+			//scrobbleCurrent
+			//Get current time
+			int now = (int) (System.currentTimeMillis() / 1000);
+			
+			if(offlineFlag == 1)
+			{//Offline
+					//Add to cache
+				addToCache(track, now);
+				return;
+			}//Offline
+	
+			Track.scrobble(artist, title, now, session);
+			getArtistInfo(artist);
 			return;
-		}//Offline
-
-		Track.scrobble(artist, title, now, session);
-		getArtistInfo(artist);
-		return;
+		}
+		else
+		{
+			return;
+		}
 	}//scrobbleCurrent
 
 	public void addToCache(MyMediaFrame track, int timeStamp)
@@ -147,44 +157,59 @@ public class Scrobbler implements ActionListener
 	
 	public void scrobbleCache()
 	{//Scrobble cache
-							//If there is no account logged in, do nothing
-		if((user == null) || (password == null))
-			return;
-							/**REMINDER: NO MORE THAN 5 SCROBBLES PER SECOND
-							 * AS PER LAST.FM USAGE AGREEMENT.*/
-		try {
-					//Open scanner for cache
-			Scanner fileReader = new Scanner(new File(cacheFile));
+		if(scrobbleFlag)
+		{
+			//If there is no account logged in, do nothing
 			
-			while(fileReader.hasNextLine())
-			{//While loop over cache
-					//Retrieve next line in cache
-				String line = fileReader.nextLine();
-					//Parse all information from said line
-				artist = line.split(";")[0];
-				title = line.split(";")[1];
-				int timeStamp = Integer.parseInt(line.split(";")[2]);
-				Track.scrobble(artist, title, timeStamp, session);//Scrobble track
-		//		Thread.sleep(1000);	//Sleep for 1 second, to prevent scrobbling too quickly
-			}//While loop over cache
-			//Clear cache file
-			PrintWriter pw = new PrintWriter(cacheFile);
-			pw.close();//Close write stream
-			fileReader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("You don't have a cache.");
+			if((user == null) || (password == null))
+				return;
+								/**REMINDER: NO MORE THAN 5 SCROBBLES PER SECOND
+								 * AS PER LAST.FM USAGE AGREEMENT.*/
+			try {
+						//Open scanner for cache
+				Scanner fileReader = new Scanner(new File(cacheFile));
+				
+				while(fileReader.hasNextLine())
+				{//While loop over cache
+						//Retrieve next line in cache
+					String line = fileReader.nextLine();
+						//Parse all information from said line
+					artist = line.split(";")[0];
+					title = line.split(";")[1];
+					int timeStamp = Integer.parseInt(line.split(";")[2]);
+					Track.scrobble(artist, title, timeStamp, session);//Scrobble track
+			//		Thread.sleep(1000);	//Sleep for 1 second, to prevent scrobbling too quickly
+				}//While loop over cache
+				//Clear cache file
+				PrintWriter pw = new PrintWriter(cacheFile);
+				pw.close();//Close write stream
+				fileReader.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("You don't have a cache.");
+			}
+			return;
 		}
-		return;
+		else
+		{
+			return;
+		}
 	}//Scrobble cache
 	
 	public void setNowPlaying(MyMediaFrame track)
 	{//Set now playing
-		System.out.println("SUP");
-		if(offlineFlag == 1)//If offline, dont do this
+		if(scrobbleFlag)
+		{
+			System.out.println("SUP");
+			if(offlineFlag == 1)//If offline, dont do this
+				return;
+			artist = track.getArtist();
+			title = track.getTitle();
+			Track.updateNowPlaying(artist, title, session);
+		}
+		else
+		{
 			return;
-		artist = track.getArtist();
-		title = track.getTitle();
-		Track.updateNowPlaying(artist, title, session);
+		}
 	}//Set now playing
 	
 	
@@ -238,8 +263,8 @@ public class Scrobbler implements ActionListener
 			String line = accountReader.nextLine();
 			user = line.split(" ")[0];
 			System.out.println(line.split(" ")[1]);
-			BASE64Decoder decoder = new BASE64Decoder();
-			byte[] pass = decoder.decodeBuffer(line.split(" ")[1]);
+			byte[] pass = Base64.decode(line.split(" ")[1].getBytes());
+			
 			System.out.println(pass.toString());
 			password = pass.toString();
 			accountReader.close();
@@ -337,8 +362,9 @@ public class Scrobbler implements ActionListener
 			{
 					//Open writing stream, overwrite file with new information
 				FileWriter fw = new FileWriter(accountFile);
-				String encoding = new sun.misc.BASE64Encoder().encode(password.getBytes());
-		        fw.write(user + " " + encoding);
+				
+				String encoding = Base64.encodeBase64String(password.getBytes());
+		        fw.write(user + " " + new String(encoding));
 		        fw.close();
 			}
 			catch(Exception ex)
@@ -350,4 +376,11 @@ public class Scrobbler implements ActionListener
 		else if(source.equals(welcomeButton))//Welcome button
 			welcomeFrame.dispose();//Close welcome frame
 	}//Set action listeners
+	
+	
+	public void setScrobbleFlag(boolean val)
+	{
+		this.scrobbleFlag = val;
+	}
+	
 }//Scrobble class
