@@ -380,10 +380,10 @@ public class Scrobbler implements ActionListener
 			welcomeFrame.dispose();//Close welcome frame
 	}//Set action listeners
 	
-	public void getUser()
+	public String getUser()
 	{
 		System.out.println(user);
-	//	return user;
+		return user;
 	}
 	
 	public void setChangeUserFlag(boolean val)

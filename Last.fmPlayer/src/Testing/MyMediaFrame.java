@@ -272,8 +272,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
-//		scrobbler.getUser();
-		JLabel UserLabel = new JLabel("Current User: " + scrobbler.user);
+		scrobbler = new Scrobbler();
+		JLabel UserLabel = new JLabel("Current User: " + scrobbler.getUser());
 		EnableScrobbler = new JCheckBox("Enable Scrobbler");
 		EnableScrobbler.addItemListener(this);
 		ChangeUser = new JButton("Changer User");
