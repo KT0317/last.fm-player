@@ -1,32 +1,25 @@
 package Testing;
 
-import player.Playlist;
-
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import javax.swing.Timer;
 import javax.sound.sampled.FloatControl;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -38,15 +31,16 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.tools.JavaCompiler;
+
+import player.Playlist;
 
 public class MyMediaFrame extends JFrame implements ActionListener, ChangeListener
 {
@@ -98,6 +92,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel currentTime;
 	private JLabel maxTime;
 	private Timer timer = new Timer(1000,this);;
+	
+	private JPanel descriptionPanel = new JPanel();
+	private JPanel currentlyPlaying = new JPanel();
 	
 	private JList playlistDisplay;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
@@ -239,7 +236,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		
 		playlistDisplay = new JList<String>(inPlaylist);
-		JPanel currentlyPlaying = new JPanel();
 		JPanel playlist = new JPanel();
 		JPanel trackInfo = new JPanel();
 		currentlyPlaying.setBorder(new TitledBorder(new EtchedBorder(), "Currently Playing"));
@@ -253,14 +249,18 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		trackInfo.add(albumLabel);
 		trackInfo.add(lengthLabel);
 		
-		JPanel infoPanel = new JPanel();
-		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-		infoPanel.setBorder(new TitledBorder(new EtchedBorder(), "Global Artist Information"));
-		infoPanel.add(artistUrl);
-		infoPanel.add(artistListners);
-		infoPanel.add(artistPlaycount);
+		descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.PAGE_AXIS));
+		descriptionPanel.setBorder(new TitledBorder(new EtchedBorder(), "Global Artist Information"));
+		descriptionPanel.add(artistUrl);
+		descriptionPanel.add(artistListners);
+		descriptionPanel.add(artistPlaycount);
 		
-		JPanel panel = new JPanel();
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new CardLayout());
+		descriptionPanel.setVisible(false);
+		
+		contentPanel.add(currentlyPlaying);
+		contentPanel.add(descriptionPanel);
 	/*	panel.setLayout(new GridLayout(2, 1, 25, 25));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(buttonPanel);
@@ -269,7 +269,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.add(infoPanel);*/
 		Pane.add(Sidebar, BorderLayout.WEST);
         Pane.add(buttonPanel, BorderLayout.SOUTH);
-        Pane.add(currentlyPlaying, BorderLayout.CENTER);
+        Pane.add(contentPanel, BorderLayout.CENTER);
         this.pack();
 	//	this.setContentPane(panel);
 		
@@ -541,6 +541,16 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				currentTime.setText(mins+":"+seconds);
 			}
+		}
+		else if(source.equals(descriptionButton))
+		{
+			currentlyPlaying.setVisible(false);
+			descriptionPanel.setVisible(true);
+		}
+		else if(source.equals(playerButton))
+		{
+			currentlyPlaying.setVisible(true);
+			descriptionPanel.setVisible(false);
 		}
 
 	}

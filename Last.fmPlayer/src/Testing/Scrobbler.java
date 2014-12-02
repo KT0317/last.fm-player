@@ -254,6 +254,7 @@ public class Scrobbler implements ActionListener
 		changeUserPanel.add(usernameLabel);
 		usernameField.setMaximumSize(new Dimension(1000,25));
 		passwordField.setMaximumSize(new Dimension(1000, 25));
+		passwordField.addActionListener(this);
 		changeUserPanel.add(usernameField);
 		changeUserPanel.add(passwordLabel);
 		changeUserPanel.add(passwordField);
@@ -296,7 +297,7 @@ public class Scrobbler implements ActionListener
 	{//All action listeners
 			//Get source of event
 		Object source = ae.getSource();
-		if(source == registerButton)
+		if((source.equals(registerButton)) || (source.equals(passwordField)))
 		{//Register button
 				//Get username/password from respetive fields
 			String user = usernameField.getText();
