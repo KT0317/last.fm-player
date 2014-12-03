@@ -65,7 +65,7 @@ public class Scrobbler implements ActionListener
 	
     private int offlineFlag = 0;
     private boolean scrobbleFlag = true;
-    private boolean changeUserFlag = false;
+    boolean changeUserFlag = false;
     
     private String[] similarArtist;
     
@@ -282,7 +282,6 @@ public class Scrobbler implements ActionListener
 		final int CHANGEUSER_PREF_MIN_HEIGHT = 300;
 		
 		JPanel changeUserPanel = new JPanel();
-		JLabel welcomeLabel = new JLabel("Meow");
 		wrongCredLabel.setVisible(false);
 		
 		changeUserPanel.setLayout(new BoxLayout(changeUserPanel, 1));
@@ -387,7 +386,6 @@ public class Scrobbler implements ActionListener
 	
 	public String getUser()
 	{
-		System.out.println(user);
 		return user;
 	}
 	
