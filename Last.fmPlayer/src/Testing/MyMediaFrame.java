@@ -101,8 +101,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton playerButton, descriptionButton, settingsButton;
 	JFrame notSupportedFrame = new JFrame("File Not Supported!");
 	private JButton notSupportedButton = new JButton("Okay :c");
-	private static final int PREF_MIN_WIDTH = 300;
-	private static final int PREF_MIN_HEIGHT = 200;
+	private static final int PREF_MIN_WIDTH = 350;
+	private static final int PREF_MIN_HEIGHT = 250;
 	private boolean shekels = false;
 	private boolean hasPaused = false;
 	private boolean playing = false;
@@ -221,9 +221,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		stop.setToolTipText("Stop");
 		open = new JButton("Open");
 		exit = new JButton("Exit");
-		previous = new JButton("<<");
+		previous = new JButton("\u25C4\u25C4");
 		previous.setToolTipText("Previous");
-		next = new JButton(">>");
+		next = new JButton("\u25BA\u25BA");
 		next.setToolTipText("Next");
 		shuffle = new JToggleButton("\u21C4");
 		shuffle.setToolTipText("Shuffle");
@@ -471,13 +471,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				System.out.println("Ya dun goofed in adding to the playlist");
 				System.out.println(e.getMessage());
 			}
-			buttonCheck();
+			
 			if(playing)
 			{
 				play.setText("\u25AE\u25AE");
 			}
 			populatePlaylist();
 			System.out.println(playlist.getSize());
+			buttonCheck();
 		}
 		else if(source.equals(shuffle))
 		{
@@ -558,8 +559,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				}
 				
 				this.getMetadata(file);
-				buttonCheck();
 				populatePlaylist();
+				
+				
 				scrobbler = new Scrobbler(this);
 				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
@@ -569,6 +571,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				timeSlider.setValue(timeCounter);
 				play.setText("\u25AE\u25AE");
 				this.setMaxTime();
+				buttonCheck();
 			}
 			catch (Exception e)
 			{
@@ -633,6 +636,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						timeSlider.setValue(timeCounter);
 						this.playSound();
 						this.setMaxTime();
+						buttonCheck();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -647,6 +651,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						this.setCurrentTrack();
 						timeSlider.setValue(timeCounter);
 						this.setMaxTime();
+						buttonCheck();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -720,6 +725,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.playlist.getNext(shekels);
 				this.setCurrentTrack();
 				this.playSound();
+				this.buttonCheck();
 			}
 			else
 			{
@@ -746,12 +752,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.playlist.getPrev(shekels);
 				this.setCurrentTrack();
 				this.playSound();
+				this.buttonCheck();
 			}
 			else
 			{
 				this.playlist.getPrev(shekels);
 				this.setCurrentTrack();
 			}
+			this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 		}
 		catch (Exception e)
 		{
@@ -918,13 +926,33 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			play.setEnabled(true);
 			stop.setEnabled(true);
-		}
-		
-		if(playlist.getSize() > 1)
-		{
-			shuffle.setEnabled(true);
-			next.setEnabled(true);
-			previous.setEnabled(true);
+			
+			if(playlist.getSize() >= 2)
+			{
+				shuffle.setEnabled(true);
+			}
+			else
+			{
+				shuffle.setEnabled(false);
+			}
+			
+			if(!playlist.hasPrevious())
+			{
+				previous.setEnabled(false);
+			}
+			else
+			{
+				previous.setEnabled(true);
+			}
+			
+			if(!playlist.hasNext())
+			{
+				next.setEnabled(false);
+			}
+			else
+			{
+				next.setEnabled(true);
+			}
 		}
 	}
 	
