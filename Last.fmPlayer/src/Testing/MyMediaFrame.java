@@ -10,6 +10,7 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -99,7 +100,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton playerButton, descriptionButton, settingsButton;
 	JFrame notSupportedFrame = new JFrame("File Not Supported!");
 	private JButton notSupportedButton = new JButton("Okay :c");
-	private static final int PREF_MIN_WIDTH = 1000;
+	private static final int PREF_MIN_WIDTH = 300;
 	private static final int PREF_MIN_HEIGHT = 200;
 	private boolean shekels = false;
 	private boolean hasPaused = false;
@@ -190,9 +191,15 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		c.gridx = 0;
 		        
 		    	
-		playerButton = new JButton("Player");
-		descriptionButton = new JButton("Description");
-		settingsButton = new JButton("Settings");
+		playerButton = new JButton(/*"Player"*/ "\u266B");
+		playerButton.setToolTipText("Now Playing");
+		playerButton.setFont(new Font("", Font.PLAIN, 20));
+		descriptionButton = new JButton(/*"Description"*/ "\u2630");
+		descriptionButton.setToolTipText("Descriptions");
+		descriptionButton.setFont(new Font("", Font.PLAIN, 20));
+		settingsButton = new JButton(/*"Settings" "\u2622"*/ "\u2623");
+		settingsButton.setToolTipText("Settings");
+		settingsButton.setFont(new Font("", Font.PLAIN, 20));
 		playerButton.addActionListener(this);
 		descriptionButton.addActionListener(this);
 		settingsButton.addActionListener(this);
@@ -203,30 +210,41 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		c.gridy = 2;
 		Sidebar.add(settingsButton, c);
 		        
-		 
+		JPanel lowerPanel = new JPanel();
+		lowerPanel.setBackground(Color.DARK_GRAY);
+		lowerPanel.setLayout(new BorderLayout());
+		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		play = new JButton("\u25BA");
+		play.setToolTipText("Play/Pause");
 		stop = new JButton("\u25A0");
+		stop.setToolTipText("Stop");
 		open = new JButton("Open");
 		exit = new JButton("Exit");
 		previous = new JButton("<<");
+		previous.setToolTipText("Previous");
 		next = new JButton(">>");
+		next.setToolTipText("Next");
 		shuffle = new JToggleButton("\u21C4");
+		shuffle.setToolTipText("Shuffle");
 		shuffle.setSelected(false);
 		
 		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 100);
+		volumeSlider.putClientProperty("JComponent.sizeVariant", "mini");
+		volumeSlider.setPreferredSize(new Dimension(70, 30));
 		volumeSlider.setMinorTickSpacing(3);
 		volumeSlider.setMajorTickSpacing(25);
 		volumeSlider.setPaintTicks(true);
-		volumeSlider.setPaintLabels(true);
+		volumeSlider.setToolTipText("Volume");
 	
 		currentTime = new JLabel("0:00");
+		currentTime.setFont(new Font("", Font.PLAIN, 16));
 		maxTime = new JLabel("0:00");
+		maxTime.setFont(new Font("", Font.PLAIN, 16));
 		timeSlider = new JSlider(0,100,0);
-		
 		
 		buttonPanel.add(previous);
 		buttonPanel.add(play);
@@ -245,13 +263,19 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		volumeSlider.addChangeListener(this);
 		shuffle.addActionListener(this);
 		timeSlider.addChangeListener(this);
-
 		
-		buttonPanel.add(volumeSlider);
-		buttonPanel.add(currentTime);
-		buttonPanel.add(timeSlider);
-		buttonPanel.add(maxTime);
 		
+		lowerPanel.add(buttonPanel, BorderLayout.CENTER);
+		
+		JPanel timePanel = new JPanel();
+		timePanel.setBackground(Color.DARK_GRAY);
+		timePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		
+		timePanel.add(currentTime);
+		timePanel.add(timeSlider);
+		timePanel.add(maxTime);
+		timePanel.add(volumeSlider);
+		lowerPanel.add(timePanel, BorderLayout.NORTH);
 		
 		playlistDisplay = new JList<String>(inPlaylist);
 		playlistDisplay.setDragEnabled(true);
@@ -302,7 +326,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		panel.add(currentlyPlaying);
 		panel.add(infoPanel);*/
 		Pane.add(Sidebar, BorderLayout.WEST);
-        Pane.add(buttonPanel, BorderLayout.SOUTH);
+        Pane.add(lowerPanel, BorderLayout.SOUTH);
         Pane.add(contentPanel, BorderLayout.CENTER);
         this.pack();
 	//	this.setContentPane(panel);
