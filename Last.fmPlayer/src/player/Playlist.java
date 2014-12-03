@@ -77,6 +77,7 @@ public class Playlist
 		if(shuffle)
 		{
 			int index = (int) (Math.random() * files.size());
+			System.out.println("This is the index:" + index + " And these are yor shekels:" + shuffle);
 			toReturn = files.get(index);
 		}
 		else
@@ -149,7 +150,7 @@ public class Playlist
 	
 	public boolean hasNext()
 	{
-		if(this.playlistIndex < files.size()-1)
+		if(this.playlistIndex < files.size() - 1)
 			return true;
 		return false;
 	}

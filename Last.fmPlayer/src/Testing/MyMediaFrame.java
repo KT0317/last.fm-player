@@ -1,6 +1,6 @@
 package Testing;
 
-//Mike, you're a dick.
+//Mike, you're a dick. Seriously.
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
