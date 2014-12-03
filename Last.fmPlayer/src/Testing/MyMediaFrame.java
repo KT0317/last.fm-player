@@ -53,6 +53,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import player.Playlist;
 
@@ -334,6 +335,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
         Pane.add(lowerPanel, BorderLayout.SOUTH);
         Pane.add(contentPanel, BorderLayout.CENTER);
         this.pack();
+
 	//	this.setContentPane(panel);
 		
 		checkCache();
@@ -448,6 +450,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		if (source.equals(AddToPlaylist))
 		{
 			JFileChooser fileChooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm");
+			fileChooser.setFileFilter(filter);
 			fileChooser.showOpenDialog(this);
 			File file = fileChooser.getSelectedFile();
 			String fileString = file.toString();
@@ -532,6 +536,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				playlist.clear();
 				JFileChooser fileChooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm");
+				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(this);
 				File file = fileChooser.getSelectedFile();
 				if(playing)
