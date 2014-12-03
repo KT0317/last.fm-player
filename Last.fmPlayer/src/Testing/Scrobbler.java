@@ -110,7 +110,7 @@ public class Scrobbler implements ActionListener
     	artist = track.getArtist();
     	album = track.getAlbum();
     	getArtistInfo(artist);
-  //  	SimilarArtists(track);
+    	SimilarArtists(track);
     	
     }//Constructor with track
     
@@ -233,7 +233,6 @@ public class Scrobbler implements ActionListener
 		toSplit = info.split("listeners=");
 		listeners = toSplit[1].split(",")[0];
 		
-		getSimilarArtist();
 		return;
 	}//Get artist info
 	
