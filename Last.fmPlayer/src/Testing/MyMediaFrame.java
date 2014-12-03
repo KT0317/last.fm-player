@@ -318,8 +318,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		SettingsPanel.add(EnableScrobbler);
 		SettingsPanel.add(ChangeUser);
 		SettingsPanel.add(Logoff);
-//		JButton changeDefaultDirectoryButton = new JButton("Change Default Directory");
-	//	SettingsPanel.add(changeDefaultDirectoryButton);
 		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
@@ -451,7 +449,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		Object source = ae.getSource();
 		if (source.equals(AddToPlaylist))
 		{
-			JFileChooser fileChooser = new JFileChooser();
+			String userPlace = System.getProperty("user.home");
+			JFileChooser fileChooser = new JFileChooser(userPlace+"\\Music");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm");
 			fileChooser.setFileFilter(filter);
 			fileChooser.showOpenDialog(this);
@@ -537,7 +536,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			try
 			{
 				playlist.clear();
-				JFileChooser fileChooser = new JFileChooser();
+				String userPlace = System.getProperty("user.home");
+				JFileChooser fileChooser = new JFileChooser(userPlace+"\\Music");
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm");
 				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(this);
@@ -989,7 +989,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		similarPanel.add(similarArtistLabels[i]);
 	}	
 	}
-
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
