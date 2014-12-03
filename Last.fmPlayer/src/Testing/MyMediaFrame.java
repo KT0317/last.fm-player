@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -291,21 +292,17 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		trackInfo.add(albumLabel);
 		trackInfo.add(lengthLabel);
 		
-		outerDescriptionPanel.setLayout(new BorderLayout());
+		outerDescriptionPanel.setLayout(new GridLayout());
 		descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.PAGE_AXIS));
 		descriptionPanel.setBorder(new TitledBorder(new EtchedBorder(), "Global Artist Information"));
 		descriptionPanel.add(artistUrl);
 		descriptionPanel.add(artistListners);
 		descriptionPanel.add(artistPlaycount);
 		
-		
 		similarPanel.setLayout(new BoxLayout(similarPanel, BoxLayout.PAGE_AXIS));
 		similarPanel.setBorder(new TitledBorder(new EtchedBorder(), "Artists you may like"));
-		descriptionPanel.setSize(outerDescriptionPanel.getWidth()/2, outerDescriptionPanel.getHeight());
-		JLabel meow = new JLabel("meowmeowmeowmeow");
-		similarPanel.add(meow);
-		outerDescriptionPanel.add(descriptionPanel, BorderLayout.EAST);
-		outerDescriptionPanel.add(similarPanel, BorderLayout.CENTER);
+		outerDescriptionPanel.add(descriptionPanel);//, BorderLayout.WEST);
+		outerDescriptionPanel.add(similarPanel);//, BorderLayout.EAST);
 		
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
@@ -323,7 +320,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
-		descriptionPanel.setVisible(false);
 		 
 		contentPanel.add(currentlyPlaying);
 		contentPanel.add(outerDescriptionPanel);
@@ -786,10 +782,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
         });
 		artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
 		artistListners.setText("Listeners: "+scrobbler.getListeners());
-		
+		System.out.println(scrobbler.getListeners());
 		artistLabel.setText("Artist: "+Artist);
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);
+		
 		
 		scrobbler.scrobbleCurrent(this);
 	}
