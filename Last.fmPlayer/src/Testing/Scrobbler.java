@@ -67,6 +67,8 @@ public class Scrobbler implements ActionListener
     private boolean scrobbleFlag = true;
     private boolean changeUserFlag = false;
     
+    private String[] similarArtist = new String[3];
+    
     public void main(String args[])
     {//Main
     	
@@ -229,6 +231,7 @@ public class Scrobbler implements ActionListener
 		toSplit = info.split("listeners=");
 		listeners = toSplit[1].split(",")[0];
 		
+		getSimilarArtists();
 		return;
 	}//Get artist info
 	
@@ -396,4 +399,26 @@ public class Scrobbler implements ActionListener
 		this.scrobbleFlag = val;
 	}
 	
+	public void getSimilarArtists(){
+		String similar = Artist.getSimilar(artist, key).toString();
+		String FirstSplit[] = similar.split("Artist[name='");
+		
+		System.out.println(FirstSplit[0]);
+		System.out.println(FirstSplit[1]);
+		System.out.println(FirstSplit[2]);
+		System.out.println(FirstSplit[3]);
+		/*
+		String Artist[] = FirstSplit[1].split("'");
+		similarArtist[0] = Artist[0];
+		
+		Artist = FirstSplit[2].split("'");
+		similarArtist[1] = Artist[0];
+		
+		Artist = FirstSplit[3].split("'");
+		similarArtist[2] = Artist[0];
+    	System.out.println(similarArtist[0] + " " + similarArtist[1] + " " + similarArtist[3]);
+		 */
+		//String FirstThreeArtist = similarArtist[0] + " " + similarArtist[1] + " " + similarArtist[3];
+		//return FirstThreeArtist;
+	}
 }//Scrobble class
