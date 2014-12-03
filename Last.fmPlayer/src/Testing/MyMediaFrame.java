@@ -490,6 +490,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 		else if(source.equals(open) || source.equals(openMI))
 		{
+			
 			timeCounter = 0;
 			try
 			{
@@ -500,6 +501,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				if(playing)
 					this.stopSound();
 				String fileString = file.toString();
+				
 				boolean check = checkFileFormat(fileString);
 				if (check == false)
 				{
@@ -519,6 +521,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.getMetadata(file);
 				buttonCheck();
 				populatePlaylist();
+				scrobbler = new Scrobbler(this);
 				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				
@@ -752,7 +755,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
         });
 		artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
 		artistListners.setText("Listeners: "+scrobbler.getListeners());
-		System.out.println(Artist+Title+Album);
+		
 		artistLabel.setText("Artist: "+Artist);
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);

@@ -110,7 +110,7 @@ public class Scrobbler implements ActionListener
     	artist = track.getArtist();
     	album = track.getAlbum();
     	getArtistInfo(artist);
-    	SimilarArtists(track);
+  //  	SimilarArtists(track);
     	
     }//Constructor with track
     
@@ -218,6 +218,7 @@ public class Scrobbler implements ActionListener
 	private void getArtistInfo(String artistName)
 	{//Get artist info
 			//Get artist info from last.fm
+		System.out.println("IN GET ARTIST INFO");
 		String info = Artist.getInfo(artistName, key).toString();
 			//Parse info, store in variables
 		String[] toSplit = info.split("url='");
@@ -232,7 +233,7 @@ public class Scrobbler implements ActionListener
 		toSplit = info.split("listeners=");
 		listeners = toSplit[1].split(",")[0];
 		
-		//getSimilarArtists();
+		getSimilarArtist();
 		return;
 	}//Get artist info
 	
@@ -242,6 +243,7 @@ public class Scrobbler implements ActionListener
 	}//get artist url
 	public String getPlaycount()
 	{//get global playcount
+		System.out.println(playcount);
 		return playcount;
 	}//get global playcount
 	public String getListeners()
