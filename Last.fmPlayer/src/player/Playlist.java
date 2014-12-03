@@ -76,7 +76,7 @@ public class Playlist
 		File toReturn = null;
 		if(shuffle)
 		{
-			int index = (int) (Math.random() * files.size());
+			int index = (int) (Math.random() * (files.size() - 1));
 			System.out.println("This is the index:" + index + " And these are yor shekels:" + shuffle);
 			toReturn = files.get(index);
 		}
@@ -95,7 +95,7 @@ public class Playlist
 		File toReturn = null;
 		if(shuffle)
 		{
-			int index = (int) (Math.random() * files.size());
+			int index = (int) (Math.random() * (files.size() - 1));
 			toReturn = files.get(index);
 		}
 		else

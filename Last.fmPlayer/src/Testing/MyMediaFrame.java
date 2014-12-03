@@ -235,7 +235,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 100);
 		volumeSlider.putClientProperty("JComponent.sizeVariant", "mini");
 		volumeSlider.setPreferredSize(new Dimension(70, 30));
-		volumeSlider.setMinorTickSpacing(3);
+		volumeSlider.setMinorTickSpacing(5);
 		volumeSlider.setMajorTickSpacing(25);
 		volumeSlider.setPaintTicks(true);
 		volumeSlider.setToolTipText("Volume");
@@ -475,11 +475,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			if(shuffle.isSelected())
 			{
 				shuffle.setSelected(false);
+				shuffle.setText("\u21C4");			
 			}
 			else if(!shuffle.isSelected())
 			{
 				shuffle.setSelected(true);
-			}
+				shuffle.setText("\u21C9");
+			}	
 			shekels = !shekels;
 		}
 		else if (source.equals(play))
