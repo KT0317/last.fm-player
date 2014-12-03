@@ -67,7 +67,7 @@ public class Scrobbler implements ActionListener
     private boolean scrobbleFlag = true;
     private boolean changeUserFlag = false;
     
-    private String[] similarArtist = new String[3];
+    private String[] similarArtist;
     
     public void main(String args[])
     {//Main
@@ -110,6 +110,7 @@ public class Scrobbler implements ActionListener
     	artist = track.getArtist();
     	album = track.getAlbum();
     	getArtistInfo(artist);
+    	SimilarArtists(track);
     	
     }//Constructor with track
     
@@ -389,6 +390,11 @@ public class Scrobbler implements ActionListener
 		return user;
 	}
 	
+	public String[] getSimilarArtist()
+	{
+		return this.similarArtist;
+	}
+	
 	public void setChangeUserFlag(boolean val)
 	{
 		this.changeUserFlag = val;
@@ -399,7 +405,7 @@ public class Scrobbler implements ActionListener
 		this.scrobbleFlag = val;
 	}
 	
-	public String[] getSimilarArtists(MyMediaFrame track){
+	public String[] SimilarArtists(MyMediaFrame track){
 		String similar = Artist.getSimilar(artist, key).toString();
 		System.out.println(similar);
 		String firstSplit[] = similar.split("'");
@@ -414,6 +420,7 @@ public class Scrobbler implements ActionListener
 		{
 			similarArtistList[i] = firstSplit[i*8+1];
 		}
-		return similarArtistList;
+		similarArtist = similarArtistList;
+		return similarArtist;
 	}
 }//Scrobble class
