@@ -414,19 +414,24 @@ public class Scrobbler implements ActionListener
 	{
 		this.scrobbleFlag = val;
 	}
-	
+	public URI getOtherArtistUrl(String toFind) throws URISyntaxException
+	{
+		String info = Artist.getInfo(toFind, key).toString();
+		//Parse info, store in variables
+		String[] toSplit = info.split("url='");
+		String otherUrl = toSplit[1].split("'")[0];
+		URI otherUri = new URI(otherUrl);
+		return otherUri;
+	}
+	@SuppressWarnings("null")
 	public String[] SimilarArtists(MyMediaFrame track){
 		String similar = Artist.getSimilar(artist, key).toString();
 		System.out.println(similar);
 		String firstSplit[] = similar.split("'");
-		String[] similarArtistList = null;
-		
-		System.out.println(firstSplit[1]);
-		System.out.println(firstSplit[9]);
-		System.out.println(firstSplit[17]);
-		System.out.println(firstSplit[25]);
-		
-		for(int i = 0; i < 5; i++)
+		String[] similarArtistList = new String[4];
+			
+			
+		for(int i = 0; i < 4; i++)
 		{
 			similarArtistList[i] = firstSplit[i*8+1];
 		}

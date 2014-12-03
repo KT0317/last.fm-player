@@ -96,6 +96,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
 	public static JLabel UserLabel = new JLabel();
+	private JPanel outerDescriptionPanel = new JPanel();
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
 	private JButton playerButton, descriptionButton, settingsButton;
 	JFrame notSupportedFrame = new JFrame("File Not Supported!");
@@ -113,6 +114,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JPanel descriptionPanel = new JPanel();
 	private JPanel currentlyPlaying = new JPanel();
 	private JPanel SettingsPanel = new JPanel();
+	private JPanel similarPanel = new JPanel();
 	
 	private JList playlistDisplay;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
@@ -249,6 +251,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		buttonPanel.add(shuffle);
 		buttonPanel.add(exit);
 		
+		
+		
 		play.addActionListener(this); 
 		stop.addActionListener(this); 
 		open.addActionListener(this);
@@ -287,11 +291,21 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		trackInfo.add(albumLabel);
 		trackInfo.add(lengthLabel);
 		
+		outerDescriptionPanel.setLayout(new BorderLayout());
 		descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.PAGE_AXIS));
 		descriptionPanel.setBorder(new TitledBorder(new EtchedBorder(), "Global Artist Information"));
 		descriptionPanel.add(artistUrl);
 		descriptionPanel.add(artistListners);
 		descriptionPanel.add(artistPlaycount);
+		
+		
+		similarPanel.setLayout(new BoxLayout(similarPanel, BoxLayout.PAGE_AXIS));
+		similarPanel.setBorder(new TitledBorder(new EtchedBorder(), "Artists you may like"));
+		descriptionPanel.setSize(outerDescriptionPanel.getWidth()/2, outerDescriptionPanel.getHeight());
+		JLabel meow = new JLabel("meowmeowmeowmeow");
+		similarPanel.add(meow);
+		outerDescriptionPanel.add(descriptionPanel, BorderLayout.EAST);
+		outerDescriptionPanel.add(similarPanel, BorderLayout.CENTER);
 		
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
@@ -312,7 +326,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		descriptionPanel.setVisible(false);
 		 
 		contentPanel.add(currentlyPlaying);
-		contentPanel.add(descriptionPanel);
+		contentPanel.add(outerDescriptionPanel);
 		contentPanel.add(SettingsPanel);
 	/*	panel.setLayout(new GridLayout(2, 1, 25, 25));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -549,6 +563,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				scrobbler = new Scrobbler(this);
 				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+				getSimilar();
 				this.setCurrentTrack();
 				playSound();
 				timeSlider.setValue(timeCounter);
@@ -645,19 +660,19 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		else if(source.equals(descriptionButton) || source.equals(ViewDescription))
 		{
 			currentlyPlaying.setVisible(false);
-			descriptionPanel.setVisible(true);
+			outerDescriptionPanel.setVisible(true);
 			SettingsPanel.setVisible(false);
 		}
 		else if(source.equals(playerButton) || source.equals(ViewPlayer))
 		{
 			currentlyPlaying.setVisible(true);
-			descriptionPanel.setVisible(false);
+			outerDescriptionPanel.setVisible(false);
 			SettingsPanel.setVisible(false);
 		}
 		else if(source.equals(settingsButton) || source.equals(OptionSettings))
 		{
 			currentlyPlaying.setVisible(false);
-			descriptionPanel.setVisible(false);
+			outerDescriptionPanel.setVisible(false);
 			SettingsPanel.setVisible(true);
 		}
 		else if(source.equals(ChangeUser)){
@@ -912,6 +927,36 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			previous.setEnabled(true);
 		}
 	}
+	
+
+	public void getSimilar()
+	{
+	JLabel[] similarArtistLabels = new JLabel[4];
+	final String[] similarArtistList = scrobbler.SimilarArtists(this);
+
+	for(int i = 0; i < 4; i++)
+	{
+		final int j = i;
+		System.out.println(similarArtistList[i]);
+		similarArtistLabels[i] = new JLabel("<html><a href=''>"+similarArtistList[i]+"</a>");
+		similarArtistLabels[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+		similarArtistLabels[i].addMouseListener(new MouseAdapter() 
+		{
+            public void mouseClicked(MouseEvent e) 
+            {
+                    try 
+                    {
+                            Desktop.getDesktop().browse(scrobbler.getOtherArtistUrl(similarArtistList[j]));
+                    } 
+                    catch (URISyntaxException | IOException ex) 
+                    {
+                   }
+            }
+        });
+		similarPanel.add(similarArtistLabels[i]);
+	}	
+	}
+
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
