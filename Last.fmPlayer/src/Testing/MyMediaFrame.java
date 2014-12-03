@@ -118,7 +118,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	Playlist playlist = new Playlist();
 	
 	
-	Scrobbler scrobbler;
+	Scrobbler scrobbler =  new Scrobbler();
 	
 	public MyMediaFrame() throws Exception
 	{
@@ -274,7 +274,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
-		scrobbler = new Scrobbler();
 		JLabel UserLabel = new JLabel("Current User: " + scrobbler.getUser());
 		EnableScrobbler = new JCheckBox("Enable Scrobbler");
 		EnableScrobbler.addItemListener(this);
@@ -518,7 +517,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				}
 				
 				this.getMetadata(file);
-				scrobbler = new Scrobbler(this);
 				buttonCheck();
 				populatePlaylist();
 				scrobbler.setNowPlaying(this);
@@ -634,14 +632,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			SettingsPanel.setVisible(true);
 		}
 		else if(source.equals(ChangeUser)){
-			scrobbler = new Scrobbler();
 			scrobbler.setChangeUserFlag(true);
 			scrobbler.newAccountSetup();
 		}
 		
 		else if(source.equals(Logoff))
 		{
-			scrobbler = new Scrobbler();
 			if (Logoff.getText().equals("Login")){
 				scrobbler.newAccountSetup();
 				scrobbler.setScrobbleFlag(true);
@@ -741,7 +737,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		System.out.println("HI");
 		this.getMetadata(file);
-		scrobbler = new Scrobbler(this);
 		artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
 		artistUrl.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		artistUrl.addMouseListener(new MouseAdapter() {
@@ -798,8 +793,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public void checkCache()
 	{//Check cache
-		Scrobbler cacheScrobbler = new Scrobbler();
-		cacheScrobbler.scrobbleCache(); 
+		scrobbler.scrobbleCache(); 
 	}//Check cache
 	
 	public void setCurrentTrack() throws Exception
