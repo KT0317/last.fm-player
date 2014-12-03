@@ -492,6 +492,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			
 			timeCounter = 0;
+			mins = 0;
+			seconds = 0;
 			try
 			{
 				playlist.clear();
@@ -524,9 +526,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				scrobbler = new Scrobbler(this);
 				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
-				
 				this.setCurrentTrack();
 				playSound();
+				timeSlider.setValue(timeCounter);
 				play.setText("\u25AE\u25AE");
 				this.setMaxTime();
 			}
