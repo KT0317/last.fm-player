@@ -126,7 +126,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public MyMediaFrame() throws Exception
 	{
-		//JFXPanel fxPanel = new JFXPanel();
+		JFXPanel fxPanel = new JFXPanel();
 		this.setMinimumSize(new Dimension(PREF_MIN_WIDTH, PREF_MIN_HEIGHT));
 		this.setVisible(true);
 		Container Pane = this.getContentPane();
