@@ -521,6 +521,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				populatePlaylist();
 				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+				
 				this.setCurrentTrack();
 				playSound();
 				play.setText("\u25AE\u25AE");
@@ -751,6 +752,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
         });
 		artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
 		artistListners.setText("Listeners: "+scrobbler.getListeners());
+		System.out.println(Artist+Title+Album);
 		artistLabel.setText("Artist: "+Artist);
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);
