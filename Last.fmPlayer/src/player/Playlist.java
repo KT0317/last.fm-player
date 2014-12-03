@@ -142,6 +142,11 @@ public class Playlist
 		}
 	}
 	
+	public void setIndex(int x)
+	{
+		this.playlistIndex = x;
+	}
+	
 	public boolean hasNext()
 	{
 		if(this.playlistIndex < files.size()-1)

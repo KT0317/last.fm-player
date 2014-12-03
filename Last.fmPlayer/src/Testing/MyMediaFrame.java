@@ -598,8 +598,19 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				}
 				else
 				{
-					play.setText("play");
+					play.setText("\u25BA");
 					mediaPlayer.stop();
+					playlist.setIndex(0);
+					try {
+						this.setCurrentTrack();
+						timeSlider.setValue(timeCounter);
+						this.setMaxTime();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					playing = false;
+					hasPaused = true;
 				}
 			}
 		}
@@ -802,13 +813,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		playing = true;
 		mediaPlayer.play();
-		Duration x = new Duration(50);
 		
 		if (hasPaused)
 			timer.start();
 		else
 		{
-			mediaPlayer.seek(x);
 			timeCounter = 0;
 			timer.restart();
 		}
