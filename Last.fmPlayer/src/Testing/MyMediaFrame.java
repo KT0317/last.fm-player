@@ -124,12 +124,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public MyMediaFrame() throws Exception
 	{
-		JFXPanel fxPanel = new JFXPanel();
-		
-		/*playlist.add("stuff.mp3");
-		//playlist.add("G:\\DT\\Dark Tranquillity - Construct (2013) (MP3)\\07 Endtime Hearts.mp3");
-		Media track = new Media(playlist.getFile(0).toURI().toString());
-		mediaPlayer = new MediaPlayer(track);*/
+		//JFXPanel fxPanel = new JFXPanel();
 		this.setMinimumSize(new Dimension(PREF_MIN_WIDTH, PREF_MIN_HEIGHT));
 		this.setVisible(true);
 		Container Pane = this.getContentPane();
@@ -749,26 +744,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	/*public void openFile() throws Exception
-	{
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.showOpenDialog(this);
-		File file = fileChooser.getSelectedFile();
-		currentTrack = file.toString();
-		System.out.println(file);
-		playlist.add(file);
-		buttonCheck();
-		
-		
-		//mediaPlayer.dispose();
-		
-		//System.out.println((int)getLength()/1000);
-		//timeSlider.setMaximumSize(mediaPlayer.getTotalDuration());
-		
-		//timeSlider.setMaximum((int)getLength()/1000);
-		//lengthLabel.setText("Tack legnth: "+getLength());
-	}*/
 		
 	public void displayTrackInfo(File file)
 	{
