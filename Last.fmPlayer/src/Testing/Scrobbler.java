@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.BoxLayout;
@@ -31,6 +33,7 @@ import de.umass.lastfm.Artist;
 import de.umass.lastfm.Authenticator;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Track;
+import de.umass.lastfm.scrobble.ScrobbleData;;
 
 public class Scrobbler implements ActionListener
 {//Scrobble class
@@ -128,9 +131,8 @@ public class Scrobbler implements ActionListener
 				addToCache(track, now);
 				return;
 			}//Offline
-	
-			Track.scrobble(artist, title, now, session);
-			getArtistInfo(artist);
+			
+			invokeScrobbler(now);
 			return;
 		}
 		else
@@ -145,7 +147,7 @@ public class Scrobbler implements ActionListener
 		try
 		{
 	        FileWriter fw = new FileWriter(cacheFile, true);
-	        fw.write(artist+";"+title+";"+timeStamp+"\n");
+	        fw.write(artist+";"+title+";"+album+";"+timeStamp+"\n");
 	        fw.close();
 		}
 		catch(Exception e)
@@ -175,8 +177,9 @@ public class Scrobbler implements ActionListener
 						//Parse all information from said line
 					artist = line.split(";")[0];
 					title = line.split(";")[1];
-					int timeStamp = Integer.parseInt(line.split(";")[2]);
-					Track.scrobble(artist, title, timeStamp, session);//Scrobble track
+					album = line.split(";")[2];
+					int timeStamp = Integer.parseInt(line.split(";")[3]);
+					invokeScrobbler(timeStamp);//Scrobble track
 			//		Thread.sleep(1000);	//Sleep for 1 second, to prevent scrobbling too quickly
 				}//While loop over cache
 				//Clear cache file
@@ -232,6 +235,21 @@ public class Scrobbler implements ActionListener
 		
 		return;
 	}//Get artist info
+	
+	public void invokeScrobbler(int timestamp)
+	{
+		ScrobbleData data = new ScrobbleData();
+		data.setAlbum(album);
+		data.setAlbumArtist(artist);
+		data.setArtist(artist);
+		data.setTimestamp(timestamp);
+		data.setTrack(title);
+		List<ScrobbleData> listicus = new LinkedList<ScrobbleData>();
+		listicus.add(data);
+		
+		Track.scrobble(listicus, session);
+		getArtistInfo(artist);
+	}
 	
 	public String getUrl()
 	{//get artist url

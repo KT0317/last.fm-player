@@ -73,7 +73,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton exit;
 	private JButton open;
 	private JButton next;
-	private JButton dickbutt;
+	private JButton previous;
 	private int timeCounter;
 	private int mins;
 	private int seconds;
@@ -212,7 +212,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		stop = new JButton("\u25A0");
 		open = new JButton("Open");
 		exit = new JButton("Exit");
-		dickbutt = new JButton("<<");
+		previous = new JButton("<<");
 		next = new JButton(">>");
 		shuffle = new JToggleButton("\u21C4");
 		shuffle.setSelected(false);
@@ -228,7 +228,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		timeSlider = new JSlider(0,100,0);
 		
 		
-		buttonPanel.add(dickbutt);
+		buttonPanel.add(previous);
 		buttonPanel.add(play);
 		buttonPanel.add(stop);
 		buttonPanel.add(next);
@@ -240,7 +240,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		stop.addActionListener(this); 
 		open.addActionListener(this);
 		exit.addActionListener(this); 
-		dickbutt.addActionListener(this);
+		previous.addActionListener(this);
 		next.addActionListener(this);
 		volumeSlider.addChangeListener(this);
 		shuffle.addActionListener(this);
@@ -254,6 +254,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		
 		playlistDisplay = new JList<String>(inPlaylist);
+		playlistDisplay.setDragEnabled(true);
 		JPanel playlist = new JPanel();
 		JPanel trackInfo = new JPanel();
 		currentlyPlaying.setBorder(new TitledBorder(new EtchedBorder(), "Currently Playing"));
@@ -556,7 +557,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			timeCounter = 0;
 			this.moveToNext();
 		}
-		else if (source.equals(dickbutt))
+		else if (source.equals(previous))
 		{
 			timeCounter = 0;
 			this.moveToPrev();
@@ -712,7 +713,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			}
 			else
 			{
-				this.playlist.getNext(shekels);
+				this.playlist.getPrev(shekels);
 				this.setCurrentTrack();
 			}
 		}
@@ -893,7 +894,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			play.setEnabled(false);
 			next.setEnabled(false);
-			dickbutt.setEnabled(false);
+			previous.setEnabled(false);
 			shuffle.setEnabled(false);
 			stop.setEnabled(false);
 		}
@@ -907,7 +908,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			shuffle.setEnabled(true);
 			next.setEnabled(true);
-			dickbutt.setEnabled(true);
+			previous.setEnabled(true);
 		}
 	}
 
