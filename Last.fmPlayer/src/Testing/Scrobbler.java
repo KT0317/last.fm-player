@@ -34,10 +34,10 @@ import de.umass.lastfm.Track;
 
 public class Scrobbler implements ActionListener
 {//Scrobble class
-	static String key = "4a7f6e9278971a6f8375d1f485e0d6a0";
-    static String secret = "de5fd35fffed624ab4a3a2941e96b2bf";
-    static String user; 
-    static String password;
+	final String key = "4a7f6e9278971a6f8375d1f485e0d6a0";
+    final String secret = "de5fd35fffed624ab4a3a2941e96b2bf";
+    private String user; 
+    private String password;
     		//Create session to communicate with last.fm server
     static Session session;
     private String cacheFile = "cache.txt";
@@ -349,8 +349,9 @@ public class Scrobbler implements ActionListener
 		if((source.equals(registerButton)) || (source.equals(passwordField)))
 		{//Register button
 				//Get username/password from respetive fields
-			String user = usernameField.getText();
-			String password = new String(passwordField.getPassword());
+			user = usernameField.getText();
+			password = new String(passwordField.getPassword());
+			MyMediaFrame.UserLabel.setText("Current user: "+user);
 			if(Authenticator.getMobileSession(user, password, key, secret) == null)
 			{
 				passwordField.setText("");

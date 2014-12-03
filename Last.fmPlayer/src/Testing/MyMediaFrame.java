@@ -94,6 +94,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistLabel = new JLabel();
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
+	public static JLabel UserLabel = new JLabel();
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
 	private JButton playerButton, descriptionButton, settingsButton;
 	JFrame notSupportedFrame = new JFrame("File Not Supported!");
@@ -274,7 +275,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
-		JLabel UserLabel = new JLabel("Current User: " + scrobbler.getUser());
+		UserLabel.setText("Current User: " + scrobbler.getUser());
 		EnableScrobbler = new JCheckBox("Enable Scrobbler");
 		EnableScrobbler.addItemListener(this);
 		ChangeUser = new JButton("Change User");
@@ -640,6 +641,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		else if(source.equals(ChangeUser)){
 			scrobbler.setChangeUserFlag(true);
 			scrobbler.newAccountSetup();
+			
+			System.out.println("TEST"+scrobbler.getUser());
+			UserLabel.setText("Current user: "+scrobbler.getUser());
 		}
 		
 		else if(source.equals(Logoff))
