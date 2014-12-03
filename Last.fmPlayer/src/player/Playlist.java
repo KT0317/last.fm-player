@@ -144,7 +144,7 @@ public class Playlist
 	
 	public boolean hasNext()
 	{
-		if(this.playlistIndex < files.size())
+		if(this.playlistIndex < files.size()-1)
 			return true;
 		return false;
 	}

@@ -73,11 +73,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton next;
 	private JButton dickbutt;
 	private int timeCounter;
-	private int hours;
 	private int mins;
 	private int seconds;
 	private int endMins;
 	private int endSeconds;
+	private int totalTime;
 	private JToggleButton shuffle;
 	
 	private JButton ChangeUser, Logoff;
@@ -524,14 +524,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.setCurrentTrack();
 				playSound();
 				play.setText("\u25AE\u25AE");
-				Thread.sleep(100);
-				endMins = ((int)getLength()/1000)/60;
-				endSeconds = ((int)getLength()/1000)%60;
-				if(endSeconds < 10)
-					maxTime.setText(endMins + ":0"+ endSeconds);
-				else
-					maxTime.setText(endMins + ":" + endSeconds);
-				timeSlider.setMaximum((int)getLength()/1000);
+				this.setMaxTime();
 			}
 			catch (Exception e)
 			{
@@ -579,6 +572,34 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				currentTime.setText(mins+":"+seconds);
 			}
+			if(totalTime == timeCounter-1)
+			{
+				timer.stop();
+				currentTime.setText("0:00");
+				timeCounter = 0;
+				mins = 0;
+				seconds = 0;
+				if(playlist.hasNext())
+				{
+					try {
+						playlist.getNext(shekels);
+						getMetadata(playlist.getFile(playlist.getCurrentIndex()));
+						this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+						this.setCurrentTrack();
+						timeSlider.setValue(timeCounter);
+						this.playSound();
+						this.setMaxTime();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else
+				{
+					play.setText("play");
+					mediaPlayer.stop();
+				}
+			}
 		}
 		
 		else if(source.equals(descriptionButton) || source.equals(ViewDescription))
@@ -621,7 +642,18 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 
 	}
-	
+	public void setMaxTime() throws Exception
+	{
+		Thread.sleep(100);
+		totalTime = (int)getLength()/1000;
+		endMins = ((int)getLength()/1000)/60;
+		endSeconds = ((int)getLength()/1000)%60;
+		if(endSeconds < 10)
+			maxTime.setText(endMins + ":0"+ endSeconds);
+		else
+			maxTime.setText(endMins + ":" + endSeconds);
+		timeSlider.setMaximum((int)getLength()/1000);
+	}
 	public void moveToNext()
 	{
 		try
