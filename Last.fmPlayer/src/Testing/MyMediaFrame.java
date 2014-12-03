@@ -308,7 +308,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
 		UserLabel.setText("Current User: " + scrobbler.getUser());
-		EnableScrobbler = new JCheckBox("Enable Scrobbler");
+		EnableScrobbler = new JCheckBox("Disable Scrobbler");
 		EnableScrobbler.addItemListener(this);
 		ChangeUser = new JButton("Change User");
 		ChangeUser.addActionListener(this);
@@ -318,6 +318,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		SettingsPanel.add(EnableScrobbler);
 		SettingsPanel.add(ChangeUser);
 		SettingsPanel.add(Logoff);
+//		JButton changeDefaultDirectoryButton = new JButton("Change Default Directory");
+	//	SettingsPanel.add(changeDefaultDirectoryButton);
 		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
