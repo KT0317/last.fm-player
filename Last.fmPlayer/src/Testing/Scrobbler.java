@@ -148,7 +148,7 @@ public class Scrobbler implements ActionListener
 		System.out.println("ADDING TO CACHE");
 		try
 		{
-	        FileWriter fw = new FileWriter(cacheFile, false);
+	        FileWriter fw = new FileWriter(cacheFile, true);
 	        fw.write(artist+";"+title+";"+album+";"+timeStamp+"\n");
 	        fw.close();
 		}
