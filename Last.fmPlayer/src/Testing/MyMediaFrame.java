@@ -1,7 +1,6 @@
 package Testing;
 
 //Mike, you're a dick. Seriously.
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -46,6 +45,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -126,6 +126,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	Scrobbler scrobbler =  new Scrobbler();
 	
+	JTextArea text = new JTextArea();
 	public MyMediaFrame() throws Exception
 	{
 		JFXPanel fxPanel = new JFXPanel();
@@ -133,6 +134,21 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		this.setVisible(true);
 		Container Pane = this.getContentPane();
 		Pane.setLayout(new BorderLayout());
+		
+		new FileDrop( System.out, Pane, /*dragBorder,*/ new FileDrop.Listener()
+        {   public void filesDropped( java.io.File[] files )
+            {   for( int i = 0; i < files.length; i++ )
+                {   try
+                    {  
+                		playlist.add(files[i].getCanonicalPath());
+                    }   // end try
+                    catch( Exception e ) {}
+                } 
+            populatePlaylist();
+			System.out.println(playlist.getSize());
+			buttonCheck();
+            }   // end filesDropped
+        }); // end FileDrop.Listener
 		
 		//The Menu bar
 		JMenuBar mb = new JMenuBar();
@@ -727,6 +743,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				this.stopSound();
 				this.playlist.getNext(shekels);
+				System.out.println("this is what the output is in media frame" + playlist.getCurrentIndex());
 				this.setCurrentTrack();
 				timeSlider.setValue(timeCounter);
 				this.setMaxTime();
@@ -956,7 +973,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				previous.setEnabled(true);
 			}
 			
-			if(!playlist.hasNext())
+			if(!playlist.hasNext()&& shekels == false)
 			{
 				next.setEnabled(false);
 			}

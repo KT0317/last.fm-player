@@ -8,7 +8,7 @@ public class Playlist
 {
 	private List<File> files = new LinkedList<File>();
 	private int playlistIndex = 0;
-	
+	int currentIndex;
 	
 	public Playlist()
 	{
@@ -76,9 +76,13 @@ public class Playlist
 		File toReturn = null;
 		if(shuffle)
 		{
-			int index = (int) (Math.random() * (files.size() - 1));
-			System.out.println("This is the index:" + index + " And these are yor shekels:" + shuffle);
-			toReturn = files.get(index);
+			currentIndex = playlistIndex;
+			while(currentIndex == playlistIndex)
+			{
+				playlistIndex = (int) (Math.random() * (files.size()));
+			}
+			System.out.println("This is the index:" + playlistIndex + " And these are yor shekels:" + shuffle);
+			toReturn = files.get(playlistIndex);
 		}
 		else
 		{
@@ -95,8 +99,12 @@ public class Playlist
 		File toReturn = null;
 		if(shuffle)
 		{
-			int index = (int) (Math.random() * (files.size() - 1));
-			toReturn = files.get(index);
+			currentIndex = playlistIndex;
+			while(currentIndex == playlistIndex)
+			{
+				playlistIndex = (int) (Math.random() * (files.size()));
+			}
+			toReturn = files.get(playlistIndex);
 		}
 		else
 		{
