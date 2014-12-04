@@ -728,6 +728,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.stopSound();
 				this.playlist.getNext(shekels);
 				this.setCurrentTrack();
+				timeSlider.setValue(timeCounter);
+				this.setMaxTime();
 				this.playSound();
 				this.buttonCheck();
 			}
@@ -755,6 +757,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.stopSound();
 				this.playlist.getPrev(shekels);
 				this.setCurrentTrack();
+				timeSlider.setValue(timeCounter);
+				this.setMaxTime();
 				this.playSound();
 				this.buttonCheck();
 			}
@@ -834,7 +838,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public void checkCache()
 	{//Check cache
-		scrobbler.scrobbleCache(); 
+		//scrobbler.scrobbleCache(); 
 	}//Check cache
 	
 	public void setCurrentTrack() throws Exception
