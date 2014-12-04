@@ -132,6 +132,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	JTextArea text = new JTextArea();
 	public MyMediaFrame() throws Exception
 	{
+		super("ScrobbLord!");
+		
 		JFXPanel fxPanel = new JFXPanel();
 		this.setMinimumSize(new Dimension(PREF_MIN_WIDTH, PREF_MIN_HEIGHT));
 		this.setVisible(true);
@@ -273,7 +275,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		buttonPanel.add(exit);
 		
 		
-		
 		play.addActionListener(this); 
 		stop.addActionListener(this); 
 		open.addActionListener(this);
@@ -343,10 +344,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.PAGE_AXIS));
 		aboutPanel.setBorder(new TitledBorder(new EtchedBorder(), "About"));
-		aboutPanel.add(new JLabel("A Scrobble for a class project that"));
-		aboutPanel.add(new JLabel("takes the music you are currently listening"));
-		aboutPanel.add(new JLabel("to and display the description to the user"));
-		aboutPanel.add(new JLabel("and sents the information to last.fm"));
+		aboutPanel.add(new JLabel("ScrobbLord is a music player"));
+		aboutPanel.add(new JLabel("with native Last.fm integration."));
+		aboutPanel.add(new JLabel("What you listen to will give you recommendations"));
+		aboutPanel.add(new JLabel("using your music taste as a heuristic."));
+		aboutPanel.add(new JLabel("You will also be able to track your music habits using Last.fm!"));
 		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
@@ -492,6 +494,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			File file = fileChooser.getSelectedFile();
 			
 			System.out.println(file);
+			fileString = file.toString();
 			boolean check = checkFileFormat(fileString);
 			if (check == false)
 			{
@@ -865,8 +868,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			System.out.println(supportedFormats[i]);
 			if(file.endsWith(supportedFormats[i]))
+			{
 				supported = true;
-			System.out.println(supported);	
+				System.out.println(supported);
+			}
 		}
 		
 		return supported;
