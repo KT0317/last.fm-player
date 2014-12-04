@@ -156,7 +156,7 @@ public class Scrobbler implements ActionListener
 		return;
 	}//Build cache
 	
-	public void scrobbleCache()
+	public void scrobbleCache() throws InterruptedException
 	{//Scrobble cache
 		if(scrobbleFlag)
 		{
@@ -180,7 +180,7 @@ public class Scrobbler implements ActionListener
 					album = line.split(";")[2];
 					int timeStamp = Integer.parseInt(line.split(";")[3]);
 					invokeScrobbler(timeStamp);//Scrobble track
-			//		Thread.sleep(1000);	//Sleep for 1 second, to prevent scrobbling too quickly
+					Thread.sleep(200);	//Sleep for 1 second, to prevent scrobbling too quickly
 				}//While loop over cache
 				//Clear cache file
 				PrintWriter pw = new PrintWriter(cacheFile);
