@@ -119,6 +119,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JPanel currentlyPlaying = new JPanel();
 	private JPanel SettingsPanel = new JPanel();
 	private JPanel similarPanel = new JPanel();
+	private JPanel aboutPanel = new JPanel();
 	
 	private JList playlistDisplay;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
@@ -340,12 +341,20 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		SettingsPanel.add(ChangeUser);
 		SettingsPanel.add(Logoff);
 		
+		aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.PAGE_AXIS));
+		aboutPanel.setBorder(new TitledBorder(new EtchedBorder(), "About"));
+		aboutPanel.add(new JLabel("A Scrobble for a class project that"));
+		aboutPanel.add(new JLabel("takes the music you are currently listening"));
+		aboutPanel.add(new JLabel("to and display the description to the user"));
+		aboutPanel.add(new JLabel("and sents the information to last.fm"));
+		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
 		 
 		contentPanel.add(currentlyPlaying);
 		contentPanel.add(outerDescriptionPanel);
 		contentPanel.add(SettingsPanel);
+		contentPanel.add(aboutPanel);
 	/*	panel.setLayout(new GridLayout(2, 1, 25, 25));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.add(buttonPanel);
@@ -699,18 +708,28 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			currentlyPlaying.setVisible(false);
 			outerDescriptionPanel.setVisible(true);
 			SettingsPanel.setVisible(false);
+			aboutPanel.setVisible(false);
 		}
 		else if(source.equals(playerButton) || source.equals(ViewPlayer))
 		{
 			currentlyPlaying.setVisible(true);
 			outerDescriptionPanel.setVisible(false);
 			SettingsPanel.setVisible(false);
+			aboutPanel.setVisible(false);
 		}
 		else if(source.equals(settingsButton) || source.equals(OptionSettings))
 		{
 			currentlyPlaying.setVisible(false);
 			outerDescriptionPanel.setVisible(false);
 			SettingsPanel.setVisible(true);
+			aboutPanel.setVisible(false);
+		}
+		else if(source.equals(HelpAbout))
+		{
+			currentlyPlaying.setVisible(false);
+			outerDescriptionPanel.setVisible(false);
+			SettingsPanel.setVisible(false);
+			aboutPanel.setVisible(true);
 		}
 		else if(source.equals(ChangeUser)){
 			scrobbler.setChangeUserFlag(true);
