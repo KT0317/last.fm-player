@@ -66,7 +66,7 @@ public class Scrobbler implements ActionListener
 	private JButton welcomeButton = new JButton("Continue");
 	private JLabel wrongCredLabel = new JLabel("The username or password you entered is incorrect.");
 	
-    private int offlineFlag = 0;
+    private boolean offlineFlag = false;
     private boolean scrobbleFlag = true;
     boolean changeUserFlag = false;
     
@@ -90,7 +90,7 @@ public class Scrobbler implements ActionListener
     	 }
     	 catch(Exception e)
     	 {
-    		 offlineFlag = 1;
+    		 offlineFlag = true;
     	 }
     }//Default constructor
     
@@ -104,7 +104,7 @@ public class Scrobbler implements ActionListener
     	}
 		catch(Exception e)
 		{
-			offlineFlag = 1;
+			offlineFlag = true;
 		}
     	//Get metadata from MyMediaFrame class
     	title = track.getTitle();
@@ -119,13 +119,15 @@ public class Scrobbler implements ActionListener
     					//Scrobble currently playing track
 	public void scrobbleCurrent(MyMediaFrame track)
 	{
+		System.out.println("IN SCROBBLE CURRENT");
 		if(scrobbleFlag)
 		{
+			System.out.println("IN SCROBBLE CURRENT - PAST SCROBBLE FLAG");
 			//scrobbleCurrent
 			//Get current time
 			int now = (int) (System.currentTimeMillis() / 1000);
 			
-			if(offlineFlag == 1)
+			if(offlineFlag == true)
 			{//Offline
 					//Add to cache
 				addToCache(track, now);
@@ -143,10 +145,10 @@ public class Scrobbler implements ActionListener
 
 	public void addToCache(MyMediaFrame track, int timeStamp)
 	{//Build cache
-		
+		System.out.println("ADDING TO CACHE");
 		try
 		{
-	        FileWriter fw = new FileWriter(cacheFile, true);
+	        FileWriter fw = new FileWriter(cacheFile, false);
 	        fw.write(artist+";"+title+";"+album+";"+timeStamp+"\n");
 	        fw.close();
 		}
@@ -199,11 +201,8 @@ public class Scrobbler implements ActionListener
 	
 	public void setNowPlaying(MyMediaFrame track)
 	{//Set now playing
-		if(scrobbleFlag)
+		if((scrobbleFlag) && (offlineFlag == false))
 		{
-			System.out.println("SUP");
-			if(offlineFlag == 1)//If offline, dont do this
-				return;
 			artist = track.getArtist();
 			title = track.getTitle();
 			Track.updateNowPlaying(artist, title, session);
@@ -217,6 +216,8 @@ public class Scrobbler implements ActionListener
 	
 	private void getArtistInfo(String artistName)
 	{//Get artist info
+		if(offlineFlag == true) //Offline, skip this part
+			return;
 			//Get artist info from last.fm
 		System.out.println("IN GET ARTIST INFO");
 		String info = Artist.getInfo(artistName, key).toString();
@@ -238,6 +239,8 @@ public class Scrobbler implements ActionListener
 	
 	public void invokeScrobbler(int timestamp)
 	{
+		if(offlineFlag == true)
+			return;
 		ScrobbleData data = new ScrobbleData();
 		data.setAlbum(album);
 		data.setAlbumArtist(artist);
@@ -257,13 +260,16 @@ public class Scrobbler implements ActionListener
 	}//get artist url
 	public String getPlaycount()
 	{//get global playcount
-		System.out.println(playcount);
 		return playcount;
 	}//get global playcount
 	public String getListeners()
 	{//get amount of listners
 		return listeners;
 	}//get amount of listners
+	public boolean getOfflineFlag()
+	{
+		return offlineFlag;
+	}
 	
 	public void setUserAndPass(String user, String pass)
 	{//Change username and password

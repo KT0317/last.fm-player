@@ -778,23 +778,25 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 	public void displayTrackInfo(File file)
 	{
-		System.out.println("HI");
 		this.getMetadata(file);
-		artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
-		artistUrl.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		artistUrl.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                    try {
-                           Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
-                    } catch (URISyntaxException | IOException ex) {
-                            //It looks like there's a problem
-                    }
-            }
-        });
-		artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
-		artistListners.setText("Listeners: "+scrobbler.getListeners());
-		System.out.println(scrobbler.getListeners());
+		if(scrobbler.getOfflineFlag() == false)
+		{
+			artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
+			artistUrl.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			artistUrl.addMouseListener(new MouseAdapter() {
+	            @Override
+	            public void mouseClicked(MouseEvent e) {
+	                    try {
+	                           Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
+	                    } catch (URISyntaxException | IOException ex) {
+	                            //It looks like there's a problem
+	                    }
+	            }
+	        });
+			artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
+			artistListners.setText("Listeners: "+scrobbler.getListeners());
+			System.out.println(scrobbler.getListeners());
+		}
 		artistLabel.setText("Artist: "+Artist);
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);
@@ -836,9 +838,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		notSupportedFrame.setVisible(true);
 	}
 	
-	public void checkCache()
+	public void checkCache() throws InterruptedException
 	{//Check cache
-		//scrobbler.scrobbleCache(); 
+		scrobbler.scrobbleCache(); 
 	}//Check cache
 	
 	public void setCurrentTrack() throws Exception
@@ -970,30 +972,32 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 
 	public void getSimilar()
 	{
-	JLabel[] similarArtistLabels = new JLabel[4];
-	final String[] similarArtistList = scrobbler.SimilarArtists(this);
-
-	for(int i = 0; i < 4; i++)
-	{
-		final int j = i;
-		System.out.println(similarArtistList[i]);
-		similarArtistLabels[i] = new JLabel("<html><a href=''>"+similarArtistList[i]+"</a>");
-		similarArtistLabels[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
-		similarArtistLabels[i].addMouseListener(new MouseAdapter() 
+		if(scrobbler.getOfflineFlag() == true)
+			return;
+		JLabel[] similarArtistLabels = new JLabel[4];
+		final String[] similarArtistList = scrobbler.SimilarArtists(this);
+	
+		for(int i = 0; i < 4; i++)
 		{
-            public void mouseClicked(MouseEvent e) 
-            {
-                    try 
-                    {
-                            Desktop.getDesktop().browse(scrobbler.getOtherArtistUrl(similarArtistList[j]));
-                    } 
-                    catch (URISyntaxException | IOException ex) 
-                    {
-                   }
-            }
-        });
-		similarPanel.add(similarArtistLabels[i]);
-	}	
+			final int j = i;
+			System.out.println(similarArtistList[i]);
+			similarArtistLabels[i] = new JLabel("<html><a href=''>"+similarArtistList[i]+"</a>");
+			similarArtistLabels[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+			similarArtistLabels[i].addMouseListener(new MouseAdapter() 
+			{
+	            public void mouseClicked(MouseEvent e) 
+	            {
+	                    try 
+	                    {
+	                            Desktop.getDesktop().browse(scrobbler.getOtherArtistUrl(similarArtistList[j]));
+	                    } 
+	                    catch (URISyntaxException | IOException ex) 
+	                    {
+	                   }
+	            }
+	        });
+			similarPanel.add(similarArtistLabels[i]);
+		}	
 	}
 
 	@Override
