@@ -876,8 +876,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		playing = false;
 		mediaPlayer.stop();
 		timer.stop();
+		timeCounter = 0;
 		mins = 0;
 		seconds = 0;
+		timeSlider.setValue(timeCounter);
 		currentTime.setText("0:00");
 	}
 	public void setYear(String Year)
