@@ -50,6 +50,14 @@ public class Playlist
 		}
 	}
 	
+	public void remove(int index) throws Exception
+	{
+		if(index > files.size())
+		{
+			files.remove(index);
+		}
+	}
+	
 	public File getFile(String name) throws Exception
 	{
 		File toReturn = null;
@@ -190,4 +198,5 @@ public class Playlist
 		files.clear();
 		playlistIndex = 0;
 	}
+
 }
