@@ -97,6 +97,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JLabel artistLabel = new JLabel();
 	private JLabel albumLabel = new JLabel();
 	private JLabel lengthLabel = new JLabel();
+	private JLabel noMetadataLabel = new JLabel("This track does not contain ID3 info.");
 	public static JLabel UserLabel = new JLabel();
 	private JPanel outerDescriptionPanel = new JPanel();
 	private JMenuItem AddToPlaylist, exitMI, ViewPlayer, ViewDescription, OptionSettings, HelpAbout, openMI;
@@ -108,6 +109,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private boolean shekels = false;
 	private boolean hasPaused = false;
 	private boolean playing = false;
+	private String fileString;
 	
 	private JLabel currentTime;
 	private JLabel maxTime;
@@ -302,12 +304,15 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		currentlyPlaying.setLayout(new BorderLayout());
 		currentlyPlaying.add(trackInfo, BorderLayout.CENTER);
 		currentlyPlaying.add(playlist, BorderLayout.EAST);
+		
 		playlist.add(playlistDisplay);
 		trackInfo.setLayout(new BoxLayout(trackInfo, BoxLayout.PAGE_AXIS));
 		trackInfo.add(artistLabel);
 		trackInfo.add(trackLabel);
 		trackInfo.add(albumLabel);
 		trackInfo.add(lengthLabel);
+		noMetadataLabel.setVisible(false);
+		trackInfo.add(noMetadataLabel);
 		
 		outerDescriptionPanel.setLayout(new GridLayout());
 		descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.PAGE_AXIS));
@@ -456,8 +461,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
             this.setYear(id3.substring(93, 97)); 
          }
          	else 
-         		System.out.println(" does not contain" 
-         		   + " ID3 info.");  
+         	{
+         		fileString = fileString.substring(fileString.lastIndexOf('\\') + 1);
+         		trackLabel.setText("Title: "+fileString);
+         		artistLabel.setText("Artist: Unknown");
+         		albumLabel.setText("Album: Unknown");
+         		noMetadataLabel.setVisible(true);
+         	}
 	}
 	
 	public void actionPerformed(ActionEvent ae)
@@ -471,7 +481,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			fileChooser.setFileFilter(filter);
 			fileChooser.showOpenDialog(this);
 			File file = fileChooser.getSelectedFile();
-			String fileString = file.toString();
+			
 			System.out.println(file);
 			boolean check = checkFileFormat(fileString);
 			if (check == false)
@@ -558,6 +568,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(this);
 				File file = fileChooser.getSelectedFile();
+				fileString = file.toString();
 				if(playing)
 					this.stopSound();
 				String fileString = file.toString();
@@ -646,6 +657,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				timeCounter = 0;
 				mins = 0;
 				seconds = 0;
+				playing = false;
 				if(playlist.hasNext())
 				{
 					try {
@@ -796,6 +808,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public void displayTrackInfo(File file)
 	{
 		this.getMetadata(file);
+		if(albumLabel.getText().equals("Album: Unknown"))
+			return;
+
 		if(scrobbler.getOfflineFlag() == false)
 		{
 			artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
@@ -806,7 +821,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	                    try {
 	                           Desktop.getDesktop().browse(new URI(scrobbler.getUrl()));
 	                    } catch (URISyntaxException | IOException ex) {
-	                            //It looks like there's a problem
 	                    }
 	            }
 	        });
@@ -817,9 +831,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		artistLabel.setText("Artist: "+Artist);
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);
-		
-		
-		scrobbler.scrobbleCurrent(this);
+		if(Title.equals(null))
+			artistLabel.setText("meow"); 
+		else
+			scrobbler.scrobbleCurrent(this);
 	}
 	
 	private boolean checkFileFormat(String file)
