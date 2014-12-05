@@ -460,6 +460,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				
 				System.out.println(songUndArtist);
 				inPlaylist.addElement(songUndArtist);
+				playlistDisplay.setBackground(currentlyPlaying.getBackground());
 			}
 		}
 		catch (Exception e)
