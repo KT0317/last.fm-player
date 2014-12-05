@@ -613,6 +613,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				else
 				{
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+					this.getSimilar();
 					this.setCurrentTrack();
 					this.setMaxTime();
 					timeSlider.setValue(timeCounter);
@@ -889,6 +890,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				this.setCurrentTrack();
 			}
 			this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+			this.getSimilar();
 			
 		}
 		catch (Exception e)
@@ -934,6 +936,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 
 		if(scrobbler.getOfflineFlag() == false)
 		{
+			scrobbler = new Scrobbler(this);
 			artistUrl.setText("<html>URL: <a href=\"" + scrobbler.getUrl() + "\">"+scrobbler.getUrl()+"</html>");
 			artistUrl.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			artistUrl.addMouseListener(new MouseAdapter() {
@@ -947,17 +950,15 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	        });
 			artistPlaycount.setText("Playcount: "+scrobbler.getPlaycount());
 			artistListners.setText("Listeners: "+scrobbler.getListeners());
-			//System.outprintln(scrobbler.getListeners());
 		}
 		System.out.println(Artist+Title);
 		artistLabel.setText("Artist: "+Artist);
 		trackLabel.setText("Title: "+Title);
 		albumLabel.setText("Album: "+Album);
-		if(Title.equals(null))
-			artistLabel.setText("meow"); 
-		else
+
+		if(Title.equals(null) == false)
 		{
-			scrobbler = new Scrobbler(this);
+			
 			scrobbler.scrobbleCurrent(this);
 			scrobbler.setNowPlaying(this);
 		}
