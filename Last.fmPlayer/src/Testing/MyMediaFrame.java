@@ -66,6 +66,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 {
 	static final long serialVersionUID = 42L;
 	FloatControl volumeControl;
+	float volume;
 	float maxVolume;
 	float minVolume;
 	MediaPlayer mediaPlayer;
@@ -262,14 +263,15 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		shuffle.setToolTipText("Shuffle");
 		shuffle.setSelected(false);
 		
-		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 100);
+		volumeSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 50, 50);
 		volumeSlider.putClientProperty("JComponent.sizeVariant", "mini");
 		volumeSlider.setPreferredSize(new Dimension(70, 30));
 		volumeSlider.setMinorTickSpacing(5);
 		volumeSlider.setMajorTickSpacing(25);
 		volumeSlider.setPaintTicks(true);
 		volumeSlider.setToolTipText("Volume");
-	
+		volume = (float) 100.0;
+		
 		currentTime = new JLabel("0:00");
 		currentTime.setFont(new Font("", Font.PLAIN, 16));
 		maxTime = new JLabel("0:00");
@@ -481,8 +483,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		JSlider s = (JSlider)ce.getSource();
 		if(s == volumeSlider)
 		{
-			float vol = s.getValue();
-			mediaPlayer.setVolume(vol/100);
+			volume = s.getValue();
+			mediaPlayer.setVolume(volume/50);
 		}
 		else if(s == timeSlider)
 		{
@@ -1020,8 +1022,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	public void playSound()
 	{
 		playing = true;
+		mediaPlayer.setVolume(volume/50);
 		mediaPlayer.play();
-		
+		System.out.println(mediaPlayer.getVolume());
 		if (hasPaused)
 			timer.start();
 		else
