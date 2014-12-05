@@ -161,7 +161,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
                     catch( Exception e ) {}
                 } 
             populatePlaylist();
-			//System.outprintln(playlist.getSize());
 			buttonCheck();
             }   // end filesDropped
         }); // end FileDrop.Listener
@@ -330,7 +329,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				if (me.getClickCount() == 2)
 				{
 					int index = temp.locationToIndex(me.getPoint());
-					//System.outprintln(index);
 					if(!playlist.isEmpty())
 					{
 						playlist.setIndex(index);
@@ -349,8 +347,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						}
 						catch(Exception e)
 						{
-							//System.outprintln("Ya dun goofed in playing");
-							//System.outprintln(e.getMessage());
+							System.out.println("Ya dun goofed in playing");
+							System.out.println(e.getMessage());
 						}
 					}
 				}
@@ -465,15 +463,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		        	songUndArtist = backupName.substring(index + 1);
 		        }
 				
-				//System.outprintln(songUndArtist);
 				inPlaylist.addElement(songUndArtist);
 				playlistDisplay.setBackground(currentlyPlaying.getBackground());
 			}
 		}
 		catch (Exception e)
 		{
-			//System.outprintln("Ya dun goofed");
-			//System.outprintln(e.getMessage());
+			System.out.println("Ya dun goofed");
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -522,7 +519,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
         } 
      	catch (Exception e)
      	{ 
-     		//System.outprintln("Error with tags: " + e.toString()); 
+     		System.out.println("Error with tags: " + e.toString()); 
      	}
 		return id3;
 	}
@@ -560,7 +557,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			fileChooser.showOpenDialog(this);
 			File file = fileChooser.getSelectedFile();
 			
-			//System.outprintln(file);
 			fileString = file.toString();
 			boolean check = checkFileFormat(fileString);
 			if (check == false)
@@ -574,8 +570,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			}
 			catch(Exception e)
 			{
-				//System.outprintln("Ya dun goofed in adding to the playlist");
-				//System.outprintln(e.getMessage());
+				System.out.println("Ya dun goofed in adding to the playlist");
+				System.out.println(e.getMessage());
 			}
 			
 			if(playing)
@@ -583,7 +579,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				play.setText("\u25AE\u25AE");
 			}
 			populatePlaylist();
-			//System.outprintln(playlist.getSize());
 			buttonCheck();
 		}
 		else if(source.equals(shuffle))
@@ -628,8 +623,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			}
 			catch(Exception e)
 			{
-				//System.outprintln("Ya dun goofed in playing");
-				//System.outprintln(e.getMessage());
+				System.out.println("Ya dun goofed in playing");
+				System.out.println(e.getMessage());
 			}
 		}
 		else if(source.equals(open) || source.equals(openMI))
@@ -664,8 +659,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				}
 				catch(Exception e)
 				{
-					//System.outprintln("Ya dun goofed in adding to the playlist");
-					//System.outprintln(e.getMessage());
+					System.out.println("Ya dun goofed in adding to the playlist");
+					System.out.println(e.getMessage());
 				}
 				
 				this.getMetadata(file);
@@ -684,15 +679,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			}
 			catch (Exception e)
 			{
-				//System.outprintln("Ya dun goofed in opening a file");
-				//System.outprintln(e.getMessage());
+				System.out.println("Ya dun goofed in opening a file");
+				System.out.println(e.getMessage());
 			}
 		}
 		else if(source.equals(notSupportedButton))
-		{
-			//System.outprintln("notSupporedButton");
 			notSupportedFrame.dispose();
-		}
+
 		else if (source.equals(stop))
 		{
 			stopSound();
@@ -800,7 +793,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			scrobbler.setChangeUserFlag(true);
 			scrobbler.newAccountSetup();
 			
-			//System.outprintln("TEST"+scrobbler.getUser());
 			UserLabel.setText("Current user: "+scrobbler.getUser());
 		}
 		
@@ -976,12 +968,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		for(int i = 0; i < 3; i++)
 		{
-			//System.outprintln(supportedFormats[i]);
 			if(file.endsWith(supportedFormats[i]))
-			{
 				supported = true;
-				//System.outprintln(supported);
-			}
 		}
 		
 		return supported;
@@ -1145,7 +1133,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		for(int i = 0; i < 4; i++)
 		{
 			final int j = i;
-			//System.outprintln(similarArtistList[i]);
 			similarArtistLabels[i] = new JLabel("<html><a href=''>"+similarArtistList[i]+"</a>");
 			similarArtistLabels[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
 			similarArtistLabels[i].addMouseListener(new MouseAdapter() 
