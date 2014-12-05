@@ -20,6 +20,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -302,6 +303,53 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		playlistDisplay = new JList<String>(inPlaylist);
 		playlistDisplay.setDragEnabled(true);
+		playlistDisplay.addMouseListener(new MouseListener()
+		{
+			public void mouseClicked(MouseEvent me)
+			{
+				JList temp = (JList) me.getSource();
+				if (me.getClickCount() == 2)
+				{
+					int index = temp.locationToIndex(me.getPoint());
+					System.out.println(index);
+					if(!playlist.isEmpty())
+					{
+						playlist.setIndex(index);
+						try
+						{
+							if(playing)
+								stopSound();
+							scrobbler.setNowPlaying(MyMediaFrame.this);
+							displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+							setCurrentTrack();
+							setMaxTime();
+							timeSlider.setValue(timeCounter);
+							playSound();
+							play.setText("\u25AE\u25AE");
+							hasPaused = false;
+							buttonCheck();
+						}
+						catch(Exception e)
+						{
+							System.out.println("Ya dun goofed in playing");
+							System.out.println(e.getMessage());
+						}
+					}
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+		});
 		JPanel playlist = new JPanel();
 		JPanel trackInfo = new JPanel();
 
