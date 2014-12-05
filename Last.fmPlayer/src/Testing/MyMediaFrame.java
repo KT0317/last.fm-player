@@ -416,18 +416,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		contentPanel.add(outerDescriptionPanel);
 		contentPanel.add(SettingsPanel);
 		contentPanel.add(aboutPanel);
-	/*	panel.setLayout(new GridLayout(2, 1, 25, 25));
-		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		panel.add(buttonPanel);
-		panel.add(volumePanel);	
-		panel.add(currentlyPlaying);
-		panel.add(infoPanel);*/
 		Pane.add(Sidebar, BorderLayout.WEST);
         Pane.add(lowerPanel, BorderLayout.SOUTH);
         Pane.add(contentPanel, BorderLayout.CENTER);
         this.pack();
-
-	//	this.setContentPane(panel);
 		
 		checkCache();
 		buttonCheck();
@@ -744,7 +736,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						this.setMaxTime();
 						buttonCheck();
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -759,11 +750,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						this.setMaxTime();
 						buttonCheck();
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//playing = false;
-					//hasPaused = true;
 				}
 			}
 		}
