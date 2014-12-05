@@ -336,7 +336,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						{
 							if(playing)
 								stopSound();
-							Scrobbler.setNowPlaying(MyMediaFrame.this);
+							//Scrobbler.setNowPlaying(MyMediaFrame.this);
 							displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 							setCurrentTrack();
 							setMaxTime();
