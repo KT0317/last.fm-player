@@ -32,6 +32,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import javax.sound.sampled.FloatControl;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -44,6 +45,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
@@ -104,8 +106,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JButton playerButton, descriptionButton, settingsButton;
 	JFrame notSupportedFrame = new JFrame("File Not Supported!");
 	private JButton notSupportedButton = new JButton("Okay :c");
-	private static final int PREF_MIN_WIDTH = 350;
-	private static final int PREF_MIN_HEIGHT = 250;
+	private static final int PREF_MIN_WIDTH = 400;
+	private static final int PREF_MIN_HEIGHT = 300;
 	private boolean shekels = false;
 	private boolean hasPaused = false;
 	private boolean playing = false;
@@ -302,12 +304,22 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		playlistDisplay.setDragEnabled(true);
 		JPanel playlist = new JPanel();
 		JPanel trackInfo = new JPanel();
+
+
+		JScrollPane thePane = new JScrollPane(playlistDisplay);
+
 		currentlyPlaying.setBorder(new TitledBorder(new EtchedBorder(), "Currently Playing"));
 		currentlyPlaying.setLayout(new BorderLayout());
 		currentlyPlaying.add(trackInfo, BorderLayout.CENTER);
 		currentlyPlaying.add(playlist, BorderLayout.EAST);
-		
-		playlist.add(playlistDisplay);
+		thePane.getViewport().setOpaque(false);
+		thePane.setBorder(BorderFactory.createEmptyBorder());
+		playlist.setOpaque(false);
+		playlistDisplay.setOpaque(false);
+		playlist.add(thePane);
+		thePane.setBackground(currentlyPlaying.getBackground());
+		thePane.getViewport().setBackground(currentlyPlaying.getBackground());
+		thePane.setForeground(currentlyPlaying.getBackground());
 		trackInfo.setLayout(new BoxLayout(trackInfo, BoxLayout.PAGE_AXIS));
 		trackInfo.add(artistLabel);
 		trackInfo.add(trackLabel);
@@ -352,7 +364,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new CardLayout());
-		 
 		contentPanel.add(currentlyPlaying);
 		contentPanel.add(outerDescriptionPanel);
 		contentPanel.add(SettingsPanel);
