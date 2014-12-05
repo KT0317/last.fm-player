@@ -145,7 +145,7 @@ public class Scrobbler implements ActionListener
 		try
 		{
 	        FileWriter fw = new FileWriter(cacheFile, true);
-	        fw.write(artist+";"+title+";"+album+";"+timeStamp+"\n");
+	        fw.write(track.getArtist()+";"+track.getTitle()+";"+track.getAlbum()+";"+timeStamp+"\n");
 	        fw.close();
 		}
 		catch(Exception e)
