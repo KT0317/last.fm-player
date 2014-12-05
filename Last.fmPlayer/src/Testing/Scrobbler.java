@@ -67,7 +67,7 @@ public class Scrobbler implements ActionListener
 	private JLabel wrongCredLabel = new JLabel("The username or password you entered is incorrect.");
 	
     private boolean offlineFlag = false;
-    private boolean scrobbleFlag = true;
+    private boolean scrobbleFlag;
     boolean changeUserFlag = false;
     
     public void main(String args[])
@@ -119,10 +119,9 @@ public class Scrobbler implements ActionListener
     					//Scrobble currently playing track
 	public void scrobbleCurrent(MyMediaFrame track)
 	{
-		System.out.println("IN SCROBBLE CURRENT");
+		System.out.println(scrobbleFlag);
 		if(scrobbleFlag)
 		{
-			System.out.println("IN SCROBBLE CURRENT - PAST SCROBBLE FLAG");
 			//scrobbleCurrent
 			//Get current time
 			int now = (int) (System.currentTimeMillis() / 1000);
@@ -145,7 +144,6 @@ public class Scrobbler implements ActionListener
 
 	public void addToCache(MyMediaFrame track, int timeStamp)
 	{//Build cache
-		System.out.println("ADDING TO CACHE");
 		try
 		{
 	        FileWriter fw = new FileWriter(cacheFile, true);
@@ -219,7 +217,6 @@ public class Scrobbler implements ActionListener
 		if(offlineFlag == true) //Offline, skip this part
 			return;
 			//Get artist info from last.fm
-		System.out.println("IN GET ARTIST INFO");
 		String info = Artist.getInfo(artistName, key).toString();
 			//Parse info, store in variables
 		String[] toSplit = info.split("url='");
@@ -391,8 +388,6 @@ public class Scrobbler implements ActionListener
 				String encoding = Base64.encodeBase64String(password.getBytes());
 				//byte[] pass = Base64.decodeBase64(encoding);
 				
-				
-				//System.out.println(encoding + "  " + new String(pass));
 		        fw.write(user + " " + new String(encoding));
 		        fw.close();
 			}
@@ -432,7 +427,6 @@ public class Scrobbler implements ActionListener
 	@SuppressWarnings("null")
 	public String[] SimilarArtists(MyMediaFrame track){
 		String similar = Artist.getSimilar(artist, key).toString();
-		System.out.println(similar);
 		String firstSplit[] = similar.split("'");
 		String[] similarArtistList = new String[4];
 			

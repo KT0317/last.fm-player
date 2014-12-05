@@ -92,7 +92,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JToggleButton shuffle;
 	
 	private JButton ChangeUser, Logoff;
-	private JCheckBox EnableScrobbler;
+	private JCheckBox DisableScrobbler;
 	
 	private static JSlider volumeSlider;
 	private static JSlider timeSlider;
@@ -404,14 +404,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		SettingsPanel.setLayout(new BoxLayout(SettingsPanel, BoxLayout.PAGE_AXIS));
 		SettingsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Settings"));
 		UserLabel.setText("Current User: " + scrobbler.getUser());
-		EnableScrobbler = new JCheckBox("Disable Scrobbler");
-		EnableScrobbler.addItemListener(this);
+		DisableScrobbler = new JCheckBox("Disable Scrobbler");
+		DisableScrobbler.addItemListener(this);
 		ChangeUser = new JButton("Change User");
 		ChangeUser.addActionListener(this);
 		Logoff = new JButton("Log Off");
 		Logoff.addActionListener(this);
 		SettingsPanel.add(UserLabel);
-		SettingsPanel.add(EnableScrobbler);
+		SettingsPanel.add(DisableScrobbler);
 		SettingsPanel.add(ChangeUser);
 		SettingsPanel.add(Logoff);
 		
@@ -1155,11 +1155,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		Object source = e.getSource();
-		if (source == EnableScrobbler)
+		if (source == DisableScrobbler)
 		{
-			if (EnableScrobbler.isSelected()) scrobbler.setScrobbleFlag(true);
-			else scrobbler.setScrobbleFlag(false);
-			
+			if (DisableScrobbler.isSelected()) scrobbler.setScrobbleFlag(false);
+			else scrobbler.setScrobbleFlag(true);
 		}
 		
 	}
