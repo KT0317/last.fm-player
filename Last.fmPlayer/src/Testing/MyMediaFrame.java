@@ -303,8 +303,9 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		
 		playlistDisplay = new JList<String>(inPlaylist);
 		playlistDisplay.setDragEnabled(true);
-		playlistDisplay.addMouseListener(new MouseListener()
+		playlistDisplay.addMouseListener(new MouseAdapter()
 		{
+			@Override
 			public void mouseClicked(MouseEvent me)
 			{
 				JList temp = (JList) me.getSource();
@@ -337,18 +338,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					}
 				}
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-
-			@Override
-			public void mouseExited(MouseEvent e) {}
-
-			@Override
-			public void mousePressed(MouseEvent e) {}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {}
 		});
 		JPanel playlist = new JPanel();
 		JPanel trackInfo = new JPanel();
