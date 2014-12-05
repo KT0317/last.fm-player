@@ -700,8 +700,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					playing = false;
-					hasPaused = true;
+					//playing = false;
+					//hasPaused = true;
 				}
 			}
 		}
