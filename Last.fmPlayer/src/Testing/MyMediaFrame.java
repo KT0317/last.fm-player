@@ -338,7 +338,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						{
 							if(playing)
 								stopSound();
-							//Scrobbler.setNowPlaying(MyMediaFrame.this);
 							displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 							setCurrentTrack();
 							setMaxTime();
@@ -618,7 +617,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				}
 				else
 				{
-					scrobbler.setNowPlaying(this);
 					this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					this.setCurrentTrack();
 					this.setMaxTime();
@@ -675,7 +673,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				
 				
 				//scrobbler = new Scrobbler(this);
-				scrobbler.setNowPlaying(this);
 				this.displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 				getSimilar();
 				this.setCurrentTrack();
@@ -830,7 +827,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				{
 					if(playing)
 						stopSound();
-					scrobbler.setNowPlaying(MyMediaFrame.this);
 					displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
 					setCurrentTrack();
 					setMaxTime();
@@ -969,6 +965,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			scrobbler = new Scrobbler(this);
 			scrobbler.scrobbleCurrent(this);
+			scrobbler.setNowPlaying(this);
 		}
 	}
 	
@@ -1032,8 +1029,6 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			timeCounter = 0;
 			timer.restart();
 		}
-			
-		scrobbler.setNowPlaying(this);
 	}
 	
 	public void pauseSound()
