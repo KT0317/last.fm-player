@@ -62,7 +62,7 @@ public class Scrobbler implements ActionListener
 	private JPasswordField passwordField = new JPasswordField();
 	private JFrame newUserFrame = new JFrame("New User");
 	private JFrame welcomeFrame = new JFrame("Welcome!");
-	private JButton registerButton = new JButton("Register");
+	private JButton registerButton = new JButton("Log In");
 	private JButton welcomeButton = new JButton("Continue");
 	private JLabel wrongCredLabel = new JLabel("The username or password you entered is incorrect.");
 	
