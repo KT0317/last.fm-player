@@ -52,7 +52,7 @@ public class Playlist
 	
 	public void remove(int index) throws Exception
 	{
-		if(index > files.size())
+		if(index < files.size())
 		{
 			files.remove(index);
 		}

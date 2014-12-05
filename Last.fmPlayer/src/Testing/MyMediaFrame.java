@@ -46,11 +46,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -125,6 +127,11 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JPanel aboutPanel = new JPanel();
 	
 	private JList playlistDisplay;
+	private JMenuItem removeMenuItem;
+	private JMenuItem playMenuItem;
+	private JPopupMenu popupMenu;
+	private int JListIndex;
+	private JList JListCurrentItem;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
 	
 	Playlist playlist = new Playlist();
@@ -301,6 +308,15 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		timePanel.add(volumeSlider);
 		lowerPanel.add(timePanel, BorderLayout.NORTH);
 		
+		removeMenuItem = new JMenuItem("remove");
+		playMenuItem = new JMenuItem("play");
+		popupMenu = new JPopupMenu();
+		popupMenu.add(playMenuItem);
+		popupMenu.add(new JPopupMenu.Separator());
+		popupMenu.add(removeMenuItem);
+		
+		playMenuItem.addActionListener(this);
+		removeMenuItem.addActionListener(this);
 		playlistDisplay = new JList<String>(inPlaylist);
 		playlistDisplay.setDragEnabled(true);
 		playlistDisplay.addMouseListener(new MouseListener()
@@ -336,6 +352,15 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 						}
 					}
 				}
+				if (SwingUtilities.isRightMouseButton(me)
+				           && !playlistDisplay.isSelectionEmpty()
+				           && playlistDisplay.locationToIndex(me.getPoint())
+				              == playlistDisplay.getSelectedIndex())
+							 {
+				               		popupMenu.show(playlistDisplay, me.getX(), me.getY());
+				               		JListCurrentItem = (JList) me.getSource();
+				               		JListIndex = JListCurrentItem.locationToIndex(me.getPoint());
+							 }
 			}
 
 			@Override
@@ -805,7 +830,49 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				Logoff.setText("Login");
 			}
 		}
-
+		else if(source.equals(playMenuItem))
+		{
+			System.out.println(JListIndex);
+			if(!playlist.isEmpty())
+			{
+				playlist.setIndex(JListIndex);
+				try
+				{
+					if(playing)
+						stopSound();
+					scrobbler.setNowPlaying(MyMediaFrame.this);
+					displayTrackInfo(playlist.getFile(playlist.getCurrentIndex()));
+					setCurrentTrack();
+					setMaxTime();
+					timeSlider.setValue(timeCounter);
+					playSound();
+					play.setText("\u25AE\u25AE");
+					hasPaused = false;
+					buttonCheck();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Ya dun goofed in playing");
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+		else if(source.equals(removeMenuItem))
+		{
+			try
+			{
+				DefaultListModel model = (DefaultListModel) playlistDisplay.getModel();
+				model.remove(JListIndex);
+				playlist.remove(JListIndex);
+				populatePlaylist();
+				System.out.println(JListIndex + "    " + playlist.getIndexOf("C:\\Users\\Michael\\Desktop\\Test FIles\\Depeche Mode - 25 Best Songs (2012) [Mp3][www.lokotorrents.com]\\02 - Personal Jesus 1990.mp3"));
+			} 
+			catch (Exception e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	public void setMaxTime() throws Exception
 	{
