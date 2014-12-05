@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -51,6 +52,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -183,8 +185,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		//Add Items to the FileMenu
 		
 		AddToPlaylist = new JMenuItem("Add To Playlist...");
+		AddToPlaylist.setMnemonic(KeyEvent.VK_L);	//for some reason Crtl + A doesn't work
+		AddToPlaylist.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
 		exitMI = new JMenuItem("Exit");
 		openMI = new JMenuItem("Open..");
+		openMI.setMnemonic(KeyEvent.VK_O);
+		openMI.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		fileMenu.add(openMI);
 		fileMenu.add(AddToPlaylist);
 		fileMenu.add(exitMI);
