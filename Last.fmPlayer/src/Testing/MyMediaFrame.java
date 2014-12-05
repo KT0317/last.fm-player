@@ -259,7 +259,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		previous.setToolTipText("Previous");
 		next = new JButton("\u25BA\u25BA");
 		next.setToolTipText("Next");
-		shuffle = new JToggleButton("\u21C4");
+		shuffle = new JToggleButton("\u21C9");
 		shuffle.setToolTipText("Shuffle");
 		shuffle.setSelected(false);
 		
@@ -584,16 +584,16 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 		else if(source.equals(shuffle))
 		{
-			if(shuffle.isSelected())
+			if(shuffle.getText().equals("\u21C9"))
 			{
 				shuffle.setSelected(false);
 				shuffle.setText("\u21C4");			
 			}
-			else if(!shuffle.isSelected())
+			else if(shuffle.getText().equals("\u21C4"))
 			{
 				shuffle.setSelected(true);
 				shuffle.setText("\u21C9");
-			}	
+			}
 			shekels = !shekels;
 		}
 		else if (source.equals(play))
