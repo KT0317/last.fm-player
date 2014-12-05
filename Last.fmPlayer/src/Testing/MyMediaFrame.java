@@ -803,11 +803,13 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		else if(source.equals(Logoff))
 		{
 			if (Logoff.getText().equals("Login")){
+				System.out.println("TEST1");
 				scrobbler.newAccountSetup();
 				setScrobbleFlag(true);
 				Logoff.setText("Log off");
 			}
 			else{
+				System.out.println("TEST2");
 				scrobbler.setUserAndPass("", "");
 				setScrobbleFlag(false);
 				Logoff.setText("Login");

@@ -332,7 +332,7 @@ public class Scrobbler implements ActionListener
 		newUserFrame.add(changeUserPanel);
 		newUserFrame.setContentPane(changeUserPanel);
 		passwordField.setVisible(true);
-		newUserFrame.toFront(); 
+		newUserFrame.setAlwaysOnTop(true);
 		newUserFrame.setVisible(true);
 		newUserFrame.pack();
 	}//Set up new account
@@ -409,10 +409,6 @@ public class Scrobbler implements ActionListener
 		this.changeUserFlag = val;
 	}
 	
-	public void setScrobbleFlag(boolean val)
-	{
-		this.scrobbleFlag = val;
-	}
 	public URI getOtherArtistUrl(String toFind) throws URISyntaxException
 	{
 		String info = Artist.getInfo(toFind, key).toString();
