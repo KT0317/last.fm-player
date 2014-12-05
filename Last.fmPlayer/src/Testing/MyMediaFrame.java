@@ -466,7 +466,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		String tag = id3.substring(0, 3);
 		if (tag.equals("TAG")) 
          { 
-         	this.setTitle(id3.substring(3, 32)); 
+         	this.setTrack(id3.substring(3, 32)); 
             this.setArtist(id3.substring(33, 62)); 
             this.setAlbum(id3.substring(63, 91)); 
             this.setYear(id3.substring(93, 97)); 
@@ -948,7 +948,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	{
 		this.Artist=Artist.trim();
 	}
-	public void setTitle(String Title)
+	public void setTrack(String Title)
 	{
 		this.Title = Title.trim();
 	}
