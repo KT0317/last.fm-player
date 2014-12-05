@@ -67,7 +67,6 @@ public class Scrobbler implements ActionListener
 	private JLabel wrongCredLabel = new JLabel("The username or password you entered is incorrect.");
 	
     private boolean offlineFlag = false;
-    private boolean scrobbleFlag = true;
     boolean changeUserFlag = false;
     
     public void main(String args[])
@@ -119,8 +118,7 @@ public class Scrobbler implements ActionListener
     					//Scrobble currently playing track
 	public void scrobbleCurrent(MyMediaFrame track)
 	{
-		System.out.println(scrobbleFlag);
-		if(scrobbleFlag)
+		if(track.isScrobbleFlag())
 		{
 			//scrobbleCurrent
 			//Get current time
@@ -156,9 +154,9 @@ public class Scrobbler implements ActionListener
 		return;
 	}//Build cache
 	
-	public void scrobbleCache() throws InterruptedException
+	public void scrobbleCache(MyMediaFrame track) throws InterruptedException
 	{//Scrobble cache
-		if(scrobbleFlag)
+		if(track.isScrobbleFlag())
 		{
 			//If there is no account logged in, do nothing
 			
@@ -199,7 +197,7 @@ public class Scrobbler implements ActionListener
 	
 	public void setNowPlaying(MyMediaFrame track)
 	{//Set now playing
-		if((scrobbleFlag) && (offlineFlag == false))
+		if((track.isScrobbleFlag()) && (offlineFlag == false))
 		{
 			artist = track.getArtist();
 			title = track.getTitle();
@@ -429,7 +427,6 @@ public class Scrobbler implements ActionListener
 		String similar = Artist.getSimilar(artist, key).toString();
 		String firstSplit[] = similar.split("'");
 		String[] similarArtistList = new String[4];
-		System.out.println(similar);
 			
 		for(int i = 0; i < 4; i++)
 		{

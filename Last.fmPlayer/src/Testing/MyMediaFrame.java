@@ -77,6 +77,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	String Artist; 
 	String Album; 
 	
+	private boolean scrobbleFlag = true;
 	private JButton play;
 	private JButton stop;
 	private JButton exit;
@@ -803,12 +804,12 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			if (Logoff.getText().equals("Login")){
 				scrobbler.newAccountSetup();
-				scrobbler.setScrobbleFlag(true);
+				setScrobbleFlag(true);
 				Logoff.setText("Log off");
 			}
 			else{
 				scrobbler.setUserAndPass("", "");
-				scrobbler.setScrobbleFlag(false);
+				setScrobbleFlag(false);
 				Logoff.setText("Login");
 			}
 		}
@@ -997,7 +998,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public void checkCache() throws InterruptedException
 	{//Check cache
-		scrobbler.scrobbleCache(); 
+		scrobbler.scrobbleCache(this); 
 	}//Check cache
 	
 	public void setCurrentTrack() throws Exception
@@ -1161,9 +1162,17 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		Object source = e.getSource();
 		if (source == DisableScrobbler)
 		{
-			if (DisableScrobbler.isSelected()) scrobbler.setScrobbleFlag(false);
-			else scrobbler.setScrobbleFlag(true);
+			if (DisableScrobbler.isSelected()) setScrobbleFlag(false);
+			else setScrobbleFlag(true);
 		}
 		
+	}
+
+	public boolean isScrobbleFlag() {
+		return scrobbleFlag;
+	}
+
+	public void setScrobbleFlag(boolean scrobbleFlag) {
+		this.scrobbleFlag = scrobbleFlag;
 	}
 }
