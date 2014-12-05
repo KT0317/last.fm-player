@@ -67,7 +67,7 @@ public class Scrobbler implements ActionListener
 	private JLabel wrongCredLabel = new JLabel("The username or password you entered is incorrect.");
 	
     private boolean offlineFlag = false;
-    private boolean scrobbleFlag;
+    private boolean scrobbleFlag = true;
     boolean changeUserFlag = false;
     
     public void main(String args[])
@@ -429,7 +429,7 @@ public class Scrobbler implements ActionListener
 		String similar = Artist.getSimilar(artist, key).toString();
 		String firstSplit[] = similar.split("'");
 		String[] similarArtistList = new String[4];
-			
+		System.out.println(similar);
 			
 		for(int i = 0; i < 4; i++)
 		{

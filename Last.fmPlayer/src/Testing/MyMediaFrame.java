@@ -642,6 +642,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(this);
 				File file = fileChooser.getSelectedFile();
+				if(file == null)
+					return;
 				fileString = file.toString();
 				if(playing)
 					this.stopSound();
@@ -1129,7 +1131,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			return;
 		JLabel[] similarArtistLabels = new JLabel[4];
 		final String[] similarArtistList = scrobbler.SimilarArtists(this);
-	
+
+		similarPanel.removeAll();
 		for(int i = 0; i < 4; i++)
 		{
 			final int j = i;
