@@ -1,4 +1,4 @@
-package Testing;
+package mainApp;
 
 //Mike, you're a dick. Seriously.
 import java.awt.BorderLayout;

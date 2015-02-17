@@ -1,4 +1,4 @@
-package Testing;
+package mainApp;
 
 import java.awt.datatransfer.DataFlavor;
 import java.io.BufferedReader;
