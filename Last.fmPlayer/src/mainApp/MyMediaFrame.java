@@ -855,7 +855,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				model.remove(JListIndex);
 				playlist.remove(JListIndex);
 				populatePlaylist();
-				System.out.println(JListIndex + "    " + playlist.getIndexOf("C:\\Users\\Michael\\Desktop\\Test FIles\\Depeche Mode - 25 Best Songs (2012) [Mp3][www.lokotorrents.com]\\02 - Personal Jesus 1990.mp3"));
+				//System.out.println(JListIndex + "    " + playlist.getIndexOf("C:\\Users\\Michael\\Desktop\\Test FIles\\Depeche Mode - 25 Best Songs (2012) [Mp3][www.lokotorrents.com]\\02 - Personal Jesus 1990.mp3"));
 			} 
 			catch (Exception e) 
 			{
