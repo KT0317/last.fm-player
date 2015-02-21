@@ -533,15 +533,17 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public void getMetadata(File playFile)
 	{
-		String id3 = this.musicToBytes(playFile);
-		String tag = id3.substring(0, 3);
-		if (tag.equals("TAG")) 
-         { 
-         	this.setTrack(id3.substring(3, 32)); 
-            this.setArtist(id3.substring(33, 62)); 
-            this.setAlbum(id3.substring(63, 91)); 
-            this.setYear(id3.substring(93, 97)); 
-         }
+		if(checkFileFormat(playFile.toString()))
+		{
+			String id3 = this.musicToBytes(playFile);
+			String tag = id3.substring(0, 3);
+			if (tag.equals("TAG")) 
+			{ 
+				this.setTrack(id3.substring(3, 32)); 
+				this.setArtist(id3.substring(33, 62)); 
+				this.setAlbum(id3.substring(63, 91)); 
+				this.setYear(id3.substring(93, 97)); 
+			}	
          	else 
          	{
          		fileString = fileString.substring(fileString.lastIndexOf('\\') + 1);
@@ -550,6 +552,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
          		albumLabel.setText("Album: Unknown");
          		noMetadataLabel.setVisible(true);
          	}
+		}
 	}
 	
 	public void actionPerformed(ActionEvent ae)
@@ -559,7 +562,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		{
 			String userPlace = System.getProperty("user.home");
 			JFileChooser fileChooser = new JFileChooser(userPlace+"\\Music");
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm", "m4a");
 			fileChooser.setFileFilter(filter);
 			fileChooser.showOpenDialog(this);
 			File file = fileChooser.getSelectedFile();
@@ -646,7 +649,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				playlist.clear();
 				String userPlace = System.getProperty("user.home");
 				JFileChooser fileChooser = new JFileChooser(userPlace+"\\Music");
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm", "m4a");
 				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(this);
 				File file = fileChooser.getSelectedFile();
@@ -975,7 +978,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	private boolean checkFileFormat(String file)
 	{
-		String supportedFormats[] = ".aac .mp3 .pcm".split(" ");
+		String supportedFormats[] = ".aac .mp3 .pcm .m4a".split(" ");
 		boolean supported = false;
 		
 		for(int i = 0; i < 3; i++)
