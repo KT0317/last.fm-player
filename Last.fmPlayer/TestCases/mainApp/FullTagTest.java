@@ -14,7 +14,11 @@ import com.sun.glass.events.KeyEvent;
 import java.awt.Robot;
 
 public class FullTagTest {
-
+/*
+ * Testing all tags as empty/non-empty using decision-table created approach
+ * Also, automated testing that, though relies on an ugly quick hack, goes through all cases
+ * Also tests the system's file selector via the Java Robot library
+ */
 	private MyMediaFrame mf;
 	private Robot rb;
 	
