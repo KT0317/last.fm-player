@@ -7,8 +7,8 @@ import java.io.File;
 import org.junit.Test;
 import org.junit.Before;
 
-public class TitleTest {
-
+public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the application reads it.
+	
 	private MyMediaFrame mf;
 	
 	@Before

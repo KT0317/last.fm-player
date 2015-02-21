@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.Before;
 
 
-public class FileCompatibilityTest {
+public class FileCompatibilityTest { //Tests if the check for supported formats works with common sound file formats.
 
 private MyMediaFrame mf;
 	
@@ -21,7 +21,30 @@ private MyMediaFrame mf;
 	@Test
 	public void testWithAAC()
 	{
-		
+		assertTrue(mf.checkFileFormat(new File("TestCases/AACTest.m4a")));
 	}
 
+	@Test
+	public void testWithMP3()
+	{
+		assertTrue(mf.checkFileFormat(new File("TestCases/Test01.mp3")));
+	}
+	
+	@Test
+	public void testWithWAV()
+	{
+		assertFalse(mf.checkFileFormat(new File("TestCases/WAVTest.wav")));
+	}
+	
+	@Test
+	public void testWithWMA()
+	{
+		assertFalse(mf.checkFileFormat(new File("TestCases/WMATest.wma")));
+	}
+	
+	@Test
+	public void testNonSound()
+	{
+		assertFalse(mf.checkFileFormat(new File("TestCases/Test12.jpg")));
+	}
 }

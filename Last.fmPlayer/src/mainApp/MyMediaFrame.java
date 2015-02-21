@@ -159,7 +159,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
             {   for( int i = 0; i < files.length; i++ )
                 {   try
                     {  
+                		if(checkFileFormat(files[i]))
                 		playlist.add(files[i].getCanonicalPath());
+                		else
+                		notSupported();
                     }   // end try
                     catch( Exception e ) {}
                 } 
@@ -976,12 +979,17 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 		}
 	}
 	
+	public boolean checkFileFormat(File file)
+	{
+		return checkFileFormat(file.toString());
+	}
+	
 	private boolean checkFileFormat(String file)
 	{
 		String supportedFormats[] = ".aac .mp3 .pcm .m4a".split(" ");
 		boolean supported = false;
 		
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < supportedFormats.length; i++)
 		{
 			if(file.endsWith(supportedFormats[i]))
 				supported = true;
