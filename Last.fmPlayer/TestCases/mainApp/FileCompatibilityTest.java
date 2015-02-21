@@ -9,8 +9,9 @@ import org.junit.Before;
 
 
 public class FileCompatibilityTest { //Tests if the check for supported formats works with common sound file formats.
+	//Equivalence classes: openable, non-openable files
 
-private MyMediaFrame mf;
+	private MyMediaFrame mf;
 	
 	@Before
 	public void setUp() throws Exception

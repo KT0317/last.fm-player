@@ -138,6 +138,8 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JList JListCurrentItem;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
 	
+	boolean testMode = false;
+	
 	Playlist playlist = new Playlist();
 	
 	
@@ -651,7 +653,16 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				playlist.clear();
 				String userPlace = System.getProperty("user.home");
-				JFileChooser fileChooser = new JFileChooser(userPlace+"\\Music");
+				
+				if(!testMode)
+				{
+					userPlace = userPlace+"\\Music";
+				}
+				else
+				{//Begin ugly hack for testing
+					userPlace = "C://Users//Jorge//git//last.fm-player1//Last.fmPlayer//TestCases"; //For tests, done locally on Jorge's machine; change if necessary
+				}//End ugly hack for testing
+				JFileChooser fileChooser = new JFileChooser(userPlace);
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm", "m4a");
 				fileChooser.setFileFilter(filter);
 				fileChooser.showOpenDialog(this);
