@@ -538,7 +538,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public void getMetadata(File playFile)
 	{
-		if(checkFileFormat(playFile.toString()))
+		if(checkFileFormat(playFile))
 		{
 			String id3 = this.musicToBytes(playFile);
 			String tag = id3.substring(0, 3);
@@ -573,7 +573,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			File file = fileChooser.getSelectedFile();
 			
 			fileString = file.toString();
-			boolean check = checkFileFormat(fileString);
+			boolean check = checkFileFormat(file);
 			if (check == false)
 			{
 				notSupported();
@@ -674,7 +674,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 					this.stopSound();
 				String fileString = file.toString();
 				
-				boolean check = checkFileFormat(fileString);
+				boolean check = checkFileFormat(file);
 				if (check == false)
 				{
 					notSupported();
@@ -992,7 +992,14 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public boolean checkFileFormat(File file)
 	{
-		return checkFileFormat(file.toString());
+		if (file.exists())
+		{
+			return checkFileFormat(file.toString());
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	private boolean checkFileFormat(String file)
