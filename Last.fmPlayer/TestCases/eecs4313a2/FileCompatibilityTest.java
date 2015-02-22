@@ -1,8 +1,10 @@
-package mainApp;
+package eecs4313a2;
 
 import static org.junit.Assert.*;
 
 import java.io.File;
+
+import mainApp.MyMediaFrame;
 
 import org.junit.Test;
 import org.junit.Before;

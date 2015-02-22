@@ -1,9 +1,11 @@
-package mainApp;
+package eecs4313a2;
 
 
 import static org.junit.Assert.*;
 
 import java.io.File;
+
+import mainApp.MyMediaFrame;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -26,7 +28,7 @@ public class FullTagTest {
 	public void setUp() throws Exception
 	{
 		mf = new MyMediaFrame();
-		mf.testMode = true;
+		mf.setTestMode(true);
 		rb = new Robot();
 		rb.keyPress(KeyEvent.VK_CONTROL);
 		rb.keyPress(KeyEvent.VK_O);		

@@ -138,7 +138,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	private JList JListCurrentItem;
 	private DefaultListModel<String> inPlaylist = new DefaultListModel<String>();
 	
-	boolean testMode = false;
+	private boolean testMode = false;
 	
 	Playlist playlist = new Playlist();
 	
@@ -660,7 +660,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				}
 				else
 				{//Begin ugly hack for testing
-					userPlace = "C://Users//Jorge//git//last.fm-player1//Last.fmPlayer//TestCases"; //For tests, done locally on Jorge's machine; change if necessary
+					userPlace = "C://Users//Jorge//git//last.fm-player2//Last.fmPlayer//TestCases"; //For tests, done locally on Jorge's machine; change if necessary
 				}//End ugly hack for testing
 				JFileChooser fileChooser = new JFileChooser(userPlace);
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Music Files", "mp3", "aac", "pcm", "m4a");
@@ -1204,5 +1204,10 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 
 	public void setScrobbleFlag(boolean scrobbleFlag) {
 		this.scrobbleFlag = scrobbleFlag;
+	}
+	
+	public void setTestMode(boolean status)
+	{
+		this.testMode = status;
 	}
 }

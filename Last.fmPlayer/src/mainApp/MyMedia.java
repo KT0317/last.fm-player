@@ -29,7 +29,7 @@ public class MyMedia
 	    //File soundFile = new File("stuff.mp3");
 	    MyMediaFrame frame = new MyMediaFrame();
 	    frame.setTitle("ScrobbLord!");
-	    frame.testMode = true;
+	    //frame.testMode = true;
 	    //frame.setTitle("DemoSoundVolume");
 	 	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	    frame.pack();

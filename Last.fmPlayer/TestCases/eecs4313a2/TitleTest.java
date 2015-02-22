@@ -1,8 +1,10 @@
-package mainApp;
+package eecs4313a2;
 
 import static org.junit.Assert.*;
 
 import java.io.File;
+
+import mainApp.MyMediaFrame;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -35,7 +37,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	public void testFile03()
 	{
 		mf.getMetadata(new File("TestCases//Test03.mp3"));
-		assertEquals("צ", mf.getTitle());
+		assertEquals("×¦", mf.getTitle());
 	}
 	
 	@Test
@@ -49,7 +51,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	public void testFile05()
 	{
 		mf.getMetadata(new File("TestCases//Test05.mp3"));
-		assertEquals("القراصنة رهيبة", mf.getTitle());
+		assertEquals("Ø§Ù„Ù‚Ø±Ø§ØµÙ†Ø© Ø±Ù‡ÙŠØ¨Ø©", mf.getTitle());
 	}
 	
 	@Test
@@ -77,21 +79,21 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	public void testFile09()
 	{
 		mf.getMetadata(new File("TestCases//Test09.mp3"));
-		assertEquals("29 сщздфтфнгуоилролрннрошзыв", mf.getTitle());
+		assertEquals("29 Ñ�Ñ‰Ð·Ð´Ñ„Ñ‚Ñ„Ð½Ð³ÑƒÐ¾Ð¸Ð»Ñ€Ð¾Ð»Ñ€Ð½Ð½Ñ€Ð¾ÑˆÐ·Ñ‹Ð²", mf.getTitle());
 	}
 	
 	@Test
 	public void testFile10()
 	{
 		mf.getMetadata(new File("TestCases//Test10.mp3"));
-		assertEquals("30 сщздфтфнгуоилролрннрошзыви", mf.getTitle());
+		assertEquals("30 Ñ�Ñ‰Ð·Ð´Ñ„Ñ‚Ñ„Ð½Ð³ÑƒÐ¾Ð¸Ð»Ñ€Ð¾Ð»Ñ€Ð½Ð½Ñ€Ð¾ÑˆÐ·Ñ‹Ð²Ð¸", mf.getTitle());
 	}
 	
 	@Test
 	public void testFile11()
 	{
 		mf.getMetadata(new File("TestCases//Test11.mp3"));
-		assertEquals("30+ сщздфтфнгуоилролрннрошзыви....", mf.getTitle());
+		assertEquals("30+ Ñ�Ñ‰Ð·Ð´Ñ„Ñ‚Ñ„Ð½Ð³ÑƒÐ¾Ð¸Ð»Ñ€Ð¾Ð»Ñ€Ð½Ð½Ñ€Ð¾ÑˆÐ·Ñ‹Ð²Ð¸....", mf.getTitle());
 	}
 	
 	@Test
