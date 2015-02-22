@@ -50,4 +50,10 @@ public class FileCompatibilityTest { //Tests if the check for supported formats 
 	{
 		assertFalse(mf.checkFileFormat(new File("TestCases/Test12.jpg")));
 	}
+	
+	@Test
+	public void testNonExistent()
+	{
+		assertFalse(mf.checkFileFormat(new File("TestCases/yyy.mp3")));
+	}
 }
