@@ -46,6 +46,12 @@ public class FileCompatibilityTest { //Tests if the check for supported formats 
 	}
 	
 	@Test
+	public void testWithFLAC()
+	{
+		assertFalse(mf.checkFileFormat(new File("TestCases/FLACTest.flac")));
+	}
+	
+	@Test
 	public void testNonSound()
 	{
 		assertFalse(mf.checkFileFormat(new File("TestCases/Test12.jpg")));
