@@ -37,7 +37,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	public void testFile03()
 	{
 		mf.getMetadata(new File("TestCases//Test03.mp3"));
-		assertEquals("צ", mf.getTitle());
+		assertEquals("\u05E6", mf.getTitle());
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	public void testFile05()
 	{
 		mf.getMetadata(new File("TestCases//Test05.mp3"));
-		assertEquals("القراصنة رهيبة", mf.getTitle());
+		assertEquals("\u0627\u0644\u0642\u0631\u0627\u0635\u0646\u0629\u0631\u0647\u064A\u0628\u0629", mf.getTitle());
 	}
 	
 	@Test
@@ -79,21 +79,24 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	public void testFile09()
 	{
 		mf.getMetadata(new File("TestCases//Test09.mp3"));
-		assertEquals("29 сщздфтфнгуоилролрннрошзыв", mf.getTitle());
+		assertEquals("29 \u0441\u0449\u0437\u0434\u0444\u0442\u0444\u043D\u0433\u0443\u043E\u0438\u043B\u0440\u043E\u043B"
+				+ "\u0440\u043D\u043D\u0440\u043E\u0448\u0437\u044B\u0432", mf.getTitle());
 	}
 	
 	@Test
 	public void testFile10()
 	{
 		mf.getMetadata(new File("TestCases//Test10.mp3"));
-		assertEquals("30 сщздфтфнгуоилролрннрошзыви", mf.getTitle());
+		assertEquals("30 \u0441\u0449\u0437\u0434\u0444\u0442\u0444\u043D\u0433\u0443\u043E\u0438\u043B\u0440\u043E\u043B"
+				+ "\u0440\u043D\u043D\u0440\u043E\u0448\u0437\u044B\u0432\u0438", mf.getTitle());
 	}
 	
 	@Test
 	public void testFile11()
 	{
 		mf.getMetadata(new File("TestCases//Test11.mp3"));
-		assertEquals("30+ сщздфтфнгуоилролрннрошзыви....", mf.getTitle());
+		assertEquals("30+ \u0441\u0449\u0437\u0434\u0444\u0442\u0444\u043D\u0433\u0443\u043E\u0438\u043B\u0440\u043E\u043B"
+				+ "\u0440\u043D\u043D\u0440\u043E\u0448\u0437\u044B\u0432\u0438....", mf.getTitle());
 	}
 	
 	@Test
