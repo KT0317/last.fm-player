@@ -1,0 +1,1 @@
+IMPORTANT NOTE: Project runs using JavaFX libraries from Java 1.8. Java 1.8 is required.
