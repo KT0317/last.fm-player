@@ -6,6 +6,7 @@ import java.io.File;
 
 import mainApp.MyMediaFrame;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -20,6 +21,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile01()
 	{
 		mf.getMetadata(new File("TestCases//Test01.mp3"));
@@ -27,6 +29,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile02()
 	{
 		mf.getMetadata(new File("TestCases//Test02.mp3"));
@@ -34,6 +37,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile03()
 	{
 		mf.getMetadata(new File("TestCases//Test03.mp3"));
@@ -41,6 +45,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile04()
 	{
 		mf.getMetadata(new File("TestCases//Test04.mp3"));
@@ -48,6 +53,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile05()
 	{
 		mf.getMetadata(new File("TestCases//Test05.mp3"));
@@ -55,6 +61,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile06()
 	{
 		mf.getMetadata(new File("TestCases//Test06.mp3"));
@@ -62,6 +69,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile07()
 	{
 		mf.getMetadata(new File("TestCases//Test07.mp3"));
@@ -69,6 +77,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile08()
 	{
 		mf.getMetadata(new File("TestCases//Test08.mp3"));
@@ -76,6 +85,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile09()
 	{
 		mf.getMetadata(new File("TestCases//Test09.mp3"));
@@ -84,6 +94,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile10()
 	{
 		mf.getMetadata(new File("TestCases//Test10.mp3"));
@@ -92,6 +103,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile11()
 	{
 		mf.getMetadata(new File("TestCases//Test11.mp3"));
@@ -100,9 +112,18 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
+	@Ignore
 	public void testFile12()
 	{
 		mf.getMetadata(new File("TestCases//Test12.jpg"));
+		assertEquals(null, mf.getTitle());
+	}
+	
+	@Test
+	@Ignore
+	public void testAAC()
+	{
+		mf.getMetadata(new File("TestCases//AACTest.m4a"));
 		assertEquals(null, mf.getTitle());
 	}
 

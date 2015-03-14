@@ -538,25 +538,34 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 	
 	public void getMetadata(File playFile)
 	{
-		if(checkFileFormat(playFile))
+		try
 		{
-			String id3 = this.musicToBytes(playFile);
-			String tag = id3.substring(0, 3);
-			if (tag.equals("TAG")) 
-			{ 
-				this.setTrack(id3.substring(3, 32)); 
-				this.setArtist(id3.substring(33, 62)); 
-				this.setAlbum(id3.substring(63, 91)); 
-				this.setYear(id3.substring(93, 97)); 
-			}	
-         	else 
-         	{
-         		fileString = fileString.substring(fileString.lastIndexOf('\\') + 1);
-         		trackLabel.setText("Title: "+fileString);
-         		artistLabel.setText("Artist: Unknown");
-         		albumLabel.setText("Album: Unknown");
-         		noMetadataLabel.setVisible(true);
-         	}
+			if(checkFileFormat(playFile))
+			{
+				String id3 = this.musicToBytes(playFile);
+				String tag = id3.substring(0, 3);
+				if (tag.equals("TAG"))
+				{ 
+					this.setTrack(id3.substring(3, 32)); 
+					this.setArtist(id3.substring(33, 62)); 
+					this.setAlbum(id3.substring(63, 91)); 
+					this.setYear(id3.substring(93, 97)); 
+				}	
+				else 
+				{
+					fileString = fileString.substring(fileString.lastIndexOf('/') + 1);
+					trackLabel.setText("Title: "+fileString);
+					artistLabel.setText("Artist: Unknown");
+					albumLabel.setText("Album: Unknown");
+         			noMetadataLabel.setVisible(true);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Ya dun goofed getting MetaData");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -641,6 +650,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 			{
 				System.out.println("Ya dun goofed in playing");
 				System.out.println(e.getMessage());
+				System.out.println(e.getStackTrace());
 			}
 		}
 		else if(source.equals(open) || source.equals(openMI))

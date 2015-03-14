@@ -281,6 +281,11 @@ public class FullTagTest {
 		
 		rb.keyPress(KeyEvent.VK_ENTER);
 		rb.keyRelease(KeyEvent.VK_ENTER);
+		rb.delay(200);
+		rb.keyPress(KeyEvent.VK_ALT);
+		rb.keyPress(KeyEvent.VK_F4);
+		rb.keyRelease(KeyEvent.VK_ALT);
+		rb.keyRelease(KeyEvent.VK_F4);
 	}
 	
 	@Test
@@ -308,6 +313,12 @@ public class FullTagTest {
 		assertEquals(null, mf.getTitle());
 		assertEquals(null, mf.getArtist());
 		assertEquals(null, mf.getAlbum());
+		
+		rb.delay(200);
+		rb.keyPress(KeyEvent.VK_ALT);
+		rb.keyPress(KeyEvent.VK_F4);
+		rb.keyRelease(KeyEvent.VK_ALT);
+		rb.keyRelease(KeyEvent.VK_F4);
 	}
 	
 	@Test
@@ -335,6 +346,15 @@ public class FullTagTest {
 		assertEquals(null, mf.getTitle());
 		assertEquals(null, mf.getArtist());
 		assertEquals(null, mf.getAlbum());
+	}
+	
+	@After
+	public void tearDown()
+	{
+		rb.keyPress(KeyEvent.VK_ALT);
+		rb.keyPress(KeyEvent.VK_F4);
+		rb.keyRelease(KeyEvent.VK_ALT);
+		rb.keyRelease(KeyEvent.VK_F4);
 	}
 	
 }
