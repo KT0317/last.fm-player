@@ -1,4 +1,4 @@
-package eecs4313a2;
+package eecs4313a3;
 
 import static org.junit.Assert.*;
 
@@ -45,7 +45,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
-	//@Ignore
+	@Ignore
 	public void testFile04()
 	{
 		mf.getMetadata(new File("TestCases//Test04.mp3"));
@@ -118,4 +118,13 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 		mf.getMetadata(new File("TestCases//Test12.jpg"));
 		assertEquals(null, mf.getTitle());
 	}
+	
+	@Test
+	//@Ignore
+	public void testAAC()
+	{
+		mf.getMetadata(new File("TestCases//AACTest.m4a"));
+		assertEquals(null, mf.getTitle());
+	}
+
 }

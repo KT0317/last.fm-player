@@ -1,4 +1,4 @@
-package eecs4313a2;
+package eecs4313a3;
 
 
 import static org.junit.Assert.*;
@@ -319,6 +319,33 @@ public class FullTagTest {
 		rb.keyPress(KeyEvent.VK_F4);
 		rb.keyRelease(KeyEvent.VK_ALT);
 		rb.keyRelease(KeyEvent.VK_F4);
+	}
+	
+	@Test
+	public void testProblematicFile() //Test using a file known not to have its tags read by other software; Android music player in particular.
+	{
+		rb.keyPress(KeyEvent.VK_9);
+		rb.keyRelease(KeyEvent.VK_9);
+		rb.delay(100);
+		rb.keyPress(KeyEvent.VK_PERIOD);
+		rb.keyRelease(KeyEvent.VK_PERIOD);
+		rb.delay(100);
+		rb.keyPress(KeyEvent.VK_M);
+		rb.keyRelease(KeyEvent.VK_M);
+		rb.delay(100);
+		rb.keyPress(KeyEvent.VK_P);
+		rb.keyRelease(KeyEvent.VK_P);
+		rb.delay(100);
+		rb.keyPress(KeyEvent.VK_3);
+		rb.keyRelease(KeyEvent.VK_3);
+		rb.delay(100);
+		rb.keyPress(KeyEvent.VK_ENTER);
+		rb.keyRelease(KeyEvent.VK_ENTER);
+		rb.delay(2000);
+		
+		assertEquals(null, mf.getTitle());
+		assertEquals(null, mf.getArtist());
+		assertEquals(null, mf.getAlbum());
 	}
 	
 	@After
