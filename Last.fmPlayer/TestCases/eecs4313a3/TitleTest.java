@@ -45,7 +45,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	}
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void testFile04()
 	{
 		mf.getMetadata(new File("TestCases//Test04.mp3"));
@@ -124,7 +124,7 @@ public class TitleTest { //Test looking at one ID3 tag in an MP3 and how the app
 	public void testAAC()
 	{
 		mf.getMetadata(new File("TestCases//AACTest.m4a"));
-		assertEquals(null, mf.getTitle());
+		assertEquals("Demented Aggression", mf.getTitle());
 	}
 
 }

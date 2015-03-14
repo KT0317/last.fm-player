@@ -323,7 +323,7 @@ public class FullTagTest {
 	
 	@Test
 	public void testProblematicFile() //Test using a file known not to have its tags read by other software; Android music player in particular.
-	{
+	{ //Expected null tags due to problematic nature of file. If failed, it means metadata acquisition has changed and this file's encoding is supported.
 		rb.keyPress(KeyEvent.VK_9);
 		rb.keyRelease(KeyEvent.VK_9);
 		rb.delay(100);
