@@ -698,6 +698,7 @@ public class MyMediaFrame extends JFrame implements ActionListener, ChangeListen
 				{
 					System.out.println("Ya dun goofed in adding to the playlist");
 					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
 				
 				this.getMetadata(file);
