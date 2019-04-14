@@ -1,1 +1,11 @@
 IMPORTANT NOTE: Project runs using JavaFX libraries from Java 1.8. Java 1.8 is required.
+
+COMPATIBLE MUSIC FILES: .mp3, .acc, .pcm, .m4a
+
+METADATA VERSION: ID3v1 (cannot retrieve metadata on versions ID3v2 and above)
+
+EXTERNAL JAR FILE: lib/commons-codec-1.10.jar & lib/lastfm-java.0.1.2.jar
+
+ACCOUNT INFORMATION:
+Username: TestAccount3461
+password: meowmix
