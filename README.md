@@ -22,8 +22,8 @@ Compatible Music Files formats:
 - m4a
 
 External Jar File (Dependencies):
-- lib/commons-codec-1.10.jar
-- lib/lastfm-java.0.1.2.jar
+- ../lib/commons-codec-1.10.jar
+- ../lib/lastfm-java.0.1.2.jar
 
 NOTE:
 
