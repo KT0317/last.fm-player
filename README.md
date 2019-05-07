@@ -15,7 +15,7 @@ Account Information:
 - Username: TestAccount3461
 - password: meowmix
 
-Compatible Music Files:
+Compatible Music Files formats:
 - mp3
 - acc
 - pcm
